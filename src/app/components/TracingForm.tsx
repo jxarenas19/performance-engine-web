@@ -5,12 +5,12 @@ import {DataType} from '../utils/types';
 
 const TracingForm = ({ addData,form, setSelectedValues }) => {
 
-  
+
   const handlePaste = (event: any) => {
     const pasteText = event.clipboardData.getData("text");
     const formData: DataType = {
       team: "",
-      employee: "",
+      user_id: "",
       detail: "",
       t_spent: "",
       t_remaining: "",
@@ -46,15 +46,15 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
             </Select>
           </Form.Item>
           <Form.Item
-            name="employee"
+            name="user_id"
             label="Employee"
             rules={[{ required: true }]}
           >
             <Select placeholder="Select an employee" allowClear>
-              <Select value="1">Messi</Select>
-              <Select value="2">Maradona</Select>
-              <Select value="3">Cristiano</Select>
-              <Select value="4">Beckham</Select>
+              <Select value="a4s854e8-a081-7079-17cf-b15b1cde6a9f">Messi</Select>
+              <Select value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Maradona</Select>
+              <Select value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Cristiano</Select>
+              <Select value="a42854ed-a081-7079-17cf-b15b1cde6a9f">Beckham</Select>
             </Select>
           </Form.Item>
           <Form.Item
@@ -76,7 +76,9 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
                 label="Time employee"
                 rules={[{ required: true }]}
               >
-                <Input />
+                <Input
+                    placeholder="Introduce un valor (ej. 2w, 5d, 3h, 4m)"
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -85,7 +87,9 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
                 label="Time remaining"
                 rules={[{ required: true }]}
               >
-                <Input />
+                <Input
+                    placeholder="Introduce un valor (ej. 2w, 5d, 3h, 4m)"
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -105,7 +109,9 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
                 label="Time affectation"
                 rules={[{ required: true }]}
               >
-                <Input />
+                <Input
+                    placeholder="Introduce un valor (ej. 2w, 5d, 3h, 4m)"
+                />
               </Form.Item>
             </Col>
           </Row>

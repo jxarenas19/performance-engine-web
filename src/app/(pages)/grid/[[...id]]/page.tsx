@@ -10,6 +10,7 @@ import TracingForm from "@/app/components/TracingForm";
 import TimeWorked from "@/app/components/TimeWorked";
 import {HeartOutlined, SmileOutlined} from "@ant-design/icons";
 import {RangePickerProps} from 'antd/es/date-picker';
+import {createTracing} from "@/app/hooks/useTracingApi";
 
 const {RangePicker} = DatePicker;
 const {Option} = Select;
@@ -96,10 +97,14 @@ export default function Page({params}: { params: { id: string } }) {
     const columnsDayGroups: ColumnsType<DayGroup> = [
         {title: "Date", dataIndex: "date", key: "date"},
     ];
-
+    const fetchTracing = async (values: DataType) => {
+        return await createTracing(values)
+    }
     const addData = (values: DataType) => {
         console.log(values);
         form.resetFields();
+        const response = fetchTracing(values);
+        console.log(response)
         setIsModalOpen(false);
     };
 

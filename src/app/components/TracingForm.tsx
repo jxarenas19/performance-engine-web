@@ -3,15 +3,15 @@ import {Button, Checkbox, Col, Form, Input, Row, Select} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import {DataType} from '../utils/types';
 
-const TracingForm = ({ addData, setSelectedValues }) => {
-  const [form] = Form.useForm();
+const TracingForm = ({ addData,form, setSelectedValues }) => {
+
   
   const handlePaste = (event: any) => {
     const pasteText = event.clipboardData.getData("text");
     const formData: DataType = {
       team: "",
       employee: "",
-      description: "",
+      detail: "",
       t_spent: "",
       t_remaining: "",
       affectation: "",
@@ -19,15 +19,18 @@ const TracingForm = ({ addData, setSelectedValues }) => {
       plus: [],
     };
 
-    pasteText.split(",").forEach((part: string) => {
-      const [key, value] = part.trim().split(":");
-      if (key.toLowerCase() === "team") formData["team"] = value.trim();
-      if (key.toLowerCase() === "employee")
-        formData["employee"] = value.trim();
+    pasteText.split(",").forEach((text: string) => {
+      // const [key, value] = part.trim().split(":");
+      // if (key.toLowerCase() === "team") formData["team"] = value.trim();
+      // if (key.toLowerCase() === "employee")
+      //   formData["employee"] = value.trim();
+      const textFormated = text.split('\n');
+      console.log(textFormated)
     });
 
     form.setFieldsValue(formData);
   };
+
   return (
         <Form form={form} layout="vertical" onFinish={addData}>
           <Input.TextArea
@@ -54,8 +57,17 @@ const TracingForm = ({ addData, setSelectedValues }) => {
               <Select value="4">Beckham</Select>
             </Select>
           </Form.Item>
-          <Form.Item>
-            <TextArea placeholder="Description" rows={4} />
+          <Form.Item
+              name="title"
+              label="Title"
+              rules={[{ required: true }]}
+          >
+            <Input placeholder="CODE:TITLE"/>
+          </Form.Item>
+          <Form.Item
+              name="detail"
+          >
+            <TextArea placeholder="Detail" rows={4} />
           </Form.Item>
           <Row gutter={16}>
             <Col span={12}>

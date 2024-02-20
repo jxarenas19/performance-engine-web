@@ -35,8 +35,9 @@ export interface TeamGroup {
 export interface DataType {
   key?: React.Key;
   team: string;
+  title?: string;
   employee: string;
-  description: string;
+  detail: string;
   t_spent: string;
   t_remaining: string;
   affectation: string;

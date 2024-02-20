@@ -36,7 +36,7 @@ export interface DataType {
   key?: React.Key;
   team: string;
   title?: string;
-  employee: string;
+  user_id: string;
   detail: string;
   t_spent: string;
   t_remaining: string;

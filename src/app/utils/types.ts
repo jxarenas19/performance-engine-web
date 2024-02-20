@@ -1,9 +1,9 @@
 export interface Requirement {
   id: string;
-  t_empleado: string;
-  t_restante: string;
-  afectacion: string;
-  t_afectacion: string;
+  t_spent: string;
+  t_remaining: string;
+  affectation: string;
+  t_affectation: string;
   // Puedes agregar más campos según los requisitos
 }
 
@@ -17,7 +17,7 @@ export interface Person {
   name: string;
   hoursWorked?:number;
   requirements: Requirement[];
-  achievements?: Achievement[];
+  plus?: Achievement[];
 }
 
 export interface DayGroup {
@@ -26,20 +26,20 @@ export interface DayGroup {
   people: Person[];
 }
 
-export interface EquipoGroup {
+export interface TeamGroup {
   id: string;
-  equipo: string;
+  team: string;
   date: string;
   people: Person[];
 }
 export interface DataType {
   key?: React.Key;
-  equipo: string;
-  trabajador: string;
-  descripcion: string;
-  t_empleado: string;
-  t_restante: string;
-  afectacion: string;
-  t_afectacion: string;
-  bonos: string[];
+  team: string;
+  employee: string;
+  description: string;
+  t_spent: string;
+  t_remaining: string;
+  affectation: string;
+  t_affectation: string;
+  plus: string[];
 }

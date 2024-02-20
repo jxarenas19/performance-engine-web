@@ -1,33 +1,26 @@
-import {EquipoGroup} from "@/app/utils/types";
-import {
-    AndroidOutlined,
-    HeartOutlined,
-    SmileOutlined,
-    StarOutlined,
-    ThunderboltOutlined,
-} from "@ant-design/icons";
-import React from "react";
+import {TeamGroup} from "@/app/utils/types";
 
-export const equipoGroupData: EquipoGroup[] = [
+
+export const teamGroupData: TeamGroup[] = [
   {
       id:'166764',
-      equipo:'Desarrollo',
+      team:'Development',
       date: '2024-02-15',
       people: [
           {
-              id: '154367',
+              id: '1',
               name: 'Castillo Palo',
               hoursWorked:6,
               requirements: [
                   {
                       id: '18734',
-                      t_empleado: '2d',
-                      t_restante: '2d',
-                      afectacion: '2d',
-                      t_afectacion: '2d'
+                      t_spent: '2d',
+                      t_remaining: '2d',
+                      affectation: '2d',
+                      t_affectation: '2d'
                   },
               ],
-              achievements: [
+              plus: [
                   {id: '11245', imageUrl: '/path/to/escudo.png'},
                   {id: '27654', imageUrl: '/path/to/rayo.png'},
               ],
@@ -39,10 +32,10 @@ export const equipoGroupData: EquipoGroup[] = [
               requirements: [
                   {
                       id: '1765',
-                      t_empleado: '3d',
-                      t_restante: '5d',
-                      afectacion: '1d',
-                      t_afectacion: '8d'
+                      t_spent: '3d',
+                      t_remaining: '5d',
+                      affectation: '1d',
+                      t_affectation: '8d'
                   }
               ],
           },
@@ -51,7 +44,7 @@ export const equipoGroupData: EquipoGroup[] = [
   },
   {
       id:'26554',
-      equipo:'Marketing',
+      team:'Marketing',
       date: '2024-02-15',
       people: [
           {
@@ -61,13 +54,13 @@ export const equipoGroupData: EquipoGroup[] = [
               requirements: [
                   {
                       id: '14432',
-                      t_empleado: '2d',
-                      t_restante: '2d',
-                      afectacion: '2d',
-                      t_afectacion: '2d'
+                      t_spent: '2d',
+                      t_remaining: '2d',
+                      affectation: '2d',
+                      t_affectation: '2d'
                   },
               ],
-              achievements: [
+              plus: [
                   {id: '12', imageUrl: '/path/to/escudo.png'},
                   {id: '2222', imageUrl: '/path/to/rayo.png'},
               ],
@@ -79,10 +72,10 @@ export const equipoGroupData: EquipoGroup[] = [
               requirements: [
                   {
                       id: '1333',
-                      t_empleado: '3d',
-                      t_restante: '5d',
-                      afectacion: '1d',
-                      t_afectacion: '8d'
+                      t_spent: '3d',
+                      t_remaining: '5d',
+                      affectation: '1d',
+                      t_affectation: '8d'
                   }
               ],
           },
@@ -91,33 +84,6 @@ export const equipoGroupData: EquipoGroup[] = [
   }
 ]
 
-export const onlyOneGroupData: EquipoGroup[] = [
-    {
-        id:'166764',
-        equipo:'Desarrollo',
-        date: '2024-02-15',
-        people: [
-            {
-                id: '154367',
-                name: 'Castillo Palo',
-                hoursWorked:6,
-                requirements: [
-                    {
-                        id: '18734',
-                        t_empleado: '2d',
-                        t_restante: '2d',
-                        afectacion: '2d',
-                        t_afectacion: '2d'
-                    },
-                ],
-                achievements: [
-                    {id: '11245', imageUrl: '/path/to/escudo.png'},
-                    {id: '27654', imageUrl: '/path/to/rayo.png'},
-                ],
-            }
-        ],
-    }
-]
 
 
-export const equiposData = ["Desarrollo", "Marketing", "Testers"];
+export const teamsData = ["Development", "Marketing", "Testers"];

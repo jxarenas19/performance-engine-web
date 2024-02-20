@@ -3,28 +3,27 @@ import {Button, Checkbox, Col, Form, Input, Row, Select} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import {DataType} from '../utils/types';
 
-const SeguimientoForm = ({ addData, setSelectedValues }) => {
+const TracingForm = ({ addData, setSelectedValues }) => {
   const [form] = Form.useForm();
   
   const handlePaste = (event: any) => {
     const pasteText = event.clipboardData.getData("text");
     const formData: DataType = {
-      equipo: "",
-      trabajador: "",
-      descripcion: "",
-      t_empleado: "",
-      t_restante: "",
-      afectacion: "",
-      t_afectacion: "",
-      bonos: [],
+      team: "",
+      employee: "",
+      description: "",
+      t_spent: "",
+      t_remaining: "",
+      affectation: "",
+      t_affectation: "",
+      plus: [],
     };
 
-    // Supongamos que el texto pegado sigue el formato "Nombre: valor, Email: valor"
     pasteText.split(",").forEach((part: string) => {
       const [key, value] = part.trim().split(":");
-      if (key.toLowerCase() === "equipo") formData["equipo"] = value.trim();
-      if (key.toLowerCase() === "trabajador")
-        formData["trabajador"] = value.trim();
+      if (key.toLowerCase() === "team") formData["team"] = value.trim();
+      if (key.toLowerCase() === "employee")
+        formData["employee"] = value.trim();
     });
 
     form.setFieldsValue(formData);
@@ -32,23 +31,23 @@ const SeguimientoForm = ({ addData, setSelectedValues }) => {
   return (
         <Form form={form} layout="vertical" onFinish={addData}>
           <Input.TextArea
-            placeholder="Pega el texto aquí"
+            placeholder="Paste the text here"
             onPaste={handlePaste}
           />
-          <Form.Item name="equipo" label="Equipo" rules={[{ required: true }]}>
-            <Select placeholder="Seleccione un proyecto" allowClear>
-              <Select value="1">Desarrollo</Select>
-              <Select value="2">Marqueting</Select>
-              <Select value="3">Ventas</Select>
-              <Select value="4">otros</Select>
+          <Form.Item name="team" label="Team" rules={[{ required: true }]}>
+            <Select placeholder="Select a project" allowClear>
+              <Select value="1">Development</Select>
+              <Select value="2">Marketing</Select>
+              <Select value="3">Sales</Select>
+              <Select value="4">Others</Select>
             </Select>
           </Form.Item>
           <Form.Item
-            name="trabajador"
-            label="Trabajador"
+            name="employee"
+            label="Employee"
             rules={[{ required: true }]}
           >
-            <Select placeholder="Seleccione un trabajador" allowClear>
+            <Select placeholder="Select an employee" allowClear>
               <Select value="1">Messi</Select>
               <Select value="2">Maradona</Select>
               <Select value="3">Cristiano</Select>
@@ -56,13 +55,13 @@ const SeguimientoForm = ({ addData, setSelectedValues }) => {
             </Select>
           </Form.Item>
           <Form.Item>
-            <TextArea placeholder="Descripción de la tarea" rows={4} />
+            <TextArea placeholder="Description" rows={4} />
           </Form.Item>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="tiempo_empleado"
-                label="Tiempo empleado"
+                name="t_spent"
+                label="Time employee"
                 rules={[{ required: true }]}
               >
                 <Input />
@@ -70,8 +69,8 @@ const SeguimientoForm = ({ addData, setSelectedValues }) => {
             </Col>
             <Col span={12}>
               <Form.Item
-                name="tiempo_restante"
-                label="Tiempo restante"
+                name="t_remaining"
+                label="Time remaining"
                 rules={[{ required: true }]}
               >
                 <Input />
@@ -81,8 +80,8 @@ const SeguimientoForm = ({ addData, setSelectedValues }) => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="afectacion"
-                label="Afectación"
+                name="affectation"
+                label="Affectation"
                 rules={[{ required: true }]}
               >
                 <Input />
@@ -90,49 +89,49 @@ const SeguimientoForm = ({ addData, setSelectedValues }) => {
             </Col>
             <Col span={12}>
               <Form.Item
-                name="tiempo_afectado"
-                label="Tiempo afectado"
+                name="t_affectation"
+                label="Time affectation"
                 rules={[{ required: true }]}
               >
                 <Input />
               </Form.Item>
             </Col>
           </Row>
-          <Form.Item name="bonos">
+          <Form.Item name="plus">
             <Checkbox.Group onChange={(values) => setSelectedValues(values)}>
               <Row>
                 <Col span={8}>
-                  <Checkbox value="cumplimiento" style={{ lineHeight: "32px" }}>
-                    Cumplimiento
+                  <Checkbox value="compliance" style={{ lineHeight: "32px" }}>
+                    Compliance
                   </Checkbox>
                 </Col>
                 <Col span={8}>
                   <Checkbox
-                    value="creatividad"
+                    value="creativity"
                     style={{ lineHeight: "32px" }}
                     disabled
                   >
-                    Creatividad
+                    Creativity
                   </Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="extras" style={{ lineHeight: "32px" }}>
-                    Extras
+                  <Checkbox value="plus" style={{ lineHeight: "32px" }}>
+                    Plus
                   </Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="rendimiento" style={{ lineHeight: "32px" }}>
-                    Rendimiento
+                  <Checkbox value="performance" style={{ lineHeight: "32px" }}>
+                    Performance
                   </Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="liderazgo" style={{ lineHeight: "32px" }}>
-                    Liderazgo
+                  <Checkbox value="leadership" style={{ lineHeight: "32px" }}>
+                    Leadership
                   </Checkbox>
                 </Col>
                 <Col span={8}>
-                  <Checkbox value="rapidez" style={{ lineHeight: "32px" }}>
-                    Rápidez
+                  <Checkbox value="speed" style={{ lineHeight: "32px" }}>
+                    Speed
                   </Checkbox>
                 </Col>
               </Row>
@@ -140,11 +139,11 @@ const SeguimientoForm = ({ addData, setSelectedValues }) => {
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Guardar
+              Save
             </Button>
           </Form.Item>
         </Form>
   );
 };
 
-export default SeguimientoForm;
+export default TracingForm;

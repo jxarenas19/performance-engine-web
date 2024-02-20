@@ -39,3 +39,14 @@
   .selected-row {
     background-color: #b3b3b3; /* Elige el color que prefieras */
   }
+.button-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea si no caben en el contenedor */
+}
+
+.ant-btn,
+.ant-picker,
+.ant-select {
+  margin-right: 10px; /* Ajusta el espacio entre cada componente */
+  margin-bottom: 10px; /* Ajusta el espacio entre las filas */
+}

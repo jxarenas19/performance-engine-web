@@ -1,4 +1,4 @@
-import React, {createContext, useReducer, Dispatch} from "react";
+import React, {createContext, useReducer, Dispatch, ReactNode} from "react";
 
 type AppState = {
     selectedPerson: string | null;
@@ -27,7 +27,7 @@ interface AppContextType {
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider: React.FC = ({ children }) => {
+export const AppProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [state, dispatch] = useReducer(appReducer, initialState);
 
     return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;

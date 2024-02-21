@@ -1,14 +1,15 @@
 "use client";
 
 import Temp from "@/app/components/Temp";
-import { AppProvider } from "@/app/context/AppContext";
+import {TracingProvider} from "@/app/context/tracingContext";
+
 
 export default function Page() {
   return (
     <>
-      <AppProvider>
+      <TracingProvider>
         <Temp></Temp>
-      </AppProvider>
+      </TracingProvider>
     </>
   );
 }

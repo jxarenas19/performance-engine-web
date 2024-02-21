@@ -3,7 +3,7 @@ import {Button, Checkbox, Col, Form, Input, Row, Select} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import {DataType} from '../utils/types';
 
-const TracingForm = ({ addData,form, setSelectedValues }) => {
+const TracingForm = ({ addData,form }) => {
 
 
   const handlePaste = (event: any) => {
@@ -39,10 +39,10 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
           />
           <Form.Item name="team" label="Team" rules={[{ required: true }]}>
             <Select placeholder="Select a project" allowClear>
-              <Select value="1">Development</Select>
-              <Select value="2">Marketing</Select>
-              <Select value="3">Sales</Select>
-              <Select value="4">Others</Select>
+              <Select.Option value="1">Development</Select.Option>
+              <Select.Option value="2">Marketing</Select.Option>
+              <Select.Option value="3">Sales</Select.Option>
+              <Select.Option value="4">Others</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -51,10 +51,10 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
             rules={[{ required: true }]}
           >
             <Select placeholder="Select an employee" allowClear>
-              <Select value="a4s854e8-a081-7079-17cf-b15b1cde6a9f">Messi</Select>
-              <Select value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Maradona</Select>
-              <Select value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Cristiano</Select>
-              <Select value="a42854ed-a081-7079-17cf-b15b1cde6a9f">Beckham</Select>
+              <Select.Option value="a4s854e8-a081-7079-17cf-b15b1cde6a9f">Messi</Select.Option>
+              <Select.Option value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Maradona</Select.Option>
+              <Select.Option value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Cristiano</Select.Option>
+              <Select.Option value="a42854ed-a081-7079-17cf-b15b1cde6a9f">Beckham</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -77,7 +77,7 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
                 rules={[{ required: true }]}
               >
                 <Input
-                    placeholder="Introduce un valor (ej. 2w, 5d, 3h, 4m)"
+                    placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
                 />
               </Form.Item>
             </Col>
@@ -88,7 +88,7 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
                 rules={[{ required: true }]}
               >
                 <Input
-                    placeholder="Introduce un valor (ej. 2w, 5d, 3h, 4m)"
+                    placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
                 />
               </Form.Item>
             </Col>
@@ -110,7 +110,7 @@ const TracingForm = ({ addData,form, setSelectedValues }) => {
                 rules={[{ required: true }]}
               >
                 <Input
-                    placeholder="Introduce un valor (ej. 2w, 5d, 3h, 4m)"
+                    placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
                 />
               </Form.Item>
             </Col>

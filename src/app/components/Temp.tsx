@@ -1,30 +1,26 @@
 "use client";
 
-import React, {useState} from "react";
-import {DatePicker, Select, Button, Col, Modal, Row, Table, TableColumnsType, Tabs, Skeleton, Form} from "antd";
+import React, {useContext} from "react";
+import {Col, Form, Modal, Row, Skeleton, Table, TableColumnsType, Tabs} from "antd";
 import type {ColumnsType} from "antd/es/table";
 import {DataType, DayGroup, Person, Requirement} from "@/app/utils/types";
 import {teamGroupData, teamsData} from "@/app/utils/data";
-import {CheckboxValueType} from "antd/lib/checkbox/Group";
 import TracingForm from "@/app/components/TracingForm";
 import TimeWorked from "@/app/components/TimeWorked";
 import {HeartOutlined, SmileOutlined} from "@ant-design/icons";
 import {RangePickerProps} from 'antd/es/date-picker';
 import {createTracing} from "@/app/hooks/useTracingApi";
 import TracingFilters from "@/app/components/TracingFilters";
+import {TracingContext} from "@/app/context/tracingContext";
 
-const {RangePicker} = DatePicker;
-const {Option} = Select;
 
 export default function Temp() {
-    const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [groupBy, setGroupBy] = useState<string>('Diario');
-    const [filteredData, setFilteredData] = useState<Person[]>([]);
 
+    const context = useContext(TracingContext);
+    if (!context) throw new Error('TracingContext must be used within TracingProvider');
+    const {state, dispatch} = context;
 
-    const personId = 1;
-    const [selectedValues, setSelectedValues] = useState<CheckboxValueType[]>([]);
+    const personId = state.personId;
 
     const columnsPeople: TableColumnsType<Person> = [
         {
@@ -77,13 +73,12 @@ export default function Temp() {
 
     const onRowClick = (person: Person) => ({
         onClick: () => {
-            setSelectedPerson(person);
+            dispatch({type: 'SET_SELECTED_PERSON', payload: person});
         },
     });
 
-
     const filterPersonById = (persons: Person[]) => {
-        if (personId != undefined) return persons.filter((person) => person.id === personId[0]);
+        if (personId != undefined) return persons.filter((person) => person.id === personId);
         else return persons;
     };
     const expandedRowRender = (record: DayGroup) => (
@@ -106,14 +101,14 @@ export default function Temp() {
         form.resetFields();
         const response = fetchTracing(values);
         console.log(response)
-        setIsModalOpen(false);
+        dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
     };
 
     const filterDataByTeam = (team: string) => {
         return teamGroupData.filter((group) => group.team === team);
     };
     const handleTabChange = (key: string) => {
-        setSelectedPerson(null);
+        dispatch({type: 'SET_SELECTED_PERSON', payload: null});
     };
 
     const groupData = (data: Person[], groupBy: string) => {
@@ -131,10 +126,9 @@ export default function Temp() {
         // }
     };
 
-    // Manejador del selector de agrupación
     const handleGroupByChange = (value: string) => {
-        setGroupBy(value);
-        setFilteredData(groupData(filteredData, value)); // Actualiza los datos filtrados según el nuevo agrupamiento
+        dispatch({type: 'SET_GROUP_BY', payload: value});
+        dispatch({type: 'SET_FILTERED_DATA', payload: groupData(state.filteredData, value)});
     };
 
     const tabsItems = teamsData.map((team) => ({
@@ -153,10 +147,10 @@ export default function Temp() {
                     />
                 </Col>
                 <Col span={12}>
-                    {selectedPerson ? (
+                    {state.selectedPerson ? (
                         <Table
                             columns={columnsRequirements}
-                            dataSource={selectedPerson.requirements}
+                            dataSource={state.selectedPerson.requirements}
                             pagination={{
                                 pageSize: 2, // Número de elementos por página
                             }}
@@ -180,16 +174,15 @@ export default function Temp() {
                 items={tabsItems}
             ></Tabs>
             <Modal
-                title="Seguimiento de tiempo"
-                open={isModalOpen}
-                onCancel={() => setIsModalOpen(false)}
+                title="Tracing time"
+                open={state.isModalOpen}
+                onCancel={() => dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen})}
                 footer={null}
             >
                 <TracingForm
                     addData={addData}
                     form={form}
-                    setSelectedValues={setSelectedValues}>
-
+                >
                 </TracingForm>
             </Modal>
         </>

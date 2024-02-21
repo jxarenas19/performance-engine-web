@@ -6,7 +6,9 @@ export const initialState: TracingState = {
     groupBy: 'Diario',
     filteredData: [],
     selectedValues: [],
-    personId: undefined
+    personId: 0,
+    tracings: [],
+    isLoading: false
 };
 export const tracingReducer = (state: TracingState, action: TracingAction) => {
     switch (action.type) {
@@ -22,7 +24,11 @@ export const tracingReducer = (state: TracingState, action: TracingAction) => {
             return {...state, selectedValues: action.payload};
         case 'SET_PERSON_ID':
             return {...state, personId: action.payload};
+        case 'SET_TRACINGS':
+            return { ...state, tracings: action.payload, isLoading: false };
+        case 'LOADING_TRACINGS':
+            return { ...state, isLoading: action.isLoading };
         default:
-            return state;
+            throw new Error('Acción no soportada');
     }
 };

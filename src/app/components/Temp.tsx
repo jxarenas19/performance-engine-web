@@ -1,17 +1,16 @@
 "use client";
 
-import React, {useContext} from "react";
-import {Col, Form, Modal, Row, Skeleton, Table, TableColumnsType, Tabs} from "antd";
+import React, {useContext, useEffect} from "react";
+import {Col, Modal, Row, Skeleton, Table, TableColumnsType, Tabs} from "antd";
 import type {ColumnsType} from "antd/es/table";
-import {DataType, DayGroup, Person, Requirement} from "@/app/utils/types";
+import {DayGroup, Person, Requirement} from "@/app/utils/types";
 import {teamGroupData, teamsData} from "@/app/utils/data";
 import TracingForm from "@/app/components/TracingForm";
 import TimeWorked from "@/app/components/TimeWorked";
 import {HeartOutlined, SmileOutlined} from "@ant-design/icons";
-import {RangePickerProps} from 'antd/es/date-picker';
-import {createTracing} from "@/app/hooks/useTracingApi";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
+import {createTracing, getTracings} from "@/app/hooks/useTracingApi";
 
 
 export default function Temp() {
@@ -20,7 +19,20 @@ export default function Temp() {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
-    const personId = state.personId;
+    const fetchFilteredData = async (filter: string, dispatch: React.Dispatch<any>) => {
+        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
+        const response = await getTracings({page:1,limit:10,filters:[]});
+        console.log(response)
+        setTimeout(() => {
+            dispatch({type: 'SET_TRACINGS', payload: response.data});
+        }, 5000);
+    };
+    useEffect(() => {
+        // Inicialmente carga todos los datos
+        fetchFilteredData('', dispatch);
+    }, [dispatch]);
+
+    const personId = undefined;
 
     const columnsPeople: TableColumnsType<Person> = [
         {
@@ -93,16 +105,7 @@ export default function Temp() {
     const columnsDayGroups: ColumnsType<DayGroup> = [
         {title: "Date", dataIndex: "date", key: "date"},
     ];
-    const fetchTracing = async (values: DataType) => {
-        return await createTracing(values)
-    }
-    const addData = (values: DataType) => {
-        console.log(values);
-        form.resetFields();
-        const response = fetchTracing(values);
-        console.log(response)
-        dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
-    };
+
 
     const filterDataByTeam = (team: string) => {
         return teamGroupData.filter((group) => group.team === team);
@@ -111,40 +114,21 @@ export default function Temp() {
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
     };
 
-    const groupData = (data: Person[], groupBy: string) => {
-        // Implementa tu lógica de agrupación aquí
-        // Esto es solo un esqueleto de la función
-        return data; // Devuelve los datos agrupados
-    };
-    const handleDateChange: RangePickerProps['onChange'] = (dates, dateStrings) => {
-        // if (dates) {
-        //     const [start, end] = dates.map(date => new Date(date.valueOf()));
-        //     const filtered = data.filter(d =>
-        //         d.date >= start && d.date <= end
-        //     );
-        //     setFilteredData(groupData(filtered, groupBy));
-        // }
-    };
-
-    const handleGroupByChange = (value: string) => {
-        dispatch({type: 'SET_GROUP_BY', payload: value});
-        dispatch({type: 'SET_FILTERED_DATA', payload: groupData(state.filteredData, value)});
-    };
-
     const tabsItems = teamsData.map((team) => ({
         label: team,
         key: team,
         children: (
             <Row gutter={16}>
                 <Col span={12}>
+                    {state.isLoading ? <p>Cargando...</p> :
                     <Table
                         columns={columnsDayGroups}
-                        dataSource={filterDataByTeam(team)}
+                        dataSource={state.tracings}
                         pagination={{
                             pageSize: 2, // Número de elementos por página
                         }}
                         expandable={{expandedRowRender}} // Usar la función existente expandedRowRender para manejar el siguiente nivel
-                    />
+                    />}
                 </Col>
                 <Col span={12}>
                     {state.selectedPerson ? (
@@ -164,7 +148,7 @@ export default function Temp() {
         ), // Aquí puedes renderizar componentes más complejos basados en tu data
     }));
 
-    const [form] = Form.useForm();
+
     return (
         <>
             <TracingFilters></TracingFilters>
@@ -179,10 +163,7 @@ export default function Temp() {
                 onCancel={() => dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen})}
                 footer={null}
             >
-                <TracingForm
-                    addData={addData}
-                    form={form}
-                >
+                <TracingForm>
                 </TracingForm>
             </Modal>
         </>

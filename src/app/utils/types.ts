@@ -47,13 +47,20 @@ export interface DataType {
   plus: string[];
 }
 
+export interface PageValues {
+  page:number | 1
+  limit: number | 10
+  filters: string[] | null
+}
 export interface TracingState {
   selectedPerson: Person | null;
   isModalOpen: boolean;
   groupBy: string;
   filteredData: Person[];
   selectedValues: CheckboxValueType[];
-  personId?: string;
+  personId?: number;
+  tracings: TeamGroup[];
+  isLoading: boolean;
 }
 
 export type TracingAction =
@@ -62,4 +69,6 @@ export type TracingAction =
     | { type: 'SET_GROUP_BY'; payload: string }
     | { type: 'SET_FILTERED_DATA'; payload: Person[] }
     | { type: 'SET_SELECTED_VALUES'; payload: CheckboxValueType[] }
-    | { type: 'SET_PERSON_ID'; payload: number };
+    | { type: 'SET_PERSON_ID'; payload: number }
+    | { type: 'SET_TRACINGS'; payload: TeamGroup[] }
+    | { type: 'LOADING_TRACINGS'; isLoading: boolean };

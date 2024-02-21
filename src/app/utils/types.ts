@@ -1,3 +1,5 @@
+import {CheckboxValueType} from "antd/lib/checkbox/Group";
+
 export interface Requirement {
   id: string;
   t_spent: string;
@@ -44,3 +46,29 @@ export interface DataType {
   t_affectation: string;
   plus: string[];
 }
+
+export interface PageValues {
+  page:number | 1
+  limit: number | 10
+  filters: string[] | null
+}
+export interface TracingState {
+  selectedPerson: Person | null;
+  isModalOpen: boolean;
+  groupBy: string;
+  filteredData: Person[];
+  selectedValues: CheckboxValueType[];
+  personId?: number;
+  tracings: TeamGroup[];
+  isLoading: boolean;
+}
+
+export type TracingAction =
+    | { type: 'SET_SELECTED_PERSON'; payload: Person | null }
+    | { type: 'SET_MODAL_OPEN'; payload: boolean }
+    | { type: 'SET_GROUP_BY'; payload: string }
+    | { type: 'SET_FILTERED_DATA'; payload: Person[] }
+    | { type: 'SET_SELECTED_VALUES'; payload: CheckboxValueType[] }
+    | { type: 'SET_PERSON_ID'; payload: number }
+    | { type: 'SET_TRACINGS'; payload: TeamGroup[] }
+    | { type: 'LOADING_TRACINGS'; isLoading: boolean };

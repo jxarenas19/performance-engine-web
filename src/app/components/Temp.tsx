@@ -4,13 +4,12 @@ import React, {useContext, useEffect} from "react";
 import {Col, Modal, Row, Skeleton, Table, TableColumnsType, Tabs} from "antd";
 import type {ColumnsType} from "antd/es/table";
 import {DayGroup, Person, Requirement} from "@/app/utils/types";
-import {teamGroupData, teamsData} from "@/app/utils/data";
 import TracingForm from "@/app/components/TracingForm";
 import TimeWorked from "@/app/components/TimeWorked";
 import {HeartOutlined, SmileOutlined} from "@ant-design/icons";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
-import {createTracing, getTracings} from "@/app/hooks/useTracingApi";
+import {getAffectations, getPersons, getTeams, getTracings} from "@/app/hooks/useTracingApi";
 
 
 export default function Temp() {
@@ -19,17 +18,35 @@ export default function Temp() {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
-    const fetchFilteredData = async (filters: string[]) => {
-        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
-        const response = await getTracings({page:1,limit:10,filters:[]});
-        console.log(response)
-        if(response) dispatch({type: 'SET_TRACINGS', payload: response.data});
+    const fetchFilteredData = async () => {
+        const response = await getTracings({page: 1, limit: 10, filters: state.filters});
+        if (response) dispatch({type: 'SET_TRACINGS', payload: response});
         else dispatch({type: 'SET_TRACINGS', payload: []});
     };
+    const fetchTeamsData = async () => {
+        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
+        const response =  await getTeams();
+        console.log(response)
+        dispatch({type: 'SET_TEAMS', payload: response});
+    }
+    const fetchPersonsData = async () => {
+        const response =  await getPersons();
+        dispatch({type: 'SET_PERSONS', payload: response});
+    }
+    const fetchAffectationsData = async () => {
+        const response =  await getAffectations();
+        dispatch({type: 'SET_AFFECTATIONS', payload: response});
+    }
     useEffect(() => {
-        // Inicialmente carga todos los datos
-        fetchFilteredData([]);
-    }, [dispatch]);
+        fetchFilteredData();
+    }, [state.filters]);
+
+    useEffect(() => {
+        fetchTeamsData();
+        fetchPersonsData();
+        fetchAffectationsData();
+    }, []);
+
 
     const personId = undefined;
 
@@ -105,33 +122,27 @@ export default function Temp() {
         {title: "Date", dataIndex: "date", key: "date"},
     ];
 
-
-    const filterDataByTeam = (team: string) => {
-        return teamGroupData.filter((group) => group.team === team);
-    };
     const handleTabChange = (key: string) => {
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
-        console.log(state.filters)
-        const filters = state.filters.set('team',key)
-        dispatch({type: 'SET_FILTERS', payload: filters});
-        console.log(state.filters)
+        dispatch({type: 'SET_FILTER', payload: {key: 'team', value: key}});
+
     };
 
-    const tabsItems = teamsData.map((team) => ({
-        label: team,
-        key: team,
+    const tabsItems = state.teams.map((team) => ({
+        label: team.name,
+        key: team.id,
         children: (
             <Row gutter={16}>
                 <Col span={12}>
                     {state.isLoading ? <p>Cargando...</p> :
-                    <Table
-                        columns={columnsDayGroups}
-                        dataSource={state.tracings}
-                        pagination={{
-                            pageSize: 2,
-                        }}
-                        expandable={{expandedRowRender}} // Usar la función existente expandedRowRender para manejar el siguiente nivel
-                    />}
+                        <Table
+                            columns={columnsDayGroups}
+                            dataSource={state.tracings}
+                            pagination={{
+                                pageSize: 2,
+                            }}
+                            expandable={{expandedRowRender}} // Usar la función existente expandedRowRender para manejar el siguiente nivel
+                        />}
                 </Col>
                 <Col span={12}>
                     {state.selectedPerson ? (
@@ -155,11 +166,14 @@ export default function Temp() {
     return (
         <>
             <TracingFilters></TracingFilters>
-            <Tabs
-                defaultActiveKey="1"
-                onChange={handleTabChange}
-                items={tabsItems}
-            ></Tabs>
+            {state.isLoading && <Skeleton/>}
+            {!state.isLoading && state.teams.length > 0 && (
+                <Tabs
+                    defaultActiveKey="1"
+                    onTabClick={handleTabChange}
+                    items={tabsItems}
+                ></Tabs>
+            )}
             <Modal
                 title="Tracing time"
                 open={state.isModalOpen}

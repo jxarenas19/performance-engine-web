@@ -13,7 +13,4 @@ const axiosRequest = axios.create({
 })
 
 
-
-
-
 export default axiosRequest

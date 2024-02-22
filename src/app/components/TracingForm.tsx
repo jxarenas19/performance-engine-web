@@ -5,6 +5,7 @@ import {DataType} from '../utils/types';
 import {createTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
+import SelectEquipoForm from "@/app/components/SelectEquipoForm";
 
 const TracingForm = () => {
     const context = useContext(TracingContext);
@@ -27,7 +28,7 @@ const TracingForm = () => {
         const pasteText = event.clipboardData.getData("text");
         const formData: DataType = {
             team: "",
-            user_id: "",
+            sub: "",
             detail: "",
             t_spent: "",
             t_remaining: "",
@@ -59,24 +60,27 @@ const TracingForm = () => {
                 placeholder="Paste the text here"
                 onPaste={handlePaste}
             />
+            <SelectEquipoForm></SelectEquipoForm>
             <Form.Item name="team" label="Team" rules={[{required: true}]}>
                 <Select placeholder="Select a project" allowClear>
-                    <Select.Option value="1">Development</Select.Option>
-                    <Select.Option value="2">Marketing</Select.Option>
-                    <Select.Option value="3">Sales</Select.Option>
-                    <Select.Option value="4">Others</Select.Option>
+                    {state.teams.map((option) => (
+                        <Select.Option key={option.id} value={option.name}>
+                            {option.name}
+                        </Select.Option>
+                    ))}
                 </Select>
             </Form.Item>
             <Form.Item
-                name="user_id"
+                name="sub"
                 label="Employee"
                 rules={[{required: true}]}
             >
                 <Select placeholder="Select an employee" allowClear>
-                    <Select.Option value="a4s854e8-a081-7079-17cf-b15b1cde6a9f">Messi</Select.Option>
-                    <Select.Option value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Maradona</Select.Option>
-                    <Select.Option value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Cristiano</Select.Option>
-                    <Select.Option value="a42854ed-a081-7079-17cf-b15b1cde6a9f">Beckham</Select.Option>
+                    {state.persons.map((option) => (
+                        <Select.Option key={option.sub} value={option.email}>
+                            {option.email}
+                        </Select.Option>
+                    ))}
                 </Select>
             </Form.Item>
             <Form.Item
@@ -122,7 +126,13 @@ const TracingForm = () => {
                         label="Affectation"
                         rules={[{required: true}]}
                     >
-                        <Input/>
+                        <Select placeholder="Select an affectation" allowClear>
+                            {state.affectations.map((option) => (
+                                <Select.Option key={option.id} value={option.name}>
+                                    {option.name}
+                                </Select.Option>
+                            ))}
+                        </Select>
                     </Form.Item>
                 </Col>
                 <Col span={12}>

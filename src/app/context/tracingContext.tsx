@@ -1,6 +1,6 @@
-import React, { createContext, useReducer, ReactNode, Dispatch } from 'react';
+import React, {createContext, Dispatch, ReactNode, useReducer} from 'react';
 import {TracingAction, TracingState} from "@/app/utils/types";
-import {tracingReducer,initialState} from "@/app/context/tracingReducer";
+import {initialState, tracingReducer} from "@/app/context/tracingReducer";
 
 
 interface AppContextProps {
@@ -10,8 +10,8 @@ interface AppContextProps {
 
 export const TracingContext = createContext<AppContextProps | undefined>(undefined);
 
-export const TracingProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const TracingProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [state, dispatch] = useReducer(tracingReducer, initialState);
 
-    return <TracingContext.Provider value={{ state, dispatch }}>{children}</TracingContext.Provider>;
+    return <TracingContext.Provider value={{state, dispatch}}>{children}</TracingContext.Provider>;
 };

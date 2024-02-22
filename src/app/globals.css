@@ -2,51 +2,67 @@
 .page-container {
     padding: 20px;
     background-color: #f0f2f5; /* Fondo claro para la página */
-  }
-  
-  /* Estilos para las tablas de Ant Design */
-  .ant-table {
+}
+
+/* Estilos para las tablas de Ant Design */
+.ant-table {
     background-color: #ffffff; /* Fondo blanco para las tablas */
     border-radius: 8px; /* Bordes redondeados para las tablas */
     overflow: hidden; /* Oculta el desbordamiento para mantener el borde redondeado */
-  }
-  
-  /* Estilos para las filas y columnas */
-  .row, .col {
+}
+
+/* Estilos para las filas y columnas */
+.row, .col {
     padding: 8px; /* Espaciado interno para filas y columnas */
-  }
-  
-  /* Estilos personalizados para íconos */
-  .icon {
+}
+
+/* Estilos personalizados para íconos */
+.icon {
     color: #1890ff; /* Color por defecto para los íconos */
     font-size: 24px; /* Tamaño de fuente para los íconos */
-  }
-  
-  /* Diferenciando íconos por color basado en la matriz de colores */
-  .smile-icon { color: #f5222d; }
-  .heart-icon { color: #faad14; }
-  .thunderbolt-icon { color: #52c41a; }
-  .star-icon { color: #13c2c2; }
-  .android-icon { color: #722ed1; }
-  
-  /* Estilos para las imágenes */
-  .image {
+}
+
+/* Diferenciando íconos por color basado en la matriz de colores */
+.smile-icon {
+    color: #f5222d;
+}
+
+.heart-icon {
+    color: #faad14;
+}
+
+.thunderbolt-icon {
+    color: #52c41a;
+}
+
+.star-icon {
+    color: #13c2c2;
+}
+
+.android-icon {
+    color: #722ed1;
+}
+
+/* Estilos para las imágenes */
+.image {
     width: 100%;
     max-width: 200px; /* Máximo ancho para imágenes */
     height: auto; /* Altura automática para mantener la proporción */
     border-radius: 8px; /* Bordes redondeados para las imágenes */
-  }
-  .selected-row {
+}
+
+.selected-row {
     background-color: #b3b3b3; /* Elige el color que prefieras */
-  }
+}
+
 .button-container {
-  display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea si no caben en el contenedor */
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea si no caben en el contenedor */
 }
 
 .ant-btn,
 .ant-picker,
 .ant-select {
-  margin-right: 10px; /* Ajusta el espacio entre cada componente */
-  margin-bottom: 10px; /* Ajusta el espacio entre las filas */
+    margin-right: 10px; /* Ajusta el espacio entre cada componente */
+    margin-bottom: 10px; /* Ajusta el espacio entre las filas */
 }

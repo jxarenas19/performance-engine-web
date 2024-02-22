@@ -4,7 +4,7 @@ export const initialState: TracingState = {
     selectedPerson: null,
     isModalOpen: false,
     groupBy: 'Diario',
-    filteredData: [],
+    filters:new Map(),
     selectedValues: [],
     personId: 0,
     tracings: [],
@@ -18,8 +18,8 @@ export const tracingReducer = (state: TracingState, action: TracingAction) => {
             return {...state, isModalOpen: action.payload};
         case 'SET_GROUP_BY':
             return {...state, groupBy: action.payload};
-        case 'SET_FILTERED_DATA':
-            return {...state, filteredData: action.payload};
+        case 'SET_FILTERS':
+            return {...state, filters: action.payload};
         case 'SET_SELECTED_VALUES':
             return {...state, selectedValues: action.payload};
         case 'SET_PERSON_ID':

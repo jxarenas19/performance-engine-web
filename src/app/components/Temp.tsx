@@ -19,17 +19,16 @@ export default function Temp() {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
-    const fetchFilteredData = async (filter: string, dispatch: React.Dispatch<any>) => {
+    const fetchFilteredData = async (filters: string[]) => {
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         const response = await getTracings({page:1,limit:10,filters:[]});
         console.log(response)
-        setTimeout(() => {
-            dispatch({type: 'SET_TRACINGS', payload: response.data});
-        }, 5000);
+        if(response) dispatch({type: 'SET_TRACINGS', payload: response.data});
+        else dispatch({type: 'SET_TRACINGS', payload: []});
     };
     useEffect(() => {
         // Inicialmente carga todos los datos
-        fetchFilteredData('', dispatch);
+        fetchFilteredData([]);
     }, [dispatch]);
 
     const personId = undefined;
@@ -112,6 +111,10 @@ export default function Temp() {
     };
     const handleTabChange = (key: string) => {
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
+        console.log(state.filters)
+        const filters = state.filters.set('team',key)
+        dispatch({type: 'SET_FILTERS', payload: filters});
+        console.log(state.filters)
     };
 
     const tabsItems = teamsData.map((team) => ({
@@ -125,7 +128,7 @@ export default function Temp() {
                         columns={columnsDayGroups}
                         dataSource={state.tracings}
                         pagination={{
-                            pageSize: 2, // Número de elementos por página
+                            pageSize: 2,
                         }}
                         expandable={{expandedRowRender}} // Usar la función existente expandedRowRender para manejar el siguiente nivel
                     />}
@@ -145,7 +148,7 @@ export default function Temp() {
                     )}
                 </Col>
             </Row>
-        ), // Aquí puedes renderizar componentes más complejos basados en tu data
+        ),
     }));
 
 

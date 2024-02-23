@@ -28,7 +28,7 @@ const SelectEquipoForm = () => {
 
     return (
         <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
-            <Form.Item name="team" label="Team" className="customFormItem">
+            <Form.Item name="team" label="Team" className="customFormItem" rules={[{ required: true }]}>
                 <Select placeholder="Select a project" allowClear>
                     {state.teams.map((option) => (
                         <Select.Option key={option.id} value={option.name}>

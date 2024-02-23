@@ -43,15 +43,15 @@ export interface TeamGroup {
 
 export interface DataType {
     key?: React.Key;
-    team: string;
+    team?: string;
     title?: string;
-    sub: string;
-    detail: string;
-    t_spent: string;
-    t_remaining: string;
-    affectation: string;
-    t_affectation: string;
-    plus: string[];
+    sub?: string;
+    detail?: string;
+    t_spent?: string;
+    t_remaining?: string;
+    affectation?: string;
+    t_affectation?: string;
+    plus?: string[];
 }
 
 export interface PageValues {

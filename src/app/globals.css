@@ -57,7 +57,8 @@
 
 .button-container {
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea si no caben en el contenedor */
+    flex-wrap: wrap;
+    gap: 16px;
 }
 
 .customFormItem {

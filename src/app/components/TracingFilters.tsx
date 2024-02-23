@@ -35,13 +35,13 @@ const TracingFilters: React.FC = () => {
             </Button>
             <DatePicker.RangePicker onChange={rangeDateFilter}/>
             <Select defaultValue="Diario" style={{width: 120}} onChange={groupFilter}>
-                <Select.Option value="Diario">Daily</Select.Option>
-                <Select.Option value="Semanal">Weekly</Select.Option>
-                <Select.Option value="Quincenal">Biweekly</Select.Option>
-                <Select.Option value="Mensual">Monthly</Select.Option>
-                <Select.Option value="Trimestral">Quarterly</Select.Option>
-                <Select.Option value="Semestral">Biannual</Select.Option>
-                <Select.Option value="Anual">Annual</Select.Option>
+                <Select.Option key="Diario" value="Diario">Daily</Select.Option>
+                <Select.Option key="Weekly" value="Semanal">Weekly</Select.Option>
+                <Select.Option key="Biweekly" value="Quincenal">Biweekly</Select.Option>
+                <Select.Option key="Monthly" value="Mensual">Monthly</Select.Option>
+                <Select.Option key="Quarterly" value="Trimestral">Quarterly</Select.Option>
+                <Select.Option key="Biannual" value="Semestral">Biannual</Select.Option>
+                <Select.Option key="Annual" value="Anual">Annual</Select.Option>
             </Select>
         </div>
     );

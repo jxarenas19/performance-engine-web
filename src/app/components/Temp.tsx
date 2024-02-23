@@ -9,7 +9,7 @@ import TimeWorked from "@/app/components/TimeWorked";
 import {HeartOutlined, SmileOutlined} from "@ant-design/icons";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
-import {getAffectations, getPersons, getTeams, getTracings} from "@/app/hooks/useTracingApi";
+import {getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
 
 
 export default function Temp() {
@@ -29,9 +29,9 @@ export default function Temp() {
         console.log(response)
         dispatch({type: 'SET_TEAMS', payload: response});
     }
-    const fetchPersonsData = async () => {
-        const response =  await getPersons();
-        dispatch({type: 'SET_PERSONS', payload: response});
+    const fetchUsersData = async () => {
+        const response =  await getUsers();
+        dispatch({type: 'SET_USERS', payload: response});
     }
     const fetchAffectationsData = async () => {
         const response =  await getAffectations();
@@ -43,7 +43,7 @@ export default function Temp() {
 
     useEffect(() => {
         fetchTeamsData();
-        fetchPersonsData();
+        fetchUsersData();
         fetchAffectationsData();
     }, []);
 

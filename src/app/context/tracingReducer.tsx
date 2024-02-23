@@ -11,6 +11,7 @@ export const initialState: TracingState = {
     teams: [],
     persons: [],
     affectations: [],
+    users: [],
     isLoading: false
 };
 export const tracingReducer = (state: TracingState, action: TracingAction) => {
@@ -39,7 +40,7 @@ export const tracingReducer = (state: TracingState, action: TracingAction) => {
             return {...state, tracings: action.payload, isLoading: false};
         case 'SET_TEAMS':
             return {...state, teams: action.payload, isLoading: false};
-        case 'SET_PERSONS':
+        case 'SET_USERS':
             return {...state, persons: action.payload, isLoading: false};
         case 'SET_AFFECTATIONS':
             return {...state, affectations: action.payload, isLoading: false};

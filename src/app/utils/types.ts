@@ -23,6 +23,10 @@ export interface Person {
     requirements?: Requirement[];
     plus?: Achievement[];
 }
+export interface User {
+    email?: string;
+    sub?: string;
+}
 
 export interface DayGroup {
     date: string;
@@ -67,6 +71,7 @@ export interface TracingState {
     teams: Generic[];
     persons: Person[];
     affectations: Generic[];
+    users: User[];
     isLoading: boolean;
 }
 
@@ -81,7 +86,7 @@ export type TracingAction =
     | { type: 'SET_PERSON_ID'; payload: number }
     | { type: 'SET_TRACINGS'; payload: TeamGroup[] }
     | { type: 'SET_TEAMS'; payload: Generic[] }
-    | { type: 'SET_PERSONS'; payload: Person[] }
+    | { type: 'SET_USERS'; payload: Person[] }
     | { type: 'SET_AFFECTATIONS'; payload: Generic[] }
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 

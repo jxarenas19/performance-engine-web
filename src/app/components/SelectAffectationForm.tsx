@@ -4,7 +4,7 @@ import React, {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
 import {createAffectation, createTeam} from "@/app/hooks/useTracingApi";
 
-const SelectEquipoForm = () => {
+const SelectAffectationForm = () => {
 
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
@@ -13,24 +13,24 @@ const SelectEquipoForm = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newItem, setNewItem] = useState('');
 
-    const fetchTeam = async (value:string) => {
+    const fetchAffectation = async (value:string) => {
         return await createAffectation(value)
     }
     const handleAddNewItem = () => {
 
         if (newItem) {
-            const response = fetchTeam(newItem);
-            dispatch({type: 'SET_TEAMS', payload: [...state.teams,{'id':"2","name":newItem}]});
+            const response = fetchAffectation(newItem);
+            dispatch({type: 'SET_AFFECTATIONS', payload: [...state.teams,{'id':"2","name":newItem}]});
             setNewItem('');
             setIsModalOpen(false);
         }
     };
 
     return (
-        <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
-            <Form.Item name="team" label="Team" className="customFormItem">
-                <Select placeholder="Select a project" allowClear>
-                    {state.teams.map((option) => (
+        <div style={{display: 'flex', alignItems: 'center'}}>
+            <Form.Item name="affectation" label="Affectation" className="customFormItem">
+                <Select placeholder="Select an affectation" allowClear>
+                    {state.affectations.map((option) => (
                         <Select.Option key={option.id} value={option.name}>
                             {option.name}
                         </Select.Option>
@@ -41,18 +41,18 @@ const SelectEquipoForm = () => {
                 type="primary"
                 icon={<PlusOutlined/>}
                 onClick={() => setIsModalOpen(true)}
-                style={{marginLeft: '8px' ,marginTop:'22px'}}
+                style={{marginLeft: '4px' ,marginTop:'22px'}}
             >
             </Button>
 
             <Modal
-                title="Add team"
+                title="Add affectation"
                 open={isModalOpen}
                 onOk={handleAddNewItem}
                 onCancel={() => setIsModalOpen(false)}
             >
                 <Form>
-                    <Form.Item label="New team">
+                    <Form.Item label="New affectation">
                         <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>
                     </Form.Item>
                 </Form>
@@ -61,4 +61,4 @@ const SelectEquipoForm = () => {
     );
 };
 
-export default SelectEquipoForm;
+export default SelectAffectationForm;

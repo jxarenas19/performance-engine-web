@@ -6,6 +6,8 @@ import {createTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
 import SelectEquipoForm from "@/app/components/SelectEquipoForm";
+import SelectAffectationForm from "@/app/components/SelectAffectationForm";
+import {InfoCircleOutlined} from "@ant-design/icons";
 
 const TracingForm = () => {
     const context = useContext(TracingContext);
@@ -55,22 +57,22 @@ const TracingForm = () => {
 
 
     return (
-        <Form form={form} layout="vertical" onFinish={addData}>
-            <Input.TextArea
-                placeholder="Paste the text here"
-                onPaste={handlePaste}
-            />
+        <Form form={form}
+              layout="vertical"
+              onFinish={addData}
+              size='small'
+              initialValues={{
+                  size: 'small',
+              }}>
+            {/*<Input.TextArea*/}
+            {/*    */}
+            {/*    className="customFormItem"*/}
+            {/*    placeholder="Paste the text here"*/}
+            {/*    onPaste={handlePaste}*/}
+            {/*/>*/}
             <SelectEquipoForm></SelectEquipoForm>
-            <Form.Item name="team" label="Team" rules={[{required: true}]}>
-                <Select placeholder="Select a project" allowClear>
-                    {state.teams.map((option) => (
-                        <Select.Option key={option.id} value={option.name}>
-                            {option.name}
-                        </Select.Option>
-                    ))}
-                </Select>
-            </Form.Item>
             <Form.Item
+                className="customFormItem"
                 name="sub"
                 label="Employee"
                 rules={[{required: true}]}
@@ -84,6 +86,7 @@ const TracingForm = () => {
                 </Select>
             </Form.Item>
             <Form.Item
+                className="customFormItem"
                 name="title"
                 label="Title"
                 rules={[{required: true}]}
@@ -91,58 +94,54 @@ const TracingForm = () => {
                 <Input placeholder="CODE:TITLE"/>
             </Form.Item>
             <Form.Item
+                className="customFormItem"
                 name="detail"
+                label="Detail"
             >
                 <TextArea placeholder="Detail" rows={4}/>
             </Form.Item>
             <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
                         name="t_spent"
                         label="Time employee"
                         rules={[{required: true}]}
                     >
                         <Input
-                            placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
+                            placeholder="Enter a value"
                         />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
                     <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
                         name="t_remaining"
                         label="Time remaining"
                         rules={[{required: true}]}
                     >
                         <Input
-                            placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
+                            placeholder="Enter a value"
                         />
                     </Form.Item>
                 </Col>
             </Row>
             <Row gutter={16}>
                 <Col span={12}>
-                    <Form.Item
-                        name="affectation"
-                        label="Affectation"
-                        rules={[{required: true}]}
-                    >
-                        <Select placeholder="Select an affectation" allowClear>
-                            {state.affectations.map((option) => (
-                                <Select.Option key={option.id} value={option.name}>
-                                    {option.name}
-                                </Select.Option>
-                            ))}
-                        </Select>
-                    </Form.Item>
+                    <SelectAffectationForm></SelectAffectationForm>
                 </Col>
                 <Col span={12}>
                     <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
                         name="t_affectation"
                         label="Time affectation"
                         rules={[{required: true}]}
                     >
                         <Input
-                            placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
+                            placeholder="Enter a value"
                         />
                     </Form.Item>
                 </Col>

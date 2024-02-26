@@ -1,7 +1,6 @@
 import {Button, DatePicker, Select} from "antd";
 import {useContext} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
-import {getTeams} from "@/app/hooks/useTracingApi";
 
 
 const TracingFilters: React.FC = () => {
@@ -10,13 +9,6 @@ const TracingFilters: React.FC = () => {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
-    const fetchTeamData = async () => {
-        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
-        const response = await getTeams();
-        console.log(response)
-        if (response) dispatch({type: 'SET_TEAMS', payload: response.data});
-        else dispatch({type: 'SET_TEAMS', payload: []});
-    };
     const setIsModalOpen = () => {
         dispatch({type: 'SET_MODAL_OPEN', payload: true});
     };

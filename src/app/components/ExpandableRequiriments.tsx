@@ -1,0 +1,57 @@
+import React, {useContext} from 'react';
+import {Descriptions, Skeleton, Table} from 'antd';
+import {ColumnsType} from 'antd/es/table';
+import {Requirement} from "@/app/utils/types";
+import {TracingContext} from "@/app/context/tracingContext";
+
+const ExpandableRequiriments = () => {
+    const context = useContext(TracingContext);
+    if (!context) throw new Error('TracingContext must be used within TracingProvider');
+    const {state, dispatch} = context;
+
+
+    const renderFields = (record: Requirement) => {
+        return (
+            <Descriptions title="Others data" bordered column={2}>
+                <Descriptions.Item label="Spent">{record.t_spent}</Descriptions.Item>
+                <Descriptions.Item label="Time affectation">{record.t_affectation}</Descriptions.Item>
+                <Descriptions.Item label="Detail">{record.detail}</Descriptions.Item>
+
+
+            </Descriptions>
+        );
+    };
+
+    const expandedRowRender = (record: Requirement) => {
+        return (
+            <>
+                {renderFields(record)}
+            </>
+        );
+    };
+
+    const columnsRequirements: ColumnsType<Requirement> = [
+        //{title: "ID", dataIndex: "id", key: "id"},
+        {
+            title: "Title",
+            dataIndex: "title",
+            key: "title",
+        }
+    ];
+
+    return state.selectedPerson ? (
+        <Table
+            columns={columnsRequirements}
+            dataSource={state.selectedPerson.requirements}
+            pagination={{pageSize: 2}}
+            expandable={{
+                expandedRowRender
+            }}
+        />
+    ) : (
+        <Skeleton/>
+    )
+
+};
+
+export default ExpandableRequiriments;

@@ -1,15 +1,13 @@
 "use client";
 
 import React, {useContext, useEffect} from "react";
-import {Col, Modal, Row, Skeleton, Table, TableColumnsType, Tabs} from "antd";
-import type {ColumnsType} from "antd/es/table";
-import {DayGroup, Person, Requirement} from "@/app/utils/types";
+import {Col, Modal, Row, Skeleton, Tabs} from "antd";
 import TracingForm from "@/app/components/TracingForm";
-import TimeWorked from "@/app/components/TimeWorked";
-import {HeartOutlined, SmileOutlined} from "@ant-design/icons";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
 import {getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
+import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
+import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 
 
 export default function Temp() {
@@ -24,8 +22,7 @@ export default function Temp() {
         else dispatch({type: 'SET_TRACINGS', payload: []});
     };
     const fetchTeamsData = async () => {
-        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
-        const response =  await getTeams();
+        const response =  await getTeams({page: 1, limit: 0});
         console.log(response)
         dispatch({type: 'SET_TEAMS', payload: response});
     }
@@ -34,7 +31,7 @@ export default function Temp() {
         dispatch({type: 'SET_USERS', payload: response});
     }
     const fetchAffectationsData = async () => {
-        const response =  await getAffectations();
+        const response =  await getAffectations({page: 1, limit: 0});
         dispatch({type: 'SET_AFFECTATIONS', payload: response});
     }
     useEffect(() => {
@@ -42,85 +39,13 @@ export default function Temp() {
     }, [state.filters]);
 
     useEffect(() => {
+        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         fetchTeamsData();
         fetchUsersData();
         fetchAffectationsData();
+        dispatch({type: 'LOADING_TRACINGS', isLoading: false});
     }, []);
 
-
-    const personId = undefined;
-
-    const columnsPeople: TableColumnsType<Person> = [
-        {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-        },
-        {
-            title: "Plus",
-            key: "plus",
-            render: () => (
-                <div className="icon-column">
-                    <SmileOutlined/>
-                    <>&ensp;</>
-                    <HeartOutlined/>
-                </div>
-            ),
-        },
-        {
-            title: 'Advance',
-            dataIndex: 'hoursWorked',
-            key: 'hoursWorked',
-            render: (hoursWorked) => <TimeWorked hoursWorked={hoursWorked}/>,
-        },
-    ];
-
-    const columnsRequirements: ColumnsType<Requirement> = [
-        {title: "ID", dataIndex: "id", key: "id"},
-        {
-            title: "T-spent",
-            dataIndex: "t_spent",
-            key: "t_spent",
-        },
-        {
-            title: "T-remaining",
-            dataIndex: "t_remaining",
-            key: "t_remaining",
-        },
-        {
-            title: "Affectation",
-            dataIndex: "affectation",
-            key: "affectation",
-        },
-        {
-            title: "T-Affectation",
-            dataIndex: "t_affectation",
-            key: "t_affectation",
-        },
-    ];
-
-    const onRowClick = (person: Person) => ({
-        onClick: () => {
-            dispatch({type: 'SET_SELECTED_PERSON', payload: person});
-        },
-    });
-
-    const filterPersonById = (persons: Person[]) => {
-        if (personId != undefined) return persons.filter((person) => person.id === personId);
-        else return persons;
-    };
-    const expandedRowRender = (record: DayGroup) => (
-        <Table
-            columns={columnsPeople}
-            dataSource={filterPersonById(record.people)}
-            pagination={false}
-            onRow={onRowClick}
-        />
-    );
-
-    const columnsDayGroups: ColumnsType<DayGroup> = [
-        {title: "Date", dataIndex: "date", key: "date"},
-    ];
 
     const handleTabChange = (key: string) => {
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
@@ -134,29 +59,10 @@ export default function Temp() {
         children: (
             <Row gutter={16}>
                 <Col span={12}>
-                    {state.isLoading ? <p>Cargando...</p> :
-                        <Table
-                            columns={columnsDayGroups}
-                            dataSource={state.tracings}
-                            pagination={{
-                                pageSize: 2,
-                            }}
-                            expandable={{expandedRowRender}} // Usar la función existente expandedRowRender para manejar el siguiente nivel
-                        />}
+                    <ExpandableDayGroups></ExpandableDayGroups>
                 </Col>
                 <Col span={12}>
-                    {state.selectedPerson ? (
-                        <Table
-                            columns={columnsRequirements}
-                            dataSource={state.selectedPerson.requirements}
-                            pagination={{
-                                pageSize: 2, // Número de elementos por página
-                            }}
-                        />
-                    ) : (
-
-                        <Skeleton></Skeleton>
-                    )}
+                    <ExpandableRequiriments></ExpandableRequiriments>
                 </Col>
             </Row>
         ),

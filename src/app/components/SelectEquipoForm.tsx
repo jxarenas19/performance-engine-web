@@ -2,7 +2,7 @@ import {Button, Form, Input, Modal, Select} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import React, {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
-import {createAffectation, createTeam} from "@/app/hooks/useTracingApi";
+import {createTeam} from "@/app/hooks/useTracingApi";
 
 const SelectEquipoForm = () => {
 
@@ -14,22 +14,26 @@ const SelectEquipoForm = () => {
     const [newItem, setNewItem] = useState('');
 
     const fetchTeam = async (value:string) => {
-        return await createAffectation(value)
+        return await createTeam(value)
     }
     const handleAddNewItem = () => {
 
         if (newItem) {
             const response = fetchTeam(newItem);
-            dispatch({type: 'SET_TEAMS', payload: [...state.teams,{'id':"2","name":newItem}]});
-            setNewItem('');
-            setIsModalOpen(false);
+            response.then(value => {
+                console.log(value)
+                dispatch({type: 'SET_TEAMS', payload: [...state.teams,
+                        {'id':value.data.id,"name":value.data.name}]});
+                setNewItem('');
+                setIsModalOpen(false);
+            });
         }
     };
 
     return (
         <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
             <Form.Item name="team" label="Team" className="customFormItem" rules={[{ required: true }]}>
-                <Select placeholder="Select a project" allowClear>
+                <Select loading={state.isLoading} placeholder="Select a project" allowClear>
                     {state.teams.map((option) => (
                         <Select.Option key={option.id} value={option.name}>
                             {option.name}

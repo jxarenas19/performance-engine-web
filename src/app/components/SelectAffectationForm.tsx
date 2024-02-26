@@ -2,7 +2,7 @@ import {Button, Form, Input, Modal, Select} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import React, {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
-import {createAffectation, createTeam} from "@/app/hooks/useTracingApi";
+import {createAffectation} from "@/app/hooks/useTracingApi";
 
 const SelectAffectationForm = () => {
 
@@ -20,16 +20,21 @@ const SelectAffectationForm = () => {
 
         if (newItem) {
             const response = fetchAffectation(newItem);
-            dispatch({type: 'SET_AFFECTATIONS', payload: [...state.teams,{'id':"2","name":newItem}]});
-            setNewItem('');
-            setIsModalOpen(false);
+            response.then(value => {
+                console.log(value)
+                dispatch({type: 'SET_AFFECTATIONS', payload: [...state.affectations,
+                        {'id':value.data.id,"name":value.data.name}]});
+                setNewItem('');
+                setIsModalOpen(false);
+            });
+
         }
     };
 
     return (
         <div style={{display: 'flex', alignItems: 'center'}}>
             <Form.Item name="affectation" label="Affectation" className="customFormItem">
-                <Select placeholder="Select an affectation" allowClear>
+                <Select loading={state.isLoading} placeholder="Select an affectation" allowClear>
                     {state.affectations.map((option) => (
                         <Select.Option key={option.id} value={option.name}>
                             {option.name}

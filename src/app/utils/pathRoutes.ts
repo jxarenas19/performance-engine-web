@@ -1,4 +1,4 @@
-const PATH_ROUTES_DEV = {
+export const PATH_ROUTES_DEV = {
     'CREATE_TRACING': 'performance',
     'GET_TEAMS': 'teams',
     'CREATE_TEAM': 'team',
@@ -8,12 +8,12 @@ const PATH_ROUTES_DEV = {
     'CREATE_AFFECTATION': 'affectation'
 };
 
-const PATH_ROUTES_PROD = {
+export const PATH_ROUTES_PROD = {
     'CREATE_TRACING': 'api/performance/create',
-    'GET_TEAMS': 'api/performance/team/create',
-    'GET_TRACING': 'api/performance',
-    'GET_PERSONS': 'api/performance/users',
-    'GET_AFFECTATIONS': 'api/performance/affectations/create'
+    'GET_TEAMS': 'api/performance/teams',
+    'CREATE_TEAM': 'api/performance/teams/update',
+    'GET_TRACING': 'api/performance/task',
+    'GET_USERS': 'api/performance/users',
+    'GET_AFFECTATIONS': 'api/performance/affectations',
+    'CREATE_AFFECTATION': 'api/performance/affectations/update'
 };
-console.log(process.env.STAGE)
-export const PATH_ROUTES = process.env.STAGE == 'DEV' ? PATH_ROUTES_DEV : PATH_ROUTES_DEV;

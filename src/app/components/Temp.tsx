@@ -22,9 +22,12 @@ export default function Temp() {
         else dispatch({type: 'SET_TRACINGS', payload: []});
     };
     const fetchTeamsData = async () => {
+        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         const response =  await getTeams({page: 1, limit: 0});
-        console.log(response)
+
         dispatch({type: 'SET_TEAMS', payload: response});
+        dispatch({type: 'LOADING_TRACINGS', isLoading: false});
+
     }
     const fetchUsersData = async () => {
         const response =  await getUsers();
@@ -39,17 +42,16 @@ export default function Temp() {
     }, [state.filters]);
 
     useEffect(() => {
-        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         fetchTeamsData();
         fetchUsersData();
         fetchAffectationsData();
-        dispatch({type: 'LOADING_TRACINGS', isLoading: false});
     }, []);
 
 
     const handleTabChange = (key: string) => {
+        console.log(key)
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
-        dispatch({type: 'SET_FILTER', payload: {key: 'team', value: key}});
+        dispatch({type: 'SET_FILTER', payload: [key]});
 
     };
 

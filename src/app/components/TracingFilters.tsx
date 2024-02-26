@@ -15,10 +15,10 @@ const TracingFilters: React.FC = () => {
     const rangeDateFilter = (dateRange: any) => {
         const startDate = dateRange[0].format('YYYY-MM-DD');
         const endDate = dateRange[1].format('YYYY-MM-DD');
-        dispatch({type: 'SET_FILTER', payload: {key: 'range', value: startDate + '-' + endDate}});
+        //dispatch({type: 'SET_FILTER', payload: {key: 'range', value: startDate + '-' + endDate}});
     }
     const groupFilter = (value: string) => {
-        dispatch({type: 'SET_FILTER', payload: {key: 'group', value: value}});
+        //dispatch({type: 'SET_FILTER', payload: {key: 'group', value: value}});
     }
     return (
         <div className="button-container">

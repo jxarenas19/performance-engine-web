@@ -4,7 +4,7 @@ export const initialState: TracingState = {
     selectedPerson: null,
     isModalOpen: false,
     groupBy: 'Diario',
-    filters: new Map(),
+    filters: [],
     selectedValues: [],
     personId: 0,
     tracings: [],

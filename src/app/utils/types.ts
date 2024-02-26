@@ -6,6 +6,8 @@ export interface Requirement {
     t_remaining: string;
     affectation: string;
     t_affectation: string;
+    detail: string;
+    title: string;
     // Puedes agregar más campos según los requisitos
 }
 
@@ -57,14 +59,14 @@ export interface DataType {
 export interface PageValues {
     page: number | 1
     limit: number | 10
-    filters: Map<string, string> | null
+    filters?: [] | null
 }
 
 export interface TracingState {
     selectedPerson: Person | null;
     isModalOpen: boolean;
     groupBy: string;
-    filters: Map<string, string>;
+    filters: [];
     selectedValues: CheckboxValueType[];
     personId?: number;
     tracings: TeamGroup[];
@@ -79,7 +81,7 @@ export type TracingAction =
     | { type: 'SET_SELECTED_PERSON'; payload: Person | null }
     | { type: 'SET_MODAL_OPEN'; payload: boolean }
     | { type: 'SET_GROUP_BY'; payload: string }
-    | { type: 'SET_FILTER'; payload: { key: string, value: string } }
+    | { type: 'SET_FILTER'; payload: string[] }
     | { type: 'REMOVE_FILTER'; payload: { key: string } }
     | { type: 'CLEAR_FILTERS' }
     | { type: 'SET_SELECTED_VALUES'; payload: CheckboxValueType[] }
@@ -93,4 +95,12 @@ export type TracingAction =
 export interface Generic {
     id: string;
     name: string;
+}
+
+export interface ResponseCod {
+    id: string;
+    name: string;
+    updatedAt: string;
+    createdAt: string;
+
 }

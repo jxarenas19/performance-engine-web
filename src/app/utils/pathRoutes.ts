@@ -9,7 +9,7 @@ export const PATH_ROUTES_DEV = {
 };
 
 export const PATH_ROUTES_PROD = {
-    'CREATE_TRACING': 'api/performance/create',
+    'CREATE_TRACING': 'api/performance/task/update',
     'GET_TEAMS': 'api/performance/teams',
     'CREATE_TEAM': 'api/performance/teams/update',
     'GET_TRACING': 'api/performance/task',

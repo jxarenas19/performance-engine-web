@@ -35,7 +35,7 @@ const SelectEquipoForm = () => {
             <Form.Item name="team" label="Team" className="customFormItem" rules={[{ required: true }]}>
                 <Select loading={state.isLoading} placeholder="Select a project" allowClear>
                     {state.teams.map((option) => (
-                        <Select.Option key={option.id} value={option.name}>
+                        <Select.Option key={option.id} value={option.id}>
                             {option.name}
                         </Select.Option>
                     ))}

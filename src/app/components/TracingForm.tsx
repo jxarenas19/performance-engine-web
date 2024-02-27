@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Form, Input, Row, Select} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import {DataType} from '../utils/types';
+import {DataTask, DataType} from '../utils/types';
 import {createTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
@@ -19,14 +19,26 @@ const TracingForm = () => {
     const [form] = Form.useForm();
 
     const fetchTracing = async (values: DataType) => {
-        return await createTracing(values)
+        const data: DataTask = {
+            user_id:values.sub,
+            team:values.team,
+            title:values.title,
+            detail:values.detail,
+            t_spent:values.t_spent,
+            t_remaining:values.t_remaining,
+            t_affectation:values.t_affectation,
+            affectation:values.affectation
+        }
+        return await createTracing(data)
     }
     const addData = (values: DataType) => {
         console.log(values);
         form.resetFields();
         const response = fetchTracing(values);
-        console.log(response)
-        dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
+        response.then(value => {
+            dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
+        });
+
     };
     const handlePaste = (event: any) => {
         const pasteText = event.clipboardData.getData("text");
@@ -81,7 +93,7 @@ const TracingForm = () => {
                     >
                         <Select placeholder="Select an employee" allowClear>
                             {state.persons.map((option) => (
-                                <Select.Option key={option.sub} value={option.email}>
+                                <Select.Option key={option.sub} value={option.sub}>
                                     {option.email}
                                 </Select.Option>
                             ))}

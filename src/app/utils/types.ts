@@ -55,18 +55,30 @@ export interface DataType {
     t_affectation?: string;
     plus?: string[];
 }
-
+export interface DataTask {
+    team?: string;
+    title?: string;
+    detail?: string;
+    t_spent?: string;
+    t_remaining?: string;
+    affectation?: string;
+    t_affectation?: string;
+    user_id?: string;
+}
+export interface FiltersValues {
+    team?: string;
+}
 export interface PageValues {
     page: number | 1
     limit: number | 10
-    filters?: [] | null
+    filters?: FiltersValues[]
 }
 
 export interface TracingState {
     selectedPerson: Person | null;
     isModalOpen: boolean;
     groupBy: string;
-    filters: [];
+    filters: FiltersValues;
     selectedValues: CheckboxValueType[];
     personId?: number;
     tracings: TeamGroup[];
@@ -75,13 +87,14 @@ export interface TracingState {
     affectations: Generic[];
     users: User[];
     isLoading: boolean;
+    error?: string;
 }
 
 export type TracingAction =
     | { type: 'SET_SELECTED_PERSON'; payload: Person | null }
     | { type: 'SET_MODAL_OPEN'; payload: boolean }
     | { type: 'SET_GROUP_BY'; payload: string }
-    | { type: 'SET_FILTER'; payload: string[] }
+    | { type: 'SET_FILTER'; payload: { key: string, value: string } }
     | { type: 'REMOVE_FILTER'; payload: { key: string } }
     | { type: 'CLEAR_FILTERS' }
     | { type: 'SET_SELECTED_VALUES'; payload: CheckboxValueType[] }
@@ -90,6 +103,7 @@ export type TracingAction =
     | { type: 'SET_TEAMS'; payload: Generic[] }
     | { type: 'SET_USERS'; payload: Person[] }
     | { type: 'SET_AFFECTATIONS'; payload: Generic[] }
+    | { type: 'SET_ERROR'; payload: string}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {

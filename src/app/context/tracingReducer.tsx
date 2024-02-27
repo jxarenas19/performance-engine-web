@@ -1,10 +1,10 @@
-import {TracingAction, TracingState} from "@/app/utils/types";
+import {TracingAction, TracingState,FiltersValues} from "@/app/utils/types";
 
 export const initialState: TracingState = {
     selectedPerson: null,
     isModalOpen: false,
     groupBy: 'Diario',
-    filters: [],
+    filters: {},
     selectedValues: [],
     personId: 0,
     tracings: [],
@@ -12,7 +12,8 @@ export const initialState: TracingState = {
     persons: [],
     affectations: [],
     users: [],
-    isLoading: false
+    isLoading: false,
+    error: ''
 };
 export const tracingReducer = (state: TracingState, action: TracingAction) => {
     switch (action.type) {
@@ -23,15 +24,11 @@ export const tracingReducer = (state: TracingState, action: TracingAction) => {
         case 'SET_GROUP_BY':
             return {...state, groupBy: action.payload};
         case 'SET_FILTER':
-            const updatedFilters = new Map(state.filters);
-            updatedFilters.set(action.payload.key, action.payload.value);
-            return {...state, filters: updatedFilters};
+            return { ...state, filters:{[action.payload.key]: action.payload.value} };
         case 'REMOVE_FILTER':
-            const reducedFilters = new Map(state.filters);
-            reducedFilters.delete(action.payload.key);
-            return {...state, filters: reducedFilters};
+
         case 'CLEAR_FILTERS':
-            return {...state, filters: new Map()}
+            return {...state, filters: {}}
         case 'SET_SELECTED_VALUES':
             return {...state, selectedValues: action.payload};
         case 'SET_PERSON_ID':
@@ -46,6 +43,8 @@ export const tracingReducer = (state: TracingState, action: TracingAction) => {
             return {...state, affectations: action.payload, isLoading: false};
         case 'LOADING_TRACINGS':
             return {...state, isLoading: action.isLoading};
+        case 'SET_ERROR':
+            return {...state, error: action.payload};
         default:
             throw new Error('Acción no soportada');
     }

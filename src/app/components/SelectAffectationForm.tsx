@@ -36,7 +36,7 @@ const SelectAffectationForm = () => {
             <Form.Item name="affectation" label="Affectation" className="customFormItem">
                 <Select loading={state.isLoading} placeholder="Select an affectation" allowClear>
                     {state.affectations.map((option) => (
-                        <Select.Option key={option.id} value={option.name}>
+                        <Select.Option key={option.id} value={option.id}>
                             {option.name}
                         </Select.Option>
                     ))}

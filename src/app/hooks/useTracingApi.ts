@@ -1,13 +1,13 @@
-import {DataType, PageValues} from "@/app/utils/types";
+import {DataTask, DataType, FiltersValues, PageValues} from "@/app/utils/types";
 import {AxiosResponse} from "axios";
 
 import {PATH_ROUTES_DEV, PATH_ROUTES_PROD} from "@/app/utils/pathRoutes";
 import {axiosRequest, axiosRequestMock} from "@/app/utils/axiosConfiguration";
 
-export const createTracing = async (info: DataType) => {
+export const createTracing = async (info: DataTask) => {
     try {
-        const {data}: AxiosResponse = await axiosRequestMock.post(
-            PATH_ROUTES_DEV.CREATE_TRACING,
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.CREATE_TRACING,
             info
         )
         return data
@@ -23,6 +23,7 @@ export const getTracings = async (info: PageValues) => {
             PATH_ROUTES_PROD.GET_TRACING,
             info
         )
+        console.log(data)
         return data.data
     } catch (e) {
         return [];
@@ -60,7 +61,7 @@ export const getTeams = async (info: PageValues) => {
         return data.data;
 
     } catch (e) {
-        console.log('entro')
+        console.log('entro error teams')
         return [];
     }
 }

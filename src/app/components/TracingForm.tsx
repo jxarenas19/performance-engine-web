@@ -1,16 +1,21 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Form, Input, Row, Select} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import {DataType} from '../utils/types';
 import {createTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
+import SelectEquipoForm from "@/app/components/SelectEquipoForm";
+import SelectAffectationForm from "@/app/components/SelectAffectationForm";
+import {InfoCircleOutlined} from "@ant-design/icons";
+import {regexTime, TEXT_AREA_TOOLTIP} from "@/app/utils/variables";
+import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
 
 const TracingForm = () => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
-
+    const [showTextArea, setShowTextArea] = useState<boolean>(true);
     const [form] = Form.useForm();
 
     const fetchTracing = async (values: DataType) => {
@@ -25,61 +30,67 @@ const TracingForm = () => {
     };
     const handlePaste = (event: any) => {
         const pasteText = event.clipboardData.getData("text");
-        const formData: DataType = {
-            team: "",
-            user_id: "",
-            detail: "",
-            t_spent: "",
-            t_remaining: "",
-            affectation: "",
-            t_affectation: "",
-            plus: [],
-        };
 
-        pasteText.split(",").forEach((text: string) => {
-            // const [key, value] = part.trim().split(":");
-            // if (key.toLowerCase() === "team") formData["team"] = value.trim();
-            // if (key.toLowerCase() === "employee")
-            //   formData["employee"] = value.trim();
-            const textFormated = text.split('\n');
-            console.log(textFormated)
-        });
+        const values = extractKeyValuePairs(pasteText);
+        const formData = convertKeyValueToFormData(values);
 
         form.setFieldsValue(formData);
+        form.setFieldsValue({ myTextArea: '' });
+        setShowTextArea(false);
     };
 
     const setSelectedValues = (values: CheckboxValueType[]) => {
         dispatch({type: 'SET_SELECTED_VALUES', payload: values});
     };
 
+    useEffect(() => {
+        if (state.isModalOpen) {
+            form.resetFields();
+            setShowTextArea(true);
+        }
+    }, [state.isModalOpen, form]);
 
     return (
-        <Form form={form} layout="vertical" onFinish={addData}>
-            <Input.TextArea
-                placeholder="Paste the text here"
-                onPaste={handlePaste}
-            />
-            <Form.Item name="team" label="Team" rules={[{required: true}]}>
-                <Select placeholder="Select a project" allowClear>
-                    <Select.Option value="1">Development</Select.Option>
-                    <Select.Option value="2">Marketing</Select.Option>
-                    <Select.Option value="3">Sales</Select.Option>
-                    <Select.Option value="4">Others</Select.Option>
-                </Select>
-            </Form.Item>
+        <Form form={form}
+              layout="vertical"
+              onFinish={addData}
+              size='small'
+              initialValues={{
+                  size: 'small',
+              }}>
+            {showTextArea && (
+                <Form.Item name="myTextArea" label="Introduce text here!"
+                           tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
+                    <Input.TextArea
+                        className="customFormItem"
+                        placeholder="Paste the text here"
+                        onPaste={handlePaste}
+                    />
+                </Form.Item>
+            )}
+            <Row>
+                <Col span={12}>
+                    <SelectEquipoForm/>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
+                        className="customFormItem"
+                        name="sub"
+                        label="Employee"
+                        rules={[{required: true}]}
+                    >
+                        <Select placeholder="Select an employee" allowClear>
+                            {state.persons.map((option) => (
+                                <Select.Option key={option.sub} value={option.email}>
+                                    {option.email}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
             <Form.Item
-                name="user_id"
-                label="Employee"
-                rules={[{required: true}]}
-            >
-                <Select placeholder="Select an employee" allowClear>
-                    <Select.Option value="a4s854e8-a081-7079-17cf-b15b1cde6a9f">Messi</Select.Option>
-                    <Select.Option value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Maradona</Select.Option>
-                    <Select.Option value="ad2854e8-a081-7079-17cf-b15b1cde6a9f">Cristiano</Select.Option>
-                    <Select.Option value="a42854ed-a081-7079-17cf-b15b1cde6a9f">Beckham</Select.Option>
-                </Select>
-            </Form.Item>
-            <Form.Item
+                className="customFormItem"
                 name="title"
                 label="Title"
                 rules={[{required: true}]}
@@ -87,52 +98,61 @@ const TracingForm = () => {
                 <Input placeholder="CODE:TITLE"/>
             </Form.Item>
             <Form.Item
+                className="customFormItem"
                 name="detail"
+                label="Detail"
             >
                 <TextArea placeholder="Detail" rows={4}/>
             </Form.Item>
             <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
                         name="t_spent"
                         label="Time employee"
-                        rules={[{required: true}]}
+                        rules={[{
+                            validator: (_, value) => {
+                                if (!regexTime.test(value)) {
+                                    return Promise.reject(new Error("invalid format. Must be 2h, 3w, 4d o 2m"));
+                                }
+                                return Promise.resolve();
+                            },
+                        }]}
                     >
                         <Input
-                            placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
+                            placeholder="Enter a value"
                         />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
                     <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
                         name="t_remaining"
                         label="Time remaining"
                         rules={[{required: true}]}
                     >
                         <Input
-                            placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
+                            placeholder="Enter a value"
                         />
                     </Form.Item>
                 </Col>
             </Row>
             <Row gutter={16}>
                 <Col span={12}>
-                    <Form.Item
-                        name="affectation"
-                        label="Affectation"
-                        rules={[{required: true}]}
-                    >
-                        <Input/>
-                    </Form.Item>
+                    <SelectAffectationForm></SelectAffectationForm>
                 </Col>
                 <Col span={12}>
                     <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
                         name="t_affectation"
                         label="Time affectation"
                         rules={[{required: true}]}
                     >
                         <Input
-                            placeholder="Enter a value (ej. 2w, 5d, 3h, 4m)"
+                            placeholder="Enter a value"
                         />
                     </Form.Item>
                 </Col>

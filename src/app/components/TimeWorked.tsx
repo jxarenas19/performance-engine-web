@@ -1,6 +1,6 @@
 import {Progress} from 'antd';
 
-const TimeWorked: React.FC<{ hoursWorked: number }> = ({ hoursWorked }) => {
+const TimeWorked: React.FC<{ hoursWorked: number }> = ({hoursWorked}) => {
     const totalHours = 8;
     const percentage = (hoursWorked / totalHours) * 100;
     const remainingHours = totalHours - hoursWorked;

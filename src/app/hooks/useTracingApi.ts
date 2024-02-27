@@ -1,12 +1,13 @@
 import {DataType, PageValues} from "@/app/utils/types";
 import {AxiosResponse} from "axios";
-import {PATH_ROUTES} from "@/app/utils/pathRoutes";
-import axiosRequest from "@/app/utils/axiosConfiguration";
 
-export const createTracing = async (info:DataType) => {
+import {PATH_ROUTES_DEV, PATH_ROUTES_PROD} from "@/app/utils/pathRoutes";
+import {axiosRequest, axiosRequestMock} from "@/app/utils/axiosConfiguration";
+
+export const createTracing = async (info: DataType) => {
     try {
-        const {data}: AxiosResponse = await axiosRequest.post(
-            PATH_ROUTES.CREATE_TRACING,
+        const {data}: AxiosResponse = await axiosRequestMock.post(
+            PATH_ROUTES_DEV.CREATE_TRACING,
             info
         )
         return data
@@ -15,26 +16,73 @@ export const createTracing = async (info:DataType) => {
     }
 }
 
-export const getTracings = async (info: PageValues)=> {
+export const getTracings = async (info: PageValues) => {
+    console.log(info)
     try {
-        const {data}:AxiosResponse = await axiosRequest.post(
-            PATH_ROUTES.GET_TRACING,
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.GET_TRACING,
             info
         )
-        return data
-    }
-    catch (e) {
-
+        return data.data
+    } catch (e) {
+        return [];
     }
 }
-export const getTeams = async ()=> {
+export const createTeam = async (info: string) => {
     try {
-        const {data}:AxiosResponse = await axiosRequest.get(
-            PATH_ROUTES.GET_TEAMS
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.CREATE_TEAM,
+            {"name":info}
         )
         return data
+    } catch (e) {
+        return [];
     }
-    catch (e) {
+}
+export const createAffectation = async (info: string) => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.CREATE_AFFECTATION,
+            {"name":info}
+        )
+        return data
+    } catch (e) {
+        return null;
+    }
+}
+export const getTeams = async (info: PageValues) => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.GET_TEAMS,
+            info
+        )
+        console.log(data);
+        return data.data;
 
+    } catch (e) {
+        console.log('entro')
+        return [];
+    }
+}
+export const getUsers = async () => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.get(
+            PATH_ROUTES_PROD.GET_USERS
+        )
+        return data.data;
+    } catch (e) {
+        return [];
+    }
+}
+
+export const getAffectations = async (info: PageValues) => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.GET_AFFECTATIONS,
+            info
+        )
+        return data.data;
+    } catch (e) {
+        return [];
     }
 }

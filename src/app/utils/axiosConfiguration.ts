@@ -1,4 +1,5 @@
 import axios from "axios"
+import eventEmitter from "@/app/utils/eventEmitter";
 
 
 const API_URL_MOCK = process.env.NEXT_PUBLIC_API_URL_MOCK
@@ -21,4 +22,10 @@ export const axiosRequestMock = axios.create({
         Accept: "*/*",
     },
 })
-
+axiosRequest.interceptors.response.use(
+    response => response,
+    error => {
+        eventEmitter.emit<string>('apiError', error.message || 'An error occurred');
+        return Promise.reject(error);
+    }
+);

@@ -41,26 +41,26 @@ const SelectEquipoForm = () => {
                     ))}
                 </Select>
             </Form.Item>
-            <Button
-                type="primary"
-                icon={<PlusOutlined/>}
-                onClick={() => setIsModalOpen(true)}
-                style={{marginLeft: '8px' ,marginTop:'22px'}}
-            >
-            </Button>
+            {/*<Button*/}
+            {/*    type="primary"*/}
+            {/*    icon={<PlusOutlined/>}*/}
+            {/*    onClick={() => setIsModalOpen(true)}*/}
+            {/*    style={{marginLeft: '8px' ,marginTop:'22px'}}*/}
+            {/*>*/}
+            {/*</Button>*/}
 
-            <Modal
-                title="Add team"
-                open={isModalOpen}
-                onOk={handleAddNewItem}
-                onCancel={() => setIsModalOpen(false)}
-            >
-                <Form>
-                    <Form.Item label="New team">
-                        <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>
-                    </Form.Item>
-                </Form>
-            </Modal>
+            {/*<Modal*/}
+            {/*    title="Add team"*/}
+            {/*    open={isModalOpen}*/}
+            {/*    onOk={handleAddNewItem}*/}
+            {/*    onCancel={() => setIsModalOpen(false)}*/}
+            {/*>*/}
+            {/*    <Form>*/}
+            {/*        <Form.Item label="New team">*/}
+            {/*            <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>*/}
+            {/*        </Form.Item>*/}
+            {/*    </Form>*/}
+            {/*</Modal>*/}
         </div>
     );
 };

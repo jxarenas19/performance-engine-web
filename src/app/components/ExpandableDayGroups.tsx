@@ -65,8 +65,9 @@ const ExpandableDayGroups = () => {
         />
     );
 
-    return state.isLoading ? <p>Cargando...</p> :
-        (<Table
+    return (
+        <Table
+            loading={state.isLoading}
             columns={columnsDayGroups}
             dataSource={state.tracings}
             pagination={{
@@ -76,7 +77,8 @@ const ExpandableDayGroups = () => {
             }}
             onChange={handleTableChange}
             expandable={{expandedRowRender}}
-        />)
+        />
+    )
 
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useContext, useEffect} from "react";
-import {Col, Modal, Row, Skeleton, Tabs,notification} from "antd";
+import {Col, Modal, Row, Tabs,notification} from "antd";
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
@@ -9,14 +9,14 @@ import {getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useT
 import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
-import DualTableSkeleton from "@/app/components/DualTableSkeleton";
-
 
 export default function Temp() {
 
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
+
+
 
     const fetchFilteredData = async () => {
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
@@ -27,7 +27,6 @@ export default function Temp() {
         if (response) {
             dispatch({type: 'SET_TRACINGS', payload: response.data});
             dispatch({type: 'SET_TOTAL', payload: response.total});
-            dispatch({type: 'LOADING_TRACINGS', isLoading: false});
         }
         else dispatch({type: 'SET_TRACINGS', payload: []});
     };
@@ -52,6 +51,7 @@ export default function Temp() {
     }
 
     useEffect(() => {
+        console.log(state.filters.team)
         if (state.filters.team) {
             fetchFilteredData();
         }
@@ -102,8 +102,7 @@ export default function Temp() {
     return (
         <>
             <TracingFilters></TracingFilters>
-            {state.isLoading && <DualTableSkeleton/>}
-            {!state.isLoading && state.teams.length > 0 && (
+            {state.teams.length > 0 && (
                 <Tabs
                     defaultActiveKey="1"
                     onTabClick={handleTabChange}

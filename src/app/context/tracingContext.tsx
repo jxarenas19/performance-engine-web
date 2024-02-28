@@ -1,10 +1,10 @@
 import React, {createContext, Dispatch, ReactNode, useReducer} from 'react';
-import {TracingAction, TracingState} from "@/app/utils/types";
+import {PageValues, TracingAction, TracingState} from "@/app/utils/types";
 import {initialState, tracingReducer} from "@/app/context/tracingReducer";
 
 
 interface AppContextProps {
-    state: TracingState;
+    state: TracingState & PageValues;
     dispatch: Dispatch<TracingAction>;
 }
 

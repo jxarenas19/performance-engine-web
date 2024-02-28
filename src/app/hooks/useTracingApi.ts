@@ -16,15 +16,15 @@ export const createTracing = async (info: DataTask) => {
     }
 }
 
-export const getTracings = async (info: PageValues) => {
+export const getTracings = async (info: any) => {
     console.log(info)
     try {
         const {data}: AxiosResponse = await axiosRequest.post(
             PATH_ROUTES_PROD.GET_TRACING,
             info
         )
-        console.log(data)
-        return data.data
+
+        return data;
     } catch (e) {
         return [];
     }

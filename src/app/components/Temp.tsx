@@ -19,10 +19,16 @@ export default function Temp() {
     const {state, dispatch} = context;
 
     const fetchFilteredData = async () => {
-
+        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         const response = await getTracings(
-            {page: 1, limit: 10, filters: [state.filters]});
-        if (response) dispatch({type: 'SET_TRACINGS', payload: response});
+            {page: state.page,
+                limit: state.limit,
+                filters: [state.filters]});
+        if (response) {
+            dispatch({type: 'SET_TRACINGS', payload: response.data});
+            dispatch({type: 'SET_TOTAL', payload: response.total});
+            dispatch({type: 'LOADING_TRACINGS', isLoading: false});
+        }
         else dispatch({type: 'SET_TRACINGS', payload: []});
     };
     const fetchTeamsData = async () => {
@@ -30,9 +36,7 @@ export default function Temp() {
         const response = await getTeams({page: 1, limit: 0});
         dispatch({type: 'SET_TEAMS', payload: response});
         if (response.length > 0) {
-            console.log('entro a primera ves')
             dispatch({type: 'SET_FILTER', payload: {key: 'team', value: response[0].id}});
-            console.log(state.filters)
         }
 
         dispatch({type: 'LOADING_TRACINGS', isLoading: false});
@@ -46,12 +50,12 @@ export default function Temp() {
         const response = await getAffectations({page: 1, limit: 0});
         dispatch({type: 'SET_AFFECTATIONS', payload: response});
     }
+
     useEffect(() => {
-        console.log('entro a efect');
         if (state.filters.team) {
             fetchFilteredData();
         }
-    }, [state.filters]);
+    }, [state.filters,state.limit,state.page]);
 
     useEffect(() => {
         fetchTeamsData();

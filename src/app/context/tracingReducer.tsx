@@ -1,6 +1,6 @@
-import {TracingAction, TracingState,FiltersValues} from "@/app/utils/types";
+import {PageValues, TracingAction, TracingState} from "@/app/utils/types";
 
-export const initialState: TracingState = {
+export const initialState: TracingState & PageValues= {
     selectedPerson: null,
     isModalOpen: false,
     groupBy: 'Diario',
@@ -13,9 +13,12 @@ export const initialState: TracingState = {
     affectations: [],
     users: [],
     isLoading: false,
-    error: ''
+    error: '',
+    page: 1,
+    limit: 1,
+    total: 0
 };
-export const tracingReducer = (state: TracingState, action: TracingAction) => {
+export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
         case 'SET_SELECTED_PERSON':
             return {...state, selectedPerson: action.payload};
@@ -26,7 +29,7 @@ export const tracingReducer = (state: TracingState, action: TracingAction) => {
         case 'SET_FILTER':
             return { ...state, filters:{[action.payload.key]: action.payload.value} };
         case 'REMOVE_FILTER':
-
+            return { ...state, filters:{} };
         case 'CLEAR_FILTERS':
             return {...state, filters: {}}
         case 'SET_SELECTED_VALUES':
@@ -45,6 +48,12 @@ export const tracingReducer = (state: TracingState, action: TracingAction) => {
             return {...state, isLoading: action.isLoading};
         case 'SET_ERROR':
             return {...state, error: action.payload};
+        case 'SET_PAGE':
+            return { ...state, page: action.payload };
+        case 'SET_PAGE_SIZE':
+            return { ...state, limit: action.payload };
+        case 'SET_TOTAL':
+            return { ...state, total: action.payload };
         default:
             throw new Error('Acción no soportada');
     }

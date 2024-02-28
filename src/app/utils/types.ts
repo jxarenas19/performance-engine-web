@@ -70,8 +70,9 @@ export interface FiltersValues {
 }
 export interface PageValues {
     page: number | 1
-    limit: number | 10
-    filters?: FiltersValues[]
+    limit: number | 1
+    filters?: FiltersValues,
+    total?:0
 }
 
 export interface TracingState {
@@ -104,6 +105,9 @@ export type TracingAction =
     | { type: 'SET_USERS'; payload: Person[] }
     | { type: 'SET_AFFECTATIONS'; payload: Generic[] }
     | { type: 'SET_ERROR'; payload: string}
+    | { type: 'SET_PAGE'; payload: number}
+    | { type: 'SET_PAGE_SIZE'; payload: number}
+    | { type: 'SET_TOTAL'; payload: number}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {

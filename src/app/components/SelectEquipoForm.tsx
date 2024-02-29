@@ -35,32 +35,32 @@ const SelectEquipoForm = () => {
             <Form.Item name="team" label="Team" className="customFormItem" rules={[{ required: true }]}>
                 <Select loading={state.isLoading} placeholder="Select a project" allowClear>
                     {state.teams.map((option) => (
-                        <Select.Option key={option.id} value={option.name}>
+                        <Select.Option key={option.id} value={option.id}>
                             {option.name}
                         </Select.Option>
                     ))}
                 </Select>
             </Form.Item>
-            <Button
-                type="primary"
-                icon={<PlusOutlined/>}
-                onClick={() => setIsModalOpen(true)}
-                style={{marginLeft: '8px' ,marginTop:'22px'}}
-            >
-            </Button>
+            {/*<Button*/}
+            {/*    type="primary"*/}
+            {/*    icon={<PlusOutlined/>}*/}
+            {/*    onClick={() => setIsModalOpen(true)}*/}
+            {/*    style={{marginLeft: '8px' ,marginTop:'22px'}}*/}
+            {/*>*/}
+            {/*</Button>*/}
 
-            <Modal
-                title="Add team"
-                open={isModalOpen}
-                onOk={handleAddNewItem}
-                onCancel={() => setIsModalOpen(false)}
-            >
-                <Form>
-                    <Form.Item label="New team">
-                        <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>
-                    </Form.Item>
-                </Form>
-            </Modal>
+            {/*<Modal*/}
+            {/*    title="Add team"*/}
+            {/*    open={isModalOpen}*/}
+            {/*    onOk={handleAddNewItem}*/}
+            {/*    onCancel={() => setIsModalOpen(false)}*/}
+            {/*>*/}
+            {/*    <Form>*/}
+            {/*        <Form.Item label="New team">*/}
+            {/*            <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>*/}
+            {/*        </Form.Item>*/}
+            {/*    </Form>*/}
+            {/*</Modal>*/}
         </div>
     );
 };

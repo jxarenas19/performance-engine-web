@@ -41,6 +41,7 @@ const ExpandableRequiriments = () => {
 
     return state.selectedPerson ? (
         <Table
+            loading={state.isLoading}
             columns={columnsRequirements}
             dataSource={state.selectedPerson.requirements}
             pagination={{pageSize: 2}}

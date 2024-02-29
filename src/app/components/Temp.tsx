@@ -1,14 +1,14 @@
 "use client";
 
 import React, {useContext, useEffect} from "react";
-import {Col, Modal, Row, Skeleton, Tabs} from "antd";
+import {Col, Modal, Row, Tabs,notification} from "antd";
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
 import {getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
 import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
-
+import eventEmitter from "../utils/eventEmitter";
 
 export default function Temp() {
 
@@ -16,30 +16,46 @@ export default function Temp() {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
+
+
     const fetchFilteredData = async () => {
-        const response = await getTracings({page: 1, limit: 10, filters: state.filters});
-        if (response) dispatch({type: 'SET_TRACINGS', payload: response});
+        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
+        const response = await getTracings(
+            {page: state.page,
+                limit: state.limit,
+                filters: [state.filters]});
+        if (response) {
+            dispatch({type: 'SET_TRACINGS', payload: response.data});
+            dispatch({type: 'SET_TOTAL', payload: response.total});
+        }
         else dispatch({type: 'SET_TRACINGS', payload: []});
     };
     const fetchTeamsData = async () => {
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
-        const response =  await getTeams({page: 1, limit: 0});
-
+        const response = await getTeams({page: 1, limit: 0});
         dispatch({type: 'SET_TEAMS', payload: response});
+        if (response.length > 0) {
+            dispatch({type: 'SET_FILTER', payload: {key: 'team', value: response[0].id}});
+        }
+
         dispatch({type: 'LOADING_TRACINGS', isLoading: false});
 
     }
     const fetchUsersData = async () => {
-        const response =  await getUsers();
+        const response = await getUsers();
         dispatch({type: 'SET_USERS', payload: response});
     }
     const fetchAffectationsData = async () => {
-        const response =  await getAffectations({page: 1, limit: 0});
+        const response = await getAffectations({page: 1, limit: 0});
         dispatch({type: 'SET_AFFECTATIONS', payload: response});
     }
+
     useEffect(() => {
-        fetchFilteredData();
-    }, [state.filters]);
+        console.log(state.filters.team)
+        if (state.filters.team) {
+            fetchFilteredData();
+        }
+    }, [state.filters,state.limit,state.page]);
 
     useEffect(() => {
         fetchTeamsData();
@@ -47,11 +63,23 @@ export default function Temp() {
         fetchAffectationsData();
     }, []);
 
+    useEffect(() => {
+        const handleApiError = (message: string) => {
+            notification.error({
+                message: 'API error',
+                description: message,
+                duration: 2.5,
+            });
+        };
+        eventEmitter.on<string>('apiError', handleApiError);
+        return () => {
+            eventEmitter.removeListener<string>('apiError', handleApiError);
+        };
+    }, [dispatch]);
 
     const handleTabChange = (key: string) => {
-        console.log(key)
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
-        dispatch({type: 'SET_FILTER', payload: [key]});
+        dispatch({type: 'SET_FILTER', payload: {key: 'team', value: key}})
 
     };
 
@@ -74,8 +102,7 @@ export default function Temp() {
     return (
         <>
             <TracingFilters></TracingFilters>
-            {state.isLoading && <Skeleton/>}
-            {!state.isLoading && state.teams.length > 0 && (
+            {state.teams.length > 0 && (
                 <Tabs
                     defaultActiveKey="1"
                     onTabClick={handleTabChange}

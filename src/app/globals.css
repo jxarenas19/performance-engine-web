@@ -64,3 +64,7 @@
 .customFormItem {
     margin-bottom: 8px;
 }
+
+.ant-form {
+    width: 100%;
+}

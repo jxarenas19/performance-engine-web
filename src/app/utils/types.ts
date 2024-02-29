@@ -54,6 +54,8 @@ export interface DataType {
     affectation?: string;
     t_affectation?: string;
     plus?: string[];
+    amount?: number;
+    amount_error?: number;
 }
 export interface DataTask {
     team?: string;
@@ -64,22 +66,26 @@ export interface DataTask {
     affectation?: string;
     t_affectation?: string;
     user_id?: string;
+    amount?: number;
+    amount_error?: number;
 }
 export interface FiltersValues {
     team?: string;
+    startDate?: string;
+    dateEnd?: string;
 }
 export interface PageValues {
     page: number | 1
     limit: number | 1
     filters?: FiltersValues,
-    total?:0
+
 }
 
 export interface TracingState {
     selectedPerson: Person | null;
     isModalOpen: boolean;
     groupBy: string;
-    filters: FiltersValues;
+    filters: Filters;
     selectedValues: CheckboxValueType[];
     personId?: number;
     tracings: TeamGroup[];
@@ -89,14 +95,23 @@ export interface TracingState {
     users: User[];
     isLoading: boolean;
     error?: string;
+    total:number;
+    selectedTeam: string | null;
+}
+
+export interface Filters {
+    team?: string;
+    dateStart?: string;
+    dateEnd?: string;
+    group?: string;
 }
 
 export type TracingAction =
     | { type: 'SET_SELECTED_PERSON'; payload: Person | null }
     | { type: 'SET_MODAL_OPEN'; payload: boolean }
     | { type: 'SET_GROUP_BY'; payload: string }
-    | { type: 'SET_FILTER'; payload: { key: string, value: string } }
-    | { type: 'REMOVE_FILTER'; payload: { key: string } }
+    | { type: 'SET_FILTER'; key: keyof Filters; value: string  }
+    | { type: 'REMOVE_FILTER'; keys: (keyof Filters)[]  }
     | { type: 'CLEAR_FILTERS' }
     | { type: 'SET_SELECTED_VALUES'; payload: CheckboxValueType[] }
     | { type: 'SET_PERSON_ID'; payload: number }
@@ -108,17 +123,10 @@ export type TracingAction =
     | { type: 'SET_PAGE'; payload: number}
     | { type: 'SET_PAGE_SIZE'; payload: number}
     | { type: 'SET_TOTAL'; payload: number}
+    | { type: 'SET_SELECTED_TEAM'; payload: string}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {
     id: string;
     name: string;
-}
-
-export interface ResponseCod {
-    id: string;
-    name: string;
-    updatedAt: string;
-    createdAt: string;
-
 }

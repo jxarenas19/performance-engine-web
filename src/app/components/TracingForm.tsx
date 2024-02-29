@@ -7,9 +7,16 @@ import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
 import SelectEquipoForm from "@/app/components/SelectEquipoForm";
 import SelectAffectationForm from "@/app/components/SelectAffectationForm";
-import {InfoCircleOutlined} from "@ant-design/icons";
+import {
+    AliwangwangOutlined, BookOutlined,
+    CarOutlined,
+    CheckCircleOutlined,
+    DingdingOutlined,
+    InfoCircleOutlined, PlusOutlined
+} from "@ant-design/icons";
 import {regexTime, TEXT_AREA_TOOLTIP} from "@/app/utils/variables";
 import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
+import ShowTitleByTeam from "@/app/components/ShowTitleByTeam";
 
 const TracingForm = () => {
     const context = useContext(TracingContext);
@@ -22,12 +29,14 @@ const TracingForm = () => {
         const data: DataTask = {
             user_id:values.sub,
             team:values.team,
-            title:values.title,
+            title:values.title || " ",
             detail:values.detail,
             t_spent:values.t_spent,
             t_remaining:values.t_remaining,
             t_affectation:values.t_affectation,
-            affectation:values.affectation
+            affectation:values.affectation,
+            amount:values.amount || 1,
+            amount_error:values.amount || 0
         }
         return await createTracing(data)
     }
@@ -71,7 +80,7 @@ const TracingForm = () => {
                   size: 'small',
               }}>
             {showTextArea && (
-                <Form.Item name="myTextArea" label="Introduce text here!"
+                <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"
                            tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
                     <Input.TextArea
                         className="customFormItem"
@@ -101,121 +110,120 @@ const TracingForm = () => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item
-                className="customFormItem"
-                name="title"
-                label="Title"
-                rules={[{required: true}]}
-            >
-                <Input placeholder="CODE:TITLE"/>
-            </Form.Item>
-            <Form.Item
-                className="customFormItem"
-                name="detail"
-                label="Detail"
-            >
-                <TextArea placeholder="Detail" rows={4}/>
-            </Form.Item>
-            <Row gutter={16}>
-                <Col span={12}>
-                    <Form.Item
-                        className="customFormItem"
-                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
-                        name="t_spent"
-                        label="Time employee"
-                        rules={[{
-                            validator: (_, value) => {
-                                if (!regexTime.test(value)) {
-                                    return Promise.reject(new Error("invalid format. Must be 2h, 3w, 4d o 2m"));
-                                }
-                                return Promise.resolve();
-                            },
-                        }]}
-                    >
-                        <Input
-                            placeholder="Enter a value"
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={12}>
-                    <Form.Item
-                        className="customFormItem"
-                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
-                        name="t_remaining"
-                        label="Time remaining"
-                        rules={[{required: true}]}
-                    >
-                        <Input
-                            placeholder="Enter a value"
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={16}>
-                <Col span={12}>
-                    <SelectAffectationForm></SelectAffectationForm>
-                </Col>
-                <Col span={12}>
-                    <Form.Item
-                        className="customFormItem"
-                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
-                        name="t_affectation"
-                        label="Time affectation"
-                        rules={[{required: true}]}
-                    >
-                        <Input
-                            placeholder="Enter a value"
-                        />
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Form.Item name="plus">
-                <Checkbox.Group onChange={(values) => setSelectedValues(values)}>
-                    <Row>
-                        <Col span={8}>
-                            <Checkbox value="compliance" style={{lineHeight: "32px"}}>
-                                Compliance
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox
-                                value="creativity"
-                                style={{lineHeight: "32px"}}
-                                disabled
-                            >
-                                Creativity
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="plus" style={{lineHeight: "32px"}}>
-                                Plus
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="performance" style={{lineHeight: "32px"}}>
-                                Performance
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="leadership" style={{lineHeight: "32px"}}>
-                                Leadership
-                            </Checkbox>
-                        </Col>
-                        <Col span={8}>
-                            <Checkbox value="speed" style={{lineHeight: "32px"}}>
-                                Speed
-                            </Checkbox>
-                        </Col>
-                    </Row>
-                </Checkbox.Group>
-            </Form.Item>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Save
-                </Button>
-            </Form.Item>
+            <ShowTitleByTeam></ShowTitleByTeam>
+                <Form.Item
+                    className="customFormItem"
+                    name="detail"
+                    label="Detail"
+                >
+                    <TextArea placeholder="Detail" rows={4}/>
+                </Form.Item>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            className="customFormItem"
+                            tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
+                            name="t_spent"
+                            label="Time employee"
+                            rules={[{
+                                validator: (_, value) => {
+                                    if (!regexTime.test(value)) {
+                                        return Promise.reject(new Error("invalid format. Must be 2h, 3w, 4d o 2m"));
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }]}
+                        >
+                            <Input
+                                placeholder="Enter a value"
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            className="customFormItem"
+                            tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
+                            name="t_remaining"
+                            label="Time remaining"
+                            rules={[{required: true}]}
+                        >
+                            <Input
+                                placeholder="Enter a value"
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <SelectAffectationForm></SelectAffectationForm>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            className="customFormItem"
+                            tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
+                            name="t_affectation"
+                            label="Time affectation"
+                            rules={[{required: true}]}
+                        >
+                            <Input
+                                placeholder="Enter a value"
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Form.Item name="plus" label="Plus">
+                    <Checkbox.Group onChange={(values) => setSelectedValues(values)}>
+                        <Row>
+                            <Col span={8}>
+                                <Checkbox value="compliance" style={{lineHeight: "32px"}}>
+                                    Compliance
+                                    <CheckCircleOutlined style={{ marginLeft: 8 }} />
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox
+                                    value="creativity"
+                                    style={{lineHeight: "32px"}}
+                                    disabled
+                                >
+                                    Creativity
+                                    <AliwangwangOutlined style={{ marginLeft: 8 }} />
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox value="plus" style={{lineHeight: "32px"}}>
+                                    Plus
+                                    <PlusOutlined style={{ marginLeft: 8 }} />
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox value="performance" style={{lineHeight: "32px"}}>
+                                    Performance
+                                    <DingdingOutlined style={{ marginLeft: 8 }} />
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox value="leadership" style={{lineHeight: "32px"}}>
+                                    Leadership
+                                    <BookOutlined style={{ marginLeft: 8 }} />
+                                </Checkbox>
+                            </Col>
+                            <Col span={8}>
+                                <Checkbox value="speed" style={{lineHeight: "32px"}}>
+                                    Speed
+                                    <CarOutlined style={{ marginLeft: 8 }} />
+                                </Checkbox>
+                            </Col>
+                        </Row>
+                    </Checkbox.Group>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Save
+                    </Button>
+                </Form.Item>
         </Form>
-    );
+);
 };
 
 export default TracingForm;

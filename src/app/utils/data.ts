@@ -1,7 +1,10 @@
 import {Generic, TeamGroup} from "@/app/utils/types";
 
 
-
+export const CustomerSupportTitle: Generic[] = [
+    {id: "1", name: 'Answer call'},
+    {id: "2", name: 'Answer message'},
+]
 
 
 export const DesignersTitle: Generic[] = [

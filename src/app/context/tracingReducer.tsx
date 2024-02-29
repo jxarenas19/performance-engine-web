@@ -1,4 +1,4 @@
-import {PageValues, TracingAction, TracingState} from "@/app/utils/types";
+import {Filters, PageValues, TracingAction, TracingState} from "@/app/utils/types";
 
 export const initialState: TracingState & PageValues= {
     selectedPerson: null,
@@ -16,7 +16,8 @@ export const initialState: TracingState & PageValues= {
     error: '',
     page: 1,
     limit: 1,
-    total: 0
+    total: 0,
+    selectedTeam: null,
 };
 export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
@@ -27,9 +28,22 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
         case 'SET_GROUP_BY':
             return {...state, groupBy: action.payload};
         case 'SET_FILTER':
-            return { ...state, filters:{[action.payload.key]: action.payload.value} };
+            return {
+                ...state,
+                filters: {
+                    ...state.filters,
+                    [action.key]: action.value
+                }
+            };
         case 'REMOVE_FILTER':
-            return { ...state, filters:{} };
+            const newFilters:Filters = { ...state.filters };
+            action.keys.forEach(key => {
+                delete newFilters[key];
+            });
+            return {
+                ...state,
+                filters: newFilters
+            };
         case 'CLEAR_FILTERS':
             return {...state, filters: {}}
         case 'SET_SELECTED_VALUES':
@@ -54,6 +68,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return { ...state, limit: action.payload };
         case 'SET_TOTAL':
             return { ...state, total: action.payload };
+        case 'SET_SELECTED_TEAM':
+            return { ...state, selectedTeam: action.payload };
         default:
             throw new Error('Acción no soportada');
     }

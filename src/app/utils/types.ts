@@ -71,6 +71,8 @@ export interface DataTask {
 }
 export interface FiltersValues {
     team?: string;
+    startDate?: string;
+    dateEnd?: string;
 }
 export interface PageValues {
     page: number | 1
@@ -83,7 +85,7 @@ export interface TracingState {
     selectedPerson: Person | null;
     isModalOpen: boolean;
     groupBy: string;
-    filters: FiltersValues;
+    filters: Filters;
     selectedValues: CheckboxValueType[];
     personId?: number;
     tracings: TeamGroup[];
@@ -97,12 +99,19 @@ export interface TracingState {
     selectedTeam: string | null;
 }
 
+export interface Filters {
+    team?: string;
+    dateStart?: string;
+    dateEnd?: string;
+    group?: string;
+}
+
 export type TracingAction =
     | { type: 'SET_SELECTED_PERSON'; payload: Person | null }
     | { type: 'SET_MODAL_OPEN'; payload: boolean }
     | { type: 'SET_GROUP_BY'; payload: string }
-    | { type: 'SET_FILTER'; payload: { key: string, value: string } }
-    | { type: 'REMOVE_FILTER'; payload: { key: string } }
+    | { type: 'SET_FILTER'; key: keyof Filters; value: string  }
+    | { type: 'REMOVE_FILTER'; keys: (keyof Filters)[]  }
     | { type: 'CLEAR_FILTERS' }
     | { type: 'SET_SELECTED_VALUES'; payload: CheckboxValueType[] }
     | { type: 'SET_PERSON_ID'; payload: number }

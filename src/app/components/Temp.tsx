@@ -9,6 +9,7 @@ import {getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useT
 import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
+import {Filters} from "@/app/utils/types";
 
 export default function Temp() {
 
@@ -30,12 +31,15 @@ export default function Temp() {
         }
         else dispatch({type: 'SET_TRACINGS', payload: []});
     };
+    const updateFilter = (key: keyof Filters, value: string) => {
+        dispatch({ type: 'SET_FILTER', key, value });
+    };
     const fetchTeamsData = async () => {
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         const response = await getTeams({page: 1, limit: 0});
         dispatch({type: 'SET_TEAMS', payload: response});
         if (response.length > 0) {
-            dispatch({type: 'SET_FILTER', payload: {key: 'team', value: response[0].id}});
+            updateFilter('team',response[0].id)
         }
 
         dispatch({type: 'LOADING_TRACINGS', isLoading: false});
@@ -51,11 +55,9 @@ export default function Temp() {
     }
 
     useEffect(() => {
-        console.log(state.filters.team)
-        if (state.filters.team) {
-            fetchFilteredData();
-        }
-    }, [state.filters,state.limit,state.page]);
+        console.log(state.filters)
+        fetchFilteredData();
+    }, [state.filters.team,state.filters.dateEnd,state.filters.group, state.limit,state.page]);
 
     useEffect(() => {
         fetchTeamsData();
@@ -79,7 +81,7 @@ export default function Temp() {
 
     const handleTabChange = (key: string) => {
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
-        dispatch({type: 'SET_FILTER', payload: {key: 'team', value: key}})
+        updateFilter('team',key)
 
     };
 

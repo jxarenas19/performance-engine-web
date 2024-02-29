@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton, Card, Row, Col } from 'antd';
+import {Card, Col, Row, Skeleton} from 'antd';
 
 const DualTableSkeleton = () => {
     // Ajusta el número de filas según tus necesidades

@@ -16,7 +16,8 @@ export const initialState: TracingState & PageValues= {
     error: '',
     page: 1,
     limit: 1,
-    total: 0
+    total: 0,
+    selectedTeam: null,
 };
 export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
@@ -54,6 +55,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return { ...state, limit: action.payload };
         case 'SET_TOTAL':
             return { ...state, total: action.payload };
+        case 'SET_SELECTED_TEAM':
+            return { ...state, selectedTeam: action.payload };
         default:
             throw new Error('Acción no soportada');
     }

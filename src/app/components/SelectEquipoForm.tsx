@@ -1,41 +1,46 @@
-import {Button, Form, Input, Modal, Select} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
-import React, {useContext, useState} from "react";
+import {Form, Select} from "antd";
+import {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
-import {createTeam} from "@/app/hooks/useTracingApi";
 
 const SelectEquipoForm = () => {
-
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newItem, setNewItem] = useState('');
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [newItem, setNewItem] = useState('');
 
-    const fetchTeam = async (value:string) => {
-        return await createTeam(value)
-    }
-    const handleAddNewItem = () => {
-
-        if (newItem) {
-            const response = fetchTeam(newItem);
-            response.then(value => {
-                console.log(value)
-                dispatch({type: 'SET_TEAMS', payload: [...state.teams,
-                        {'id':value.data.id,"name":value.data.name}]});
-                setNewItem('');
-                setIsModalOpen(false);
-            });
-        }
+    // const fetchTeam = async (value:string) => {
+    //     return await createTeam(value)
+    // }
+    // const handleAddNewItem = () => {
+    //
+    //     if (newItem) {
+    //         const response = fetchTeam(newItem);
+    //         response.then(value => {
+    //             console.log(value)
+    //             dispatch({type: 'SET_TEAMS', payload: [...state.teams,
+    //                     {'id':value.data.id,"name":value.data.name}]});
+    //             setNewItem('');
+    //             setIsModalOpen(false);
+    //         });
+    //     }
+    // };
+    const handleClick = (value: string) => {
+        const selectedOption = state.teams.find(option => option.id === value);
+        if(selectedOption)
+            dispatch({type: 'SET_SELECTED_TEAM', payload: selectedOption.name});
     };
-
     return (
         <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
             <Form.Item name="team" label="Team" className="customFormItem" rules={[{ required: true }]}>
-                <Select loading={state.isLoading} placeholder="Select a project" allowClear>
+                <Select
+                        loading={state.isLoading} placeholder="Select a project" allowClear onSelect={handleClick}>
                     {state.teams.map((option) => (
-                        <Select.Option key={option.id} value={option.id}>
+                        <Select.Option
+                            key={option.id}
+                            value={option.id}
+                        >
                             {option.name}
                         </Select.Option>
                     ))}

@@ -54,6 +54,8 @@ export interface DataType {
     affectation?: string;
     t_affectation?: string;
     plus?: string[];
+    amount?: number;
+    amount_error?: number;
 }
 export interface DataTask {
     team?: string;
@@ -64,6 +66,8 @@ export interface DataTask {
     affectation?: string;
     t_affectation?: string;
     user_id?: string;
+    amount?: number;
+    amount_error?: number;
 }
 export interface FiltersValues {
     team?: string;
@@ -72,7 +76,7 @@ export interface PageValues {
     page: number | 1
     limit: number | 1
     filters?: FiltersValues,
-    total?:0
+
 }
 
 export interface TracingState {
@@ -89,6 +93,8 @@ export interface TracingState {
     users: User[];
     isLoading: boolean;
     error?: string;
+    total:number;
+    selectedTeam: string | null;
 }
 
 export type TracingAction =
@@ -108,17 +114,10 @@ export type TracingAction =
     | { type: 'SET_PAGE'; payload: number}
     | { type: 'SET_PAGE_SIZE'; payload: number}
     | { type: 'SET_TOTAL'; payload: number}
+    | { type: 'SET_SELECTED_TEAM'; payload: string}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {
     id: string;
     name: string;
-}
-
-export interface ResponseCod {
-    id: string;
-    name: string;
-    updatedAt: string;
-    createdAt: string;
-
 }

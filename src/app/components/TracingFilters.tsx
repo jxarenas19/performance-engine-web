@@ -15,7 +15,8 @@ const TracingFilters: React.FC = () => {
     const rangeDateFilter = (dateRange: any) => {
         const startDate = dateRange[0].format('YYYY-MM-DD');
         const endDate = dateRange[1].format('YYYY-MM-DD');
-        //dispatch({type: 'SET_FILTER', payload: {key: 'range', value: startDate + '-' + endDate}});
+        dispatch({type: 'SET_FILTER', payload: {key: 'dateStart', value: startDate}});
+        dispatch({type: 'SET_FILTER', payload: {key: 'dateEnd', value: endDate}});
     }
     const groupFilter = (value: string) => {
         //dispatch({type: 'SET_FILTER', payload: {key: 'group', value: value}});
@@ -26,14 +27,14 @@ const TracingFilters: React.FC = () => {
                 Add tracing
             </Button>
             <DatePicker.RangePicker onChange={rangeDateFilter}/>
-            <Select defaultValue="Diario" style={{width: 120}} onChange={groupFilter}>
-                <Select.Option key="Diario" value="Diario">Daily</Select.Option>
-                <Select.Option key="Weekly" value="Semanal">Weekly</Select.Option>
-                <Select.Option key="Biweekly" value="Quincenal">Biweekly</Select.Option>
-                <Select.Option key="Monthly" value="Mensual">Monthly</Select.Option>
-                <Select.Option key="Quarterly" value="Trimestral">Quarterly</Select.Option>
-                <Select.Option key="Biannual" value="Semestral">Biannual</Select.Option>
-                <Select.Option key="Annual" value="Anual">Annual</Select.Option>
+            <Select defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
+                <Select.Option key="Daily" value="Daily">Daily</Select.Option>
+                <Select.Option key="Weekly" value="Weekly">Weekly</Select.Option>
+                <Select.Option key="Biweekly" value="Biweekly">Biweekly</Select.Option>
+                <Select.Option key="Monthly" value="Monthly">Monthly</Select.Option>
+                <Select.Option key="Quarterly" value="Quarterly">Quarterly</Select.Option>
+                <Select.Option key="Biannual" value="Biannual">Biannual</Select.Option>
+                <Select.Option key="Annual" value="Annual">Annual</Select.Option>
             </Select>
         </div>
     );

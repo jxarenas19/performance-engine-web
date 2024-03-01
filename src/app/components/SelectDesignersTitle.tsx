@@ -7,7 +7,7 @@ const SelectDesignersTitle = () => {
 
     return (
         <Row gutter={24} style={{ display: 'flex', alignItems: 'center' }}>
-            <Col span={12} style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <Col span={18} style={{ width: '100%' }}>
                 <Form.Item name="title" label="Title" className="customFormItem"
                 >
                     <Select placeholder="Select a title" allowClear>
@@ -22,6 +22,7 @@ const SelectDesignersTitle = () => {
             </Col>
 
             <Form.Item name="amount_error"
+
                        tooltip={{title: 'Number of errors detected', icon: <InfoCircleOutlined/>}}
                        label="Amount error" className="customFormItem">
                 <InputNumber min={0} max={10} defaultValue={0}/>

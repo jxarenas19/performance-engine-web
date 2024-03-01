@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Checkbox, Col, Form, Input, Row, Select} from 'antd';
+import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import {DataTask, DataType} from '../utils/types';
+import {DataTask, DataType, Filters} from '../utils/types';
 import {createTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
@@ -40,12 +40,20 @@ const TracingForm = () => {
         }
         return await createTracing(data)
     }
+    const updateFilter = (key: keyof Filters, value: string) => {
+        dispatch({ type: 'SET_FILTER', key, value });
+    };
     const addData = (values: DataType) => {
         console.log(values);
+        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         form.resetFields();
         const response = fetchTracing(values);
         response.then(value => {
+            dispatch({type: 'LOADING_TRACINGS', isLoading: false});
             dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
+            if(state.filters.group) updateFilter('group',state.filters.group)
+            else updateFilter('group','Daily')
+
         });
 
     };
@@ -72,6 +80,7 @@ const TracingForm = () => {
     }, [state.isModalOpen, form]);
 
     return (
+        <Spin spinning={state.isLoading}>
         <Form form={form}
               layout="vertical"
               onFinish={addData}
@@ -89,11 +98,13 @@ const TracingForm = () => {
                     />
                 </Form.Item>
             )}
-            <Row>
+            <Row gutter={12}>
                 <Col span={12}>
-                    <SelectEquipoForm/>
+                    <SelectEquipoForm
+                        form={form}
+                    />
                 </Col>
-                <Col span={12}>
+                <Col span={12} style={{ display: 'flex'}}>
                     <Form.Item
                         className="customFormItem"
                         name="sub"
@@ -223,6 +234,7 @@ const TracingForm = () => {
                     </Button>
                 </Form.Item>
         </Form>
+        </Spin>
 );
 };
 

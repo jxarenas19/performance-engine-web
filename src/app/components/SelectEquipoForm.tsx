@@ -1,8 +1,12 @@
 import {Form, Select} from "antd";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
+import {FormInstance} from "antd/es/form/hooks/useForm";
 
-const SelectEquipoForm = () => {
+interface ChildComponentProps {
+    form: FormInstance<any>;
+}
+const SelectEquipoForm = (form:any ) => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
@@ -28,11 +32,15 @@ const SelectEquipoForm = () => {
     // };
     const handleClick = (value: string) => {
         const selectedOption = state.teams.find(option => option.id === value);
-        if(selectedOption)
+        if(selectedOption){
+            console.log(form)
+            form.form.resetFields(['title'])
             dispatch({type: 'SET_SELECTED_TEAM', payload: selectedOption.name});
+        }
+
     };
     return (
-        <div style={{display: 'flex', alignItems: 'center', width: '100%'}}>
+        <div>
             <Form.Item name="team" label="Team" className="customFormItem" rules={[{ required: true }]}>
                 <Select
                         loading={state.isLoading} placeholder="Select a project" allowClear onSelect={handleClick}>

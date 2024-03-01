@@ -27,6 +27,7 @@ const ExpandableDayGroups = () => {
 
         dispatch({ type: 'SET_PAGE', payload: page });
         dispatch({ type: 'SET_PAGE_SIZE', payload: limit });
+        dispatch({type: 'SET_SELECTED_PERSON', payload: null});
     };
     const columnsDayGroups: ColumnsType<DayGroup> = [
         {title: "Date", dataIndex: "date", key: "date"},

@@ -1,8 +1,9 @@
-import {Button, DatePicker, Select} from "antd";
+import {Button, DatePicker, Modal, Select} from "antd";
 import {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
 import {Filters} from "@/app/utils/types";
-import {DeleteOutlined} from "@ant-design/icons";
+import {BarChartOutlined, DeleteOutlined, ReloadOutlined} from "@ant-design/icons";
+import DashboardPage from "@/app/(pages)/dashboard/page";
 
 
 const TracingFilters: React.FC = () => {
@@ -12,6 +13,7 @@ const TracingFilters: React.FC = () => {
     const {state, dispatch} = context;
     const [date, setDate] = useState(null);
     const [group, setGroup] = useState('Daily');
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const setIsModalOpen = () => {
         dispatch({type: 'SET_MODAL_OPEN', payload: true});
     };
@@ -36,6 +38,15 @@ const TracingFilters: React.FC = () => {
         setGroup(value)
         updateFilter('group',value)
     }
+    const reloadTable = () => {
+        updateFilter('group',group)
+    }
+    const loadDashboard = () => {
+        setIsModalVisible(true);
+    }
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
     return (
         <div className="button-container">
             <Button type="primary" onClick={setIsModalOpen}>
@@ -56,6 +67,19 @@ const TracingFilters: React.FC = () => {
 
             }}>
             </Button>
+            <Button  icon={<ReloadOutlined />} type="primary" onClick={reloadTable}>
+            </Button>
+            <Button  icon={<BarChartOutlined />} type="primary" onClick={loadDashboard}>
+            </Button>
+            <Modal
+                title="Chart Dashboard"
+                open={isModalVisible}
+                onCancel={handleCancel}
+                width="90%"  // Ajusta el ancho según necesites
+                footer={null}  // Elimina el pie del modal si no necesitas botones de acción
+            >
+                <DashboardPage />
+            </Modal>
         </div>
     );
 };

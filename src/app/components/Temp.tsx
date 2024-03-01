@@ -10,6 +10,7 @@ import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
 import {Filters} from "@/app/utils/types";
+import {TableProvider} from "@/app/context/TableContext";
 
 export default function Temp() {
 
@@ -102,7 +103,7 @@ export default function Temp() {
 
 
     return (
-        <>
+        <TableProvider>
             <TracingFilters></TracingFilters>
             {state.teams.length > 0 && (
                 <Tabs
@@ -117,10 +118,11 @@ export default function Temp() {
                 onCancel={() => dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen})}
                 footer={null}
             >
-                <TracingForm>
-                </TracingForm>
+
+                    <TracingForm>
+                    </TracingForm>
             </Modal>
-        </>
+        </TableProvider>
     );
 }
 

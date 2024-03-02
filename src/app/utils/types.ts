@@ -56,6 +56,11 @@ export interface DataType {
     plus?: string[];
     amount?: number;
     amount_error?: number;
+    people_attended?: number;
+    people_entered_to_system?: number;
+    incoming_calls?: number;
+    calls_made?: number;
+    activities?: string[];
 }
 export interface DataTask {
     team?: string;
@@ -68,6 +73,11 @@ export interface DataTask {
     user_id?: string;
     amount?: number;
     amount_error?: number;
+    people_attended?: number;
+    people_entered_to_system?: number;
+    incoming_calls?: number;
+    calls_made?: number;
+    activities?: string[];
 }
 export interface FiltersValues {
     team?: string;
@@ -90,6 +100,7 @@ export interface TracingState {
     personId?: number;
     tracings: TeamGroup[];
     teams: Generic[];
+    activities: Generic[];
     persons: Person[];
     affectations: Generic[];
     users: User[];
@@ -117,6 +128,7 @@ export type TracingAction =
     | { type: 'SET_PERSON_ID'; payload: number }
     | { type: 'SET_TRACINGS'; payload: TeamGroup[] }
     | { type: 'SET_TEAMS'; payload: Generic[] }
+    | { type: 'SET_ACTIVITIES'; payload: Generic[] }
     | { type: 'SET_USERS'; payload: Person[] }
     | { type: 'SET_AFFECTATIONS'; payload: Generic[] }
     | { type: 'SET_ERROR'; payload: string}

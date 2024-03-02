@@ -65,6 +65,20 @@ export const getTeams = async (info: PageValues) => {
         return [];
     }
 }
+export const getActivities = async (info: PageValues) => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.GET_ACTIVITIES,
+            info
+        )
+        console.log(data);
+        return data.data;
+
+    } catch (e) {
+        console.log('entro error activities')
+        return [];
+    }
+}
 export const getUsers = async () => {
     try {
         const {data}: AxiosResponse = await axiosRequest.get(

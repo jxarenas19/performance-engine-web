@@ -26,6 +26,7 @@ const TracingForm = () => {
     const [form] = Form.useForm();
 
     const fetchTracing = async (values: DataType) => {
+        console.log(values)
         const data: DataTask = {
             user_id:values.sub,
             team:values.team,
@@ -36,7 +37,12 @@ const TracingForm = () => {
             t_affectation:values.t_affectation,
             affectation:values.affectation,
             amount:values.amount || 1,
-            amount_error:values.amount || 0
+            amount_error:values.amount || 0,
+            people_attended: values.people_attended || 0,
+            people_entered_to_system: values.people_entered_to_system || 0,
+            incoming_calls: values.incoming_calls || 0,
+            calls_made: values.calls_made || 0,
+            activities: values.activities || []
         }
         return await createTracing(data)
     }
@@ -54,6 +60,8 @@ const TracingForm = () => {
             if(state.filters.group) updateFilter('group',state.filters.group)
             else updateFilter('group','Daily')
 
+        }).catch(reason => {
+            dispatch({type: 'LOADING_TRACINGS', isLoading: false});
         });
 
     };

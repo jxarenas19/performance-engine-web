@@ -9,6 +9,7 @@ export const initialState: TracingState & PageValues= {
     personId: 0,
     tracings: [],
     teams: [],
+    activities: [],
     persons: [],
     affectations: [],
     users: [],
@@ -54,6 +55,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return {...state, tracings: action.payload, isLoading: false};
         case 'SET_TEAMS':
             return {...state, teams: action.payload, isLoading: false};
+        case 'SET_ACTIVITIES':
+            return {...state, activities: action.payload, isLoading: false};
         case 'SET_USERS':
             return {...state, persons: action.payload, isLoading: false};
         case 'SET_AFFECTATIONS':

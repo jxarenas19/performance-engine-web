@@ -5,7 +5,7 @@ import {Col, Modal, notification, Row, Tabs} from "antd";
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
-import {getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
+import {getActivities, getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
 import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
@@ -50,6 +50,10 @@ export default function Temp() {
         const response = await getUsers();
         dispatch({type: 'SET_USERS', payload: response});
     }
+    const fetchActivitiesData = async () => {
+        const response = await getActivities({page: 1, limit: 0});
+        dispatch({type: 'SET_ACTIVITIES', payload: response});
+    }
     const fetchAffectationsData = async () => {
         const response = await getAffectations({page: 1, limit: 0});
         dispatch({type: 'SET_AFFECTATIONS', payload: response});
@@ -63,6 +67,7 @@ export default function Temp() {
     useEffect(() => {
         fetchTeamsData();
         fetchUsersData();
+        fetchActivitiesData();
         fetchAffectationsData();
     }, []);
 

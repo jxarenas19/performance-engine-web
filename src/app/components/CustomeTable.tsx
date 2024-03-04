@@ -1,11 +1,7 @@
 // CustomTable.tsx
 import React, {useContext} from 'react';
-import {Table, Select, InputNumber, Row, Col, Form, Input} from 'antd';
-import { useTable } from '@/app/context/TableContext';
+import {Col, Form, InputNumber, Row, Select} from 'antd';
 import {InfoCircleOutlined} from "@ant-design/icons";
-import {regexTime} from "@/app/utils/variables";
-import SelectAffectationForm from "@/app/components/SelectAffectationForm";
-import {CustomerSupportTitle} from "@/app/utils/data";
 import {TracingContext} from "@/app/context/tracingContext";
 
 const { Option } = Select;
@@ -62,7 +58,7 @@ const CustomTable: React.FC = () => {
             <Form.Item name="activities" label="Activities" className="customFormItem">
                 <Select mode="multiple" placeholder="Select activities" allowClear style={{flex: 3}}>
                     {state.activities.map((option) => (
-                        <Select.Option key={option.name} value={option.name}>
+                        <Select.Option key={option.name} value={option.id}>
                             {option.name}
                         </Select.Option>
                     ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Col, Modal, notification, Row, Tabs} from "antd";
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
@@ -9,39 +9,54 @@ import {getActivities, getAffectations, getTeams, getTracings, getUsers} from "@
 import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
-import {Filters} from "@/app/utils/types";
+import {Filters, UserData} from "@/app/utils/types";
 import {TableProvider} from "@/app/context/TableContext";
 
 export default function Temp() {
-
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
-
+    const [initialized, setInitialized] = useState(false);
+    const [loadedTeam, setloadedTeam] = useState(false);
 
 
     const fetchFilteredData = async () => {
-        dispatch({type: 'LOADING_TRACINGS', isLoading: true});
-        const response = await getTracings(
-            {page: state.page,
-                limit: state.limit,
-                filters: [state.filters]});
-        if (response) {
-            dispatch({type: 'SET_TRACINGS', payload: response.data});
-            dispatch({type: 'SET_TOTAL', payload: response.total});
+        if (loadedTeam) {
+            dispatch({type: 'LOADING_TRACINGS', isLoading: true});
+            console.log('entro datos trabajdo')
+            const response = await getTracings(
+                {
+                    page: state.page,
+                    limit: state.limit,
+                    filters: [state.filters]
+                });
+            if (response) {
+                dispatch({type: 'SET_TRACINGS', payload: response.data});
+                dispatch({type: 'SET_TOTAL', payload: response.total});
+            } else dispatch({type: 'SET_TRACINGS', payload: []});
         }
-        else dispatch({type: 'SET_TRACINGS', payload: []});
+
     };
     const updateFilter = (key: keyof Filters, value: string) => {
-        dispatch({ type: 'SET_FILTER', key, value });
+        dispatch({type: 'SET_FILTER', key, value});
     };
     const fetchTeamsData = async () => {
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
-        const response = await getTeams({page: 1, limit: 0});
-        dispatch({type: 'SET_TEAMS', payload: response});
-        if (response.length > 0) {
-            updateFilter('team',response[0].id)
+        if (state.filters.user_id) {
+            const response = await getTeams({page: 1, limit: 0, filters: [state.filters]});
+            dispatch({type: 'SET_TEAMS', payload: response});
+            if (response.length > 0) {
+                setloadedTeam(true)
+                updateFilter('team', response[0].id)
+            }
+        } else {
+            const response = await getTeams({page: 1, limit: 0});
+            dispatch({type: 'SET_TEAMS', payload: response});
+            if (response.length > 0) {
+                updateFilter('team', response[0].id)
+            }
         }
+
 
         dispatch({type: 'LOADING_TRACINGS', isLoading: false});
 
@@ -60,16 +75,32 @@ export default function Temp() {
     }
 
     useEffect(() => {
-        console.log(state.filters)
-        fetchFilteredData();
-    }, [state.filters.team,state.filters.dateEnd,state.filters.group, state.limit,state.page]);
+        const user: UserData = {
+            user_id: '14086478-5031-702c-059f-a749c3d26f24',
+            name: 'Messi',
+            is_admin: false
+        }
+        if (!user.is_admin) {
+            updateFilter('user_id', user.user_id)
+        }
+        dispatch({type: 'SET_USER_AUTHENTICATED', payload: user});
+        setInitialized(true);
+
+    }, []);
 
     useEffect(() => {
-        fetchTeamsData();
-        fetchUsersData();
-        fetchActivitiesData();
-        fetchAffectationsData();
-    }, []);
+        if (initialized) {
+            fetchTeamsData();
+            fetchUsersData();
+            fetchActivitiesData();
+            fetchAffectationsData();
+        }
+    }, [initialized]);
+
+    useEffect(() => {
+        fetchFilteredData();
+    }, [initialized, state.filters.team, state.filters.dateEnd, state.filters.group, state.limit, state.page]);
+
 
     useEffect(() => {
         const handleApiError = (message: string) => {
@@ -87,7 +118,7 @@ export default function Temp() {
 
     const handleTabChange = (key: string) => {
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
-        updateFilter('team',key)
+        updateFilter('team', key)
 
     };
 
@@ -127,8 +158,8 @@ export default function Temp() {
                 footer={null}
             >
 
-                    <TracingForm>
-                    </TracingForm>
+                <TracingForm>
+                </TracingForm>
             </Modal>
         </TableProvider>
     );

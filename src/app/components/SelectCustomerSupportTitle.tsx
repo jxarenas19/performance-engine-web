@@ -1,6 +1,4 @@
-import {Col, Form, InputNumber, Row, Select} from "antd";
 import React from "react";
-import {CustomerSupportTitle} from "@/app/utils/data";
 import CustomTable from "@/app/components/CustomeTable";
 
 const SelectCustomerSupportTitle = () => {

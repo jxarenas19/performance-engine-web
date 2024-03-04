@@ -1,18 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import {DataTask, DataForm, Filters} from '../utils/types';
+import {DataForm, DataTask, Filters} from '../utils/types';
 import {createTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
 import SelectEquipoForm from "@/app/components/SelectEquipoForm";
 import SelectAffectationForm from "@/app/components/SelectAffectationForm";
 import {
-    AliwangwangOutlined, BookOutlined,
+    AliwangwangOutlined,
+    BookOutlined,
     CarOutlined,
     CheckCircleOutlined,
     DingdingOutlined,
-    InfoCircleOutlined, PlusOutlined
+    InfoCircleOutlined,
+    PlusOutlined
 } from "@ant-design/icons";
 import {regexTime, TEXT_AREA_TOOLTIP} from "@/app/utils/variables";
 import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
@@ -98,6 +100,10 @@ const TracingForm = () => {
                   size: 'small'
               }}
         >
+            <Input
+                type="hidden"
+                name="id"
+            />
             {showTextArea && (
                 <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"
                            tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
@@ -191,6 +197,7 @@ const TracingForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
+            {state.authenticatedUser?.is_admin && (
                 <Form.Item name="plus" label="Plus">
                     <Checkbox.Group onChange={(values) => setSelectedValues(values)}>
                         <Row>
@@ -237,6 +244,8 @@ const TracingForm = () => {
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
+            )}
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Save

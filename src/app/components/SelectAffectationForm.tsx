@@ -42,13 +42,16 @@ const SelectAffectationForm = () => {
                     ))}
                 </Select>
             </Form.Item>
-            <Button
-                type="primary"
-                icon={<PlusOutlined/>}
-                onClick={() => setIsModalOpen(true)}
-                style={{marginLeft: '4px' ,marginTop:'22px'}}
-            >
-            </Button>
+            {state.authenticatedUser?.is_admin && (
+                <Button
+                    type="primary"
+                    icon={<PlusOutlined/>}
+                    onClick={() => setIsModalOpen(true)}
+                    style={{marginLeft: '4px' ,marginTop:'22px'}}
+                >
+                </Button>
+            )}
+
 
             <Modal
                 title="Add affectation"

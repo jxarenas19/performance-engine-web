@@ -1,4 +1,4 @@
-import {Generic, TeamGroup} from "@/app/utils/types";
+import {Generic} from "@/app/utils/types";
 
 
 export const CustomerSupportTitle: Generic[] = [

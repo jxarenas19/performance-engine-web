@@ -35,7 +35,7 @@ const TracingForm = () => {
             t_spent:values.t_spent,
             t_remaining:values.t_remaining,
             t_affectation:values.t_affectation,
-            affectation:values.affectation,
+            affectation:values.affectation  || [],
             amount:values.amount || 1,
             amount_error:values.amount || 0,
             people_attended: values.people_attended || 0,
@@ -96,6 +96,10 @@ const TracingForm = () => {
               initialValues={{
                   size: 'small',
               }}>
+            <Input
+                type="hidden"
+                name="id"
+            />
             {showTextArea && (
                 <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"
                            tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
@@ -190,6 +194,7 @@ const TracingForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
+            {state.is_admin && (
                 <Form.Item name="plus" label="Plus">
                     <Checkbox.Group onChange={(values) => setSelectedValues(values)}>
                         <Row>
@@ -236,6 +241,8 @@ const TracingForm = () => {
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
+            )}
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Save

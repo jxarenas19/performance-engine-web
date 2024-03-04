@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
-import {Descriptions, Skeleton, Table} from 'antd';
+import {Button, Descriptions, Skeleton, Table} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import {Requirement} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
+import {EditOutlined} from "@ant-design/icons";
 
 const ExpandableRequiriments = () => {
     const context = useContext(TracingContext);
@@ -21,7 +22,9 @@ const ExpandableRequiriments = () => {
             </Descriptions>
         );
     };
-
+    const setIsModalOpen = () => {
+        dispatch({type: 'SET_MODAL_OPEN', payload: true});
+    };
     const expandedRowRender = (record: Requirement) => {
         return (
             <>
@@ -36,7 +39,18 @@ const ExpandableRequiriments = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
-        }
+            width: '90%'
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            width: '10%',
+            render: (record) => (
+                <Button type="link" onClick={setIsModalOpen}>
+                    <EditOutlined />
+                </Button>
+            ),
+        },
     ];
 
     return state.selectedPerson ? (

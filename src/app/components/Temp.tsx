@@ -18,8 +18,6 @@ export default function Temp() {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
-
-
     const fetchFilteredData = async () => {
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         const response = await getTracings(

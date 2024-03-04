@@ -51,7 +51,7 @@ export interface DataType {
     detail?: string;
     t_spent?: string;
     t_remaining?: string;
-    affectation?: string;
+    affectation?: string[];
     t_affectation?: string;
     plus?: string[];
     amount?: number;
@@ -68,7 +68,7 @@ export interface DataTask {
     detail?: string;
     t_spent?: string;
     t_remaining?: string;
-    affectation?: string;
+    affectation?: string[];
     t_affectation?: string;
     user_id?: string;
     amount?: number;
@@ -107,6 +107,7 @@ export interface TracingState {
     isLoading: boolean;
     error?: string;
     total:number;
+    is_admin:boolean;
     selectedTeam: string | null;
 }
 
@@ -136,6 +137,7 @@ export type TracingAction =
     | { type: 'SET_PAGE_SIZE'; payload: number}
     | { type: 'SET_TOTAL'; payload: number}
     | { type: 'SET_SELECTED_TEAM'; payload: string}
+    | { type: 'SET_ADMIN'; payload: boolean}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {

@@ -19,11 +19,14 @@ export const initialState: TracingState & PageValues= {
     limit: 1,
     total: 0,
     selectedTeam: null,
+    selectedTask: null
 };
 export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
         case 'SET_SELECTED_PERSON':
             return {...state, selectedPerson: action.payload};
+        case 'SET_SELECTED_TASK':
+            return {...state, selectedTask: action.payload};
         case 'SET_MODAL_OPEN':
             return {...state, isModalOpen: action.payload};
         case 'SET_GROUP_BY':

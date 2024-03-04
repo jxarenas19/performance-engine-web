@@ -18,7 +18,9 @@ const ExpandableDayGroups = () => {
     };
     const onRowClick = (person: Person) => ({
         onClick: () => {
+            console.log(person)
             dispatch({type: 'SET_SELECTED_PERSON', payload: person});
+            dispatch({type: 'SET_SELECTED_TASK', payload: null});
         },
     });
     const handleTableChange = (pagination:TablePaginationConfig) => {

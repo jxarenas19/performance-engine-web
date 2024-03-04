@@ -120,7 +120,10 @@ export default function Temp() {
             <Modal
                 title="Tracing time"
                 open={state.isModalOpen}
-                onCancel={() => dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen})}
+                onCancel={() => {
+                    dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
+                    dispatch({type: 'SET_SELECTED_TASK', payload: null});
+                }}
                 footer={null}
             >
 

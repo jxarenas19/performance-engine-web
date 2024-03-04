@@ -34,7 +34,7 @@ const SelectAffectationForm = () => {
     return (
         <div style={{display: 'flex', alignItems: 'center'}}>
             <Form.Item name="affectation" label="Affectation" className="customFormItem">
-                <Select loading={state.isLoading} placeholder="Select an affectation" allowClear>
+                <Select mode="multiple" loading={state.isLoading}  placeholder="Select an affectation" allowClear>
                     {state.affectations.map((option) => (
                         <Select.Option key={option.id} value={option.id}>
                             {option.name}

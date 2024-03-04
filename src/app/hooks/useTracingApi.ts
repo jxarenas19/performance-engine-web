@@ -1,4 +1,4 @@
-import {DataTask, DataType, FiltersValues, PageValues} from "@/app/utils/types";
+import {DataTask, DataForm, FiltersValues, PageValues} from "@/app/utils/types";
 import {AxiosResponse} from "axios";
 
 import {PATH_ROUTES_DEV, PATH_ROUTES_PROD} from "@/app/utils/pathRoutes";

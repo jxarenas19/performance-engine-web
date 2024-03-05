@@ -39,7 +39,8 @@ const TracingFilters: React.FC = () => {
         updateFilter('group',value)
     }
     const reloadTable = () => {
-        updateFilter('group',group)
+        updateFilter('group',group);
+        dispatch({type: 'SET_SELECTED_PERSON', payload: null});
     }
     const loadDashboard = () => {
         setIsModalVisible(true);

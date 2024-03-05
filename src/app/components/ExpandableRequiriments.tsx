@@ -55,7 +55,7 @@ const ExpandableRequiriments = () => {
         dispatch({type: 'SET_MODAL_OPEN', payload: true});
         if(state.selectedPerson){
             const dataForm:DataForm = {
-                id:state.selectedPerson.id,
+                id:person.id,
                 team:state.selectedPerson.team,
                 sub:state.authenticatedUser?.user_id,
                 title:person.title,
@@ -64,7 +64,7 @@ const ExpandableRequiriments = () => {
                 t_remaining:person.t_remaining,
                 t_affectation:person.t_affectation,
                 affectation:person.affectation || [],
-                amount:person.amount || 1,
+                amount:person.amount || 0,
                 amount_error:person.amount || 0,
                 people_attended: person.people_attended || 0,
                 people_entered_to_system: person.people_entered_to_system || 0,

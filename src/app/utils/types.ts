@@ -62,6 +62,7 @@ export interface DataForm {
     incoming_calls?: number | 0;
     calls_made?: number | 0;
     activities?: string[] | [];
+    status?: string | 'Pending';
 }
 export interface DataTask {
     team?: string;
@@ -153,5 +154,14 @@ export type TracingAction =
 
 export interface Generic {
     id: string;
+    id_two?: number;
     name: string;
+}
+
+export interface DashboardData {
+    dataAmount?:any,
+    dataTimeSpentRemaining?:any,
+    dataTimeSpentRemainingByTeam?:any,
+    dataUserActivity?:any
+
 }

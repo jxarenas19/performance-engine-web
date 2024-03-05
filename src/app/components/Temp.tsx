@@ -20,7 +20,6 @@ export default function Temp() {
 
 
     const fetchFilteredData = async () => {
-        console.log(loadedTeam)
         if (loadedTeam) {
             dispatch({type: 'LOADING_TRACINGS', isLoading: true});
             console.log('entro datos trabajdo')
@@ -43,14 +42,17 @@ export default function Temp() {
     const fetchTeamsData = async () => {
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         if (state.filters.user_id) {
-            const response = await getTeams({page: 1, limit: 0, filters: [state.filters]});
+            let filters_temp: Filters = {};
+            filters_temp.user_id = state.filters.user_id;
+
+            const response = await getTeams({page: 1, limit: 0, filters: [filters_temp]});
             dispatch({type: 'SET_TEAMS', payload: response});
             if (response.length > 0) {
                 setloadedTeam(true)
                 updateFilter('team', response[0].id)
             }
         } else {
-            const response = await getTeams({page: 1, limit: 0,filters: [state.filters]});
+            const response = await getTeams({page: 1, limit: 0,filters: []});
             dispatch({type: 'SET_TEAMS', payload: response});
             if (response.length > 0) {
                 setloadedTeam(true)

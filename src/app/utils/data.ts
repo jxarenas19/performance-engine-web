@@ -23,3 +23,8 @@ export const DesignersTitle: Generic[] = [
     {id: "13", name: 'Sending the video to the ABA4LOVE group for final review. II: 15-20 minutes'},
     {id: "14", name: 'Placing the video in the Folder: 5 minutes'}
 ];
+export const StatusData: Generic[] = [
+    {id: "1",id_two:1, name: 'Pending'},
+    {id: "2",id_two:2, name: 'Approved'},
+    {id: "3",id_two:3, name: 'Refused'},
+];

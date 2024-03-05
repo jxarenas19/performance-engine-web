@@ -1,18 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import {DataTask, DataType, Filters} from '../utils/types';
+import {DataForm, DataTask, Filters} from '../utils/types';
 import {createTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
 import SelectEquipoForm from "@/app/components/SelectEquipoForm";
 import SelectAffectationForm from "@/app/components/SelectAffectationForm";
 import {
-    AliwangwangOutlined, BookOutlined,
+    AliwangwangOutlined,
+    BookOutlined,
     CarOutlined,
     CheckCircleOutlined,
     DingdingOutlined,
-    InfoCircleOutlined, PlusOutlined
+    InfoCircleOutlined,
+    PlusOutlined
 } from "@ant-design/icons";
 import {regexTime, TEXT_AREA_TOOLTIP} from "@/app/utils/variables";
 import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
@@ -25,7 +27,7 @@ const TracingForm = () => {
     const [showTextArea, setShowTextArea] = useState<boolean>(true);
     const [form] = Form.useForm();
 
-    const fetchTracing = async (values: DataType) => {
+    const fetchTracing = async (values: DataForm) => {
         console.log(values)
         const data: DataTask = {
             user_id:values.sub,
@@ -35,7 +37,7 @@ const TracingForm = () => {
             t_spent:values.t_spent,
             t_remaining:values.t_remaining,
             t_affectation:values.t_affectation,
-            affectation:values.affectation,
+            affectation:values.affectation || [],
             amount:values.amount || 1,
             amount_error:values.amount || 0,
             people_attended: values.people_attended || 0,
@@ -49,7 +51,7 @@ const TracingForm = () => {
     const updateFilter = (key: keyof Filters, value: string) => {
         dispatch({ type: 'SET_FILTER', key, value });
     };
-    const addData = (values: DataType) => {
+    const addData = (values: DataForm) => {
         console.log(values);
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         form.resetFields();
@@ -94,8 +96,14 @@ const TracingForm = () => {
               onFinish={addData}
               size='small'
               initialValues={{
-                  size: 'small',
-              }}>
+                  ...state.selectedTask,
+                  size: 'small'
+              }}
+        >
+            <Input
+                type="hidden"
+                name="id"
+            />
             {showTextArea && (
                 <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"
                            tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
@@ -182,7 +190,6 @@ const TracingForm = () => {
                             tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
                             name="t_affectation"
                             label="Time affectation"
-                            rules={[{required: true}]}
                         >
                             <Input
                                 placeholder="Enter a value"
@@ -190,6 +197,7 @@ const TracingForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
+            {state.authenticatedUser?.is_admin && (
                 <Form.Item name="plus" label="Plus">
                     <Checkbox.Group onChange={(values) => setSelectedValues(values)}>
                         <Row>
@@ -236,6 +244,8 @@ const TracingForm = () => {
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
+            )}
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Save

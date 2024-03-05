@@ -2,6 +2,7 @@ import {Filters, PageValues, TracingAction, TracingState} from "@/app/utils/type
 
 export const initialState: TracingState & PageValues= {
     selectedPerson: null,
+    authenticatedUser: null,
     isModalOpen: false,
     groupBy: 'Diario',
     filters: {},
@@ -18,12 +19,18 @@ export const initialState: TracingState & PageValues= {
     page: 1,
     limit: 1,
     total: 0,
+    is_admin: true,
     selectedTeam: null,
+    selectedTask: null
 };
 export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
+        case 'SET_USER_AUTHENTICATED':
+            return {...state, authenticatedUser: action.payload};
         case 'SET_SELECTED_PERSON':
             return {...state, selectedPerson: action.payload};
+        case 'SET_SELECTED_TASK':
+            return {...state, selectedTask: action.payload};
         case 'SET_MODAL_OPEN':
             return {...state, isModalOpen: action.payload};
         case 'SET_GROUP_BY':
@@ -73,6 +80,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return { ...state, total: action.payload };
         case 'SET_SELECTED_TEAM':
             return { ...state, selectedTeam: action.payload };
+        case 'SET_ADMIN':
+            return { ...state, is_admin: action.is_admin };
         default:
             throw new Error('Acción no soportada');
     }

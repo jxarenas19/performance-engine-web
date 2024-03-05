@@ -1,5 +1,5 @@
 // TableContext.tsx
-import React, {createContext, useReducer, useContext, ReactNode} from 'react';
+import React, {createContext, ReactNode, useContext, useReducer} from 'react';
 
 // Definiendo el tipo para los elementos de la tabla
 type ItemType = {

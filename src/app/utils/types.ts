@@ -22,6 +22,7 @@ export interface Person {
     email?: string;
     sub?: string;
     hoursWorked?: number;
+    team?: string;
     requirements?: Requirement[];
     plus?: Achievement[];
 }
@@ -43,15 +44,15 @@ export interface TeamGroup {
     people: Person[];
 }
 
-export interface DataType {
-    key?: React.Key;
+export interface DataForm {
+    id?: React.Key;
     team?: string;
     title?: string;
     sub?: string;
     detail?: string;
     t_spent?: string;
     t_remaining?: string;
-    affectation?: string;
+    affectation?: string[];
     t_affectation?: string;
     plus?: string[];
     amount?: number;
@@ -68,7 +69,7 @@ export interface DataTask {
     detail?: string;
     t_spent?: string;
     t_remaining?: string;
-    affectation?: string;
+    affectation?: string[];
     t_affectation?: string;
     user_id?: string;
     amount?: number;
@@ -93,6 +94,7 @@ export interface PageValues {
 
 export interface TracingState {
     selectedPerson: Person | null;
+    authenticatedUser: UserData | null;
     isModalOpen: boolean;
     groupBy: string;
     filters: Filters;
@@ -107,7 +109,9 @@ export interface TracingState {
     isLoading: boolean;
     error?: string;
     total:number;
+    is_admin:boolean;
     selectedTeam: string | null;
+    selectedTask: DataForm | null;
 }
 
 export interface Filters {
@@ -115,10 +119,18 @@ export interface Filters {
     dateStart?: string;
     dateEnd?: string;
     group?: string;
+    user_id?: string;
+}
+export interface UserData {
+    user_id: string;
+    name?: string;
+    is_admin: boolean | true
 }
 
 export type TracingAction =
     | { type: 'SET_SELECTED_PERSON'; payload: Person | null }
+    | { type: 'SET_USER_AUTHENTICATED'; payload: UserData | null }
+    | { type: 'SET_SELECTED_TASK'; payload: DataForm | null }
     | { type: 'SET_MODAL_OPEN'; payload: boolean }
     | { type: 'SET_GROUP_BY'; payload: string }
     | { type: 'SET_FILTER'; key: keyof Filters; value: string  }
@@ -136,6 +148,7 @@ export type TracingAction =
     | { type: 'SET_PAGE_SIZE'; payload: number}
     | { type: 'SET_TOTAL'; payload: number}
     | { type: 'SET_SELECTED_TEAM'; payload: string}
+    | { type: 'SET_ADMIN'; is_admin: boolean}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {

@@ -1,4 +1,4 @@
-import {DataType} from "@/app/utils/types";
+import {DataForm} from "@/app/utils/types";
 
 export const extractKeyValuePairs = (inputText: string): Record<string, string> =>{
     const record: Record<string, string> = {};
@@ -15,7 +15,7 @@ export const extractKeyValuePairs = (inputText: string): Record<string, string> 
     return record;
 }
 
-export const convertKeyValueToFormData = (data:Record<string, string>): DataType =>{
+export const convertKeyValueToFormData = (data:Record<string, string>): DataForm =>{
     const keys: string[] = Object.keys(data);
     const formData: Record<string, string> = {
         team: "",
@@ -30,7 +30,7 @@ export const convertKeyValueToFormData = (data:Record<string, string>): DataType
     keys.forEach(key => {
         formData[convertKey[key]] = data[key]
     });
-    return formData as DataType;
+    return formData as DataForm;
 }
 
 const convertKey:Record<string, string> = {

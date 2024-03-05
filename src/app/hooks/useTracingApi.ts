@@ -1,8 +1,8 @@
-import {DataTask, DataType, FiltersValues, PageValues} from "@/app/utils/types";
+import {DataTask, PageValues} from "@/app/utils/types";
 import {AxiosResponse} from "axios";
 
-import {PATH_ROUTES_DEV, PATH_ROUTES_PROD} from "@/app/utils/pathRoutes";
-import {axiosRequest, axiosRequestMock} from "@/app/utils/axiosConfiguration";
+import {PATH_ROUTES_PROD} from "@/app/utils/pathRoutes";
+import {axiosRequest} from "@/app/utils/axiosConfiguration";
 
 export const createTracing = async (info: DataTask) => {
     try {
@@ -17,7 +17,6 @@ export const createTracing = async (info: DataTask) => {
 }
 
 export const getTracings = async (info: any) => {
-    console.log(info)
     try {
         const {data}: AxiosResponse = await axiosRequest.post(
             PATH_ROUTES_PROD.GET_TRACING,
@@ -51,13 +50,12 @@ export const createAffectation = async (info: string) => {
         return null;
     }
 }
-export const getTeams = async (info: PageValues) => {
+export const getTeams = async (info: any) => {
     try {
         const {data}: AxiosResponse = await axiosRequest.post(
             PATH_ROUTES_PROD.GET_TEAMS,
             info
         )
-        console.log(data);
         return data.data;
 
     } catch (e) {
@@ -71,7 +69,6 @@ export const getActivities = async (info: PageValues) => {
             PATH_ROUTES_PROD.GET_ACTIVITIES,
             info
         )
-        console.log(data);
         return data.data;
 
     } catch (e) {

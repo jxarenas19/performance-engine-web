@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import {DataForm, DataTask, Filters} from '../utils/types';
-import {createTracing} from "@/app/hooks/useTracingApi";
+import {createTracing, updateTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
 import SelectEquipoForm from "@/app/components/SelectEquipoForm";
@@ -28,37 +28,34 @@ const TracingForm = () => {
     const [form] = Form.useForm();
 
     const fetchTracing = async (values: DataForm) => {
-        console.log(values)
-        const data: DataTask = {
-            user_id:values.sub,
-            team:values.team,
-            title:values.title || " ",
-            detail:values.detail,
-            t_spent:values.t_spent,
-            t_remaining:values.t_remaining,
-            t_affectation:values.t_affectation,
-            affectation:values.affectation || [],
-            amount:values.amount || 1,
-            amount_error:values.amount || 0,
-            people_attended: values.people_attended || 0,
-            people_entered_to_system: values.people_entered_to_system || 0,
-            incoming_calls: values.incoming_calls || 0,
-            calls_made: values.calls_made || 0,
-            activities: values.activities || []
-        }
-        return await createTracing(data)
+
+        if(!values.id) return await createTracing(values)
+        else return await updateTracing(values)
     }
     const updateFilter = (key: keyof Filters, value: string) => {
         dispatch({ type: 'SET_FILTER', key, value });
     };
+    const completeField = (values: DataForm) => {
+        values.user_id = values.sub;
+        if (!values.amount) values.amount = 0;
+        if (!values.amount_error) values.amount_error = 0;
+        if (!values.people_attended) values.people_attended = 0;
+        if (!values.people_entered_to_system) values.people_entered_to_system = 0;
+        if (!values.incoming_calls) values.incoming_calls = 0;
+        if (!values.calls_made) values.calls_made = 0;
+        if (!values.activities) values.activities = [];
+        return values
+    }
     const addData = (values: DataForm) => {
         console.log(values);
+        values = completeField(values)
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         form.resetFields();
         const response = fetchTracing(values);
         response.then(value => {
             dispatch({type: 'LOADING_TRACINGS', isLoading: false});
             dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
+            dispatch({type: 'SET_SELECTED_PERSON', payload: null});
             if(state.filters.group) updateFilter('group',state.filters.group)
             else updateFilter('group','Daily')
 
@@ -100,10 +97,12 @@ const TracingForm = () => {
                   size: 'small'
               }}
         >
-            <Input
-                type="hidden"
+            <Form.Item
                 name="id"
-            />
+                hidden={true}
+            >
+                <Input placeholder="CODE:TITLE"/>
+            </Form.Item>
             {showTextArea && (
                 <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"
                            tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
@@ -180,22 +179,20 @@ const TracingForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
+                <Row gutter={24} style={{ display: 'flex', alignItems: 'center' }}>
+                    <Col span={12} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                         <SelectAffectationForm></SelectAffectationForm>
                     </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            className="customFormItem"
-                            tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
-                            name="t_affectation"
-                            label="Time affectation"
-                        >
-                            <Input
-                                placeholder="Enter a value"
-                            />
-                        </Form.Item>
-                    </Col>
+                    <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
+                        name="t_affectation"
+                        label="Time affectation"
+                    >
+                        <Input
+                            placeholder="Enter a value"
+                        />
+                    </Form.Item>
                 </Row>
             {state.authenticatedUser?.is_admin && (
                 <Form.Item name="plus" label="Plus">

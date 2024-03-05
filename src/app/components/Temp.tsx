@@ -10,7 +10,6 @@ import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
 import {Filters, UserData} from "@/app/utils/types";
-import {TableProvider} from "@/app/context/TableContext";
 
 export default function Temp() {
     const context = useContext(TracingContext);
@@ -21,6 +20,7 @@ export default function Temp() {
 
 
     const fetchFilteredData = async () => {
+        console.log(loadedTeam)
         if (loadedTeam) {
             dispatch({type: 'LOADING_TRACINGS', isLoading: true});
             console.log('entro datos trabajdo')
@@ -50,9 +50,10 @@ export default function Temp() {
                 updateFilter('team', response[0].id)
             }
         } else {
-            const response = await getTeams({page: 1, limit: 0});
+            const response = await getTeams({page: 1, limit: 0,filters: [state.filters]});
             dispatch({type: 'SET_TEAMS', payload: response});
             if (response.length > 0) {
+                setloadedTeam(true)
                 updateFilter('team', response[0].id)
             }
         }
@@ -78,7 +79,7 @@ export default function Temp() {
         const user: UserData = {
             user_id: '14086478-5031-702c-059f-a749c3d26f24',
             name: 'Messi',
-            is_admin: false
+            is_admin: true
         }
         if (!user.is_admin) {
             updateFilter('user_id', user.user_id)
@@ -119,7 +120,7 @@ export default function Temp() {
     const handleTabChange = (key: string) => {
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
         updateFilter('team', key)
-
+        console.log(key)
     };
 
     const tabsItems = state.teams.map((team) => ({
@@ -139,7 +140,7 @@ export default function Temp() {
 
 
     return (
-        <TableProvider>
+        <>
             <TracingFilters></TracingFilters>
             {state.teams.length > 0 && (
                 <Tabs
@@ -161,7 +162,7 @@ export default function Temp() {
                 <TracingForm>
                 </TracingForm>
             </Modal>
-        </TableProvider>
+        </>
     );
 }
 

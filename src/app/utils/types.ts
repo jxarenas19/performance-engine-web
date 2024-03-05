@@ -8,7 +8,6 @@ export interface Requirement {
     t_affectation: string;
     detail: string;
     title: string;
-    // Puedes agregar más campos según los requisitos
 }
 
 export interface Achievement {
@@ -45,23 +44,24 @@ export interface TeamGroup {
 }
 
 export interface DataForm {
-    id?: React.Key;
+    id?: string;
     team?: string;
-    title?: string;
+    title?: string | " ";
     sub?: string;
+    user_id?: string;
     detail?: string;
     t_spent?: string;
     t_remaining?: string;
-    affectation?: string[];
+    affectation?: string[] | [];
     t_affectation?: string;
     plus?: string[];
-    amount?: number;
-    amount_error?: number;
-    people_attended?: number;
-    people_entered_to_system?: number;
-    incoming_calls?: number;
-    calls_made?: number;
-    activities?: string[];
+    amount?: number | 1;
+    amount_error?: number | 0;
+    people_attended?: number | 0;
+    people_entered_to_system?: number | 0;
+    incoming_calls?: number | 0;
+    calls_made?: number | 0;
+    activities?: string[] | [];
 }
 export interface DataTask {
     team?: string;

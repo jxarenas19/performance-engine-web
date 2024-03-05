@@ -1,12 +1,24 @@
-import {DataTask, PageValues} from "@/app/utils/types";
+import {DataForm, PageValues} from "@/app/utils/types";
 import {AxiosResponse} from "axios";
 
 import {PATH_ROUTES_PROD} from "@/app/utils/pathRoutes";
 import {axiosRequest} from "@/app/utils/axiosConfiguration";
 
-export const createTracing = async (info: DataTask) => {
+export const createTracing = async (info: DataForm) => {
     try {
         const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.CREATE_TRACING,
+            info
+        )
+        return data
+    } catch (error) {
+        throw error
+    }
+}
+
+export const updateTracing = async (info: DataForm) => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.put(
             PATH_ROUTES_PROD.CREATE_TRACING,
             info
         )

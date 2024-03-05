@@ -32,7 +32,7 @@ const SelectAffectationForm = () => {
     };
 
     return (
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        <>
             <Form.Item name="affectation" label="Affectation" className="customFormItem">
                 <Select mode="multiple" loading={state.isLoading}  placeholder="Select an affectation" allowClear>
                     {state.affectations.map((option) => (
@@ -65,7 +65,7 @@ const SelectAffectationForm = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-        </div>
+        </>
     );
 };
 

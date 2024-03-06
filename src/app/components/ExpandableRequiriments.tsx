@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Button, Descriptions, Skeleton, Table} from 'antd';
+import {Badge, Button, Descriptions, Skeleton, Table} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import {DataForm, Requirement} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
@@ -37,7 +37,33 @@ const ExpandableRequiriments = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
-            width: '90%'
+            width: '70%'
+        },
+        {
+            title: 'Status',
+            key: 'status',
+            dataIndex: 'status',
+            width: '20%',
+            render: (text) => {
+                let color = '';
+                switch (text) {
+                    case 'Pending':
+                        color = 'green';
+                        break;
+                    case 'Approved':
+                        color = 'blue';
+                        break;
+                    case 'Refused':
+                        color = 'red';
+                        break;
+                    default:
+                        color = 'default';
+                }
+
+                return (
+                    <Badge color={color} text={text} />
+                );
+            },
         },
         {
             title: 'Action',
@@ -56,6 +82,7 @@ const ExpandableRequiriments = () => {
         if(state.selectedPerson){
             const dataForm:DataForm = {
                 id:person.id,
+                status:person.status,
                 team:state.selectedPerson.team,
                 sub:state.authenticatedUser?.user_id,
                 title:person.title,

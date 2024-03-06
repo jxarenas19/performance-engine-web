@@ -40,6 +40,18 @@ export const getTracings = async (info: any) => {
         return [];
     }
 }
+
+export const getDashboard = async () => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.GET_DASHBOARD
+        )
+
+        return data;
+    } catch (e) {
+        return [];
+    }
+}
 export const createTeam = async (info: string) => {
     try {
         const {data}: AxiosResponse = await axiosRequest.post(

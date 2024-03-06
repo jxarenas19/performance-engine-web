@@ -16,5 +16,6 @@ export const PATH_ROUTES_PROD = {
     'GET_TRACING': 'api/performance/task',
     'GET_USERS': 'api/performance/users',
     'GET_AFFECTATIONS': 'api/performance/affectations',
-    'CREATE_AFFECTATION': 'api/performance/affectations/update'
+    'CREATE_AFFECTATION': 'api/performance/affectations/update',
+    'GET_DASHBOARD': 'api/performance/dashboard'
 };

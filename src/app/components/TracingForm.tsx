@@ -19,6 +19,7 @@ import {
 import {regexTime, TEXT_AREA_TOOLTIP} from "@/app/utils/variables";
 import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
 import ShowTitleByTeam from "@/app/components/ShowTitleByTeam";
+import {DesignersTitle, StatusData} from "@/app/utils/data";
 
 const TracingForm = () => {
     const context = useContext(TracingContext);
@@ -241,8 +242,22 @@ const TracingForm = () => {
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
-            )}
 
+            )}
+            {state.authenticatedUser?.is_admin && (
+                <Form.Item name="status" label="Status" className="customFormItem"
+                >
+                    <Select placeholder="Select a status" allowClear>
+                        {StatusData.map((option) => (
+                            <Select.Option key={option.name} value={option.id_two}>
+                                {option.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
+
+                </Form.Item>
+
+            )}
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Save

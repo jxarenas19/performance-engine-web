@@ -47,7 +47,7 @@ const SelectAffectationForm = () => {
                     type="primary"
                     icon={<PlusOutlined/>}
                     onClick={() => setIsModalOpen(true)}
-                    style={{marginLeft: '4px' ,marginTop:'22px'}}
+                    style={{marginLeft: '4px' ,marginTop:'32px'}}
                 >
                 </Button>
             )}

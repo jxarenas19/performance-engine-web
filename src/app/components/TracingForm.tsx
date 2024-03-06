@@ -25,7 +25,7 @@ const TracingForm = () => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
-    const [showTextArea, setShowTextArea] = useState<boolean>(true);
+    const [showTextArea, setShowTextArea] = useState<boolean>(false);
     const [form] = Form.useForm();
 
     const fetchTracing = async (values: DataForm) => {
@@ -45,6 +45,10 @@ const TracingForm = () => {
         if (!values.incoming_calls) values.incoming_calls = 0;
         if (!values.calls_made) values.calls_made = 0;
         if (!values.activities) values.activities = [];
+        if (!values.affectation) values.affectation = [];
+        if (!values.title) values.title = ' ';
+        if (!values.t_affectation ) values.t_affectation  = '0h';
+
         return values
     }
     const addData = (values: DataForm) => {
@@ -57,8 +61,7 @@ const TracingForm = () => {
             dispatch({type: 'LOADING_TRACINGS', isLoading: false});
             dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
             dispatch({type: 'SET_SELECTED_PERSON', payload: null});
-            if(state.filters.group) updateFilter('group',state.filters.group)
-            else updateFilter('group','Daily')
+            dispatch({ type: 'RELOAD_DATA' });
 
         }).catch(reason => {
             dispatch({type: 'LOADING_TRACINGS', isLoading: false});
@@ -83,7 +86,7 @@ const TracingForm = () => {
     useEffect(() => {
         if (state.isModalOpen) {
             form.resetFields();
-            setShowTextArea(true);
+            // setShowTextArea(true);
         }
     }, [state.isModalOpen, form]);
 
@@ -104,16 +107,16 @@ const TracingForm = () => {
             >
                 <Input placeholder="CODE:TITLE"/>
             </Form.Item>
-            {showTextArea && (
-                <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"
-                           tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
-                    <Input.TextArea
-                        className="customFormItem"
-                        placeholder="Paste the text here"
-                        onPaste={handlePaste}
-                    />
-                </Form.Item>
-            )}
+            {/*{showTextArea && (*/}
+            {/*    <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"*/}
+            {/*               tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>*/}
+            {/*        <Input.TextArea*/}
+            {/*            className="customFormItem"*/}
+            {/*            placeholder="Paste the text here"*/}
+            {/*            onPaste={handlePaste}*/}
+            {/*        />*/}
+            {/*    </Form.Item>*/}
+            {/*)}*/}
             <Row gutter={12}>
                 <Col span={12}>
                     <SelectEquipoForm
@@ -127,7 +130,8 @@ const TracingForm = () => {
                         label="Employee"
                         rules={[{required: true}]}
                     >
-                        <Select placeholder="Select an employee" allowClear>
+                        <Select placeholder="Select an employee" allowClear
+                                disabled={!state.authenticatedUser?.is_admin}>
                             {state.persons.map((option) => (
                                 <Select.Option key={option.sub} value={option.sub}>
                                     {option.email}
@@ -249,7 +253,7 @@ const TracingForm = () => {
                 >
                     <Select placeholder="Select a status" allowClear>
                         {StatusData.map((option) => (
-                            <Select.Option key={option.name} value={option.id_two}>
+                            <Select.Option key={option.id_two} value={option.id_two}>
                                 {option.name}
                             </Select.Option>
                         ))}

@@ -62,7 +62,7 @@ export interface DataForm {
     incoming_calls?: number | 0;
     calls_made?: number | 0;
     activities?: string[] | [];
-    status?: string | 'Pending';
+    status?: number | 1;
 }
 export interface DataTask {
     team?: string;
@@ -113,6 +113,7 @@ export interface TracingState {
     is_admin:boolean;
     selectedTeam: string | null;
     selectedTask: DataForm | null;
+    lastUpdated: Date | null;
 }
 
 export interface Filters {
@@ -150,6 +151,7 @@ export type TracingAction =
     | { type: 'SET_TOTAL'; payload: number}
     | { type: 'SET_SELECTED_TEAM'; payload: string}
     | { type: 'SET_ADMIN'; is_admin: boolean}
+    | { type: 'RELOAD_DATA'}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {

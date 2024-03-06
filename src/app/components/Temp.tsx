@@ -79,9 +79,9 @@ export default function Temp() {
 
     useEffect(() => {
         const user: UserData = {
-            user_id: '14086478-5031-702c-059f-a749c3d26f24',
+            user_id: '2458e4c8-80e1-70a8-e6e4-4d57fa2e5061',
             name: 'Messi',
-            is_admin: true
+            is_admin: false
         }
         if (!user.is_admin) {
             updateFilter('user_id', user.user_id)
@@ -102,7 +102,7 @@ export default function Temp() {
 
     useEffect(() => {
         fetchFilteredData();
-    }, [initialized, state.filters.team, state.filters.dateEnd, state.filters.group, state.limit, state.page]);
+    }, [state.lastUpdated,initialized, state.filters.team, state.filters.dateEnd, state.filters.group, state.limit, state.page]);
 
 
     useEffect(() => {
@@ -120,7 +120,10 @@ export default function Temp() {
     }, [dispatch]);
 
     const handleTabChange = (key: string) => {
+        const selectedTeam = tabsItems.find(item => item.key === key);
+        const teamName = selectedTeam?.label || key;
         dispatch({type: 'SET_SELECTED_PERSON', payload: null});
+        dispatch({type: 'SET_SELECTED_TEAM', payload: teamName});
         updateFilter('team', key)
         console.log(key)
     };

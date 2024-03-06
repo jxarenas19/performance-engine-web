@@ -21,7 +21,8 @@ export const initialState: TracingState & PageValues= {
     total: 0,
     is_admin: true,
     selectedTeam: null,
-    selectedTask: null
+    selectedTask: null,
+    lastUpdated: new Date()
 };
 export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
@@ -82,6 +83,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return { ...state, selectedTeam: action.payload };
         case 'SET_ADMIN':
             return { ...state, is_admin: action.is_admin };
+        case 'RELOAD_DATA':
+            return { ...state, lastUpdated: new Date() };
         default:
             throw new Error('Acción no soportada');
     }

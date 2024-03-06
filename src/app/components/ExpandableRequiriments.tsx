@@ -4,6 +4,7 @@ import {ColumnsType} from 'antd/es/table';
 import {DataForm, Requirement} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
 import {EditOutlined} from "@ant-design/icons";
+import {StatusData} from "@/app/utils/data";
 
 const ExpandableRequiriments = () => {
     const context = useContext(TracingContext);
@@ -45,6 +46,9 @@ const ExpandableRequiriments = () => {
             dataIndex: 'status',
             width: '20%',
             render: (text) => {
+                if (typeof text === 'number'){
+                    text = StatusData.find(item => item.id_two === text)?.name;
+                }
                 let color = '';
                 switch (text) {
                     case 'Pending':
@@ -80,6 +84,9 @@ const ExpandableRequiriments = () => {
         console.log(person)
         dispatch({type: 'SET_MODAL_OPEN', payload: true});
         if(state.selectedPerson){
+            if (typeof person.status === 'string'){
+                person.status = StatusData.find(item => item.name === person.status)?.id_two;
+            }
             const dataForm:DataForm = {
                 id:person.id,
                 status:person.status,
@@ -92,7 +99,7 @@ const ExpandableRequiriments = () => {
                 t_affectation:person.t_affectation,
                 affectation:person.affectation || [],
                 amount:person.amount || 0,
-                amount_error:person.amount || 0,
+                amount_error:person.amount_error || 0,
                 people_attended: person.people_attended || 0,
                 people_entered_to_system: person.people_entered_to_system || 0,
                 incoming_calls: person.incoming_calls || 0,

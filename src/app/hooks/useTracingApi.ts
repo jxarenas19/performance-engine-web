@@ -74,6 +74,17 @@ export const createAffectation = async (info: string) => {
         return null;
     }
 }
+export const createActivity = async (info: string) => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.CREATE_ACTIVITY,
+            {"name":info}
+        )
+        return data
+    } catch (e) {
+        return null;
+    }
+}
 export const getTeams = async (info: any) => {
     try {
         const {data}: AxiosResponse = await axiosRequest.post(

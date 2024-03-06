@@ -1,8 +1,9 @@
 // CustomTable.tsx
-import React, {useContext} from 'react';
-import {Col, Form, InputNumber, Row, Select} from 'antd';
-import {InfoCircleOutlined} from "@ant-design/icons";
+import React, {useContext, useState} from 'react';
+import {Button, Col, Form, Input, InputNumber, Modal, Row, Select} from 'antd';
+import {InfoCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {TracingContext} from "@/app/context/tracingContext";
+import {createActivity, createAffectation} from "@/app/hooks/useTracingApi";
 
 const { Option } = Select;
 
@@ -11,6 +12,25 @@ const CustomTable: React.FC = () => {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newItem, setNewItem] = useState('');
+
+    const fetchActivity = async (value:string) => {
+        return await createActivity(value)
+    }
+    const handleAddNewItem = () => {
+
+        if (newItem) {
+            const response = fetchActivity(newItem);
+            response.then(value => {
+                dispatch({type: 'SET_ACTIVITIES', payload: [...state.activities,
+                        {'id':value.data.id,"name":value.data.name}]});
+                setNewItem('');
+                setIsModalOpen(false);
+            });
+
+        }
+    };
     return (
         <>
             <Row gutter={16}>
@@ -55,15 +75,46 @@ const CustomTable: React.FC = () => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item name="activities" label="Activities" className="customFormItem">
-                <Select mode="multiple" placeholder="Select activities" allowClear style={{flex: 3}}>
-                    {state.activities.map((option) => (
-                        <Select.Option key={option.name} value={option.id}>
-                            {option.name}
-                        </Select.Option>
-                    ))}
-                </Select>
-            </Form.Item>
+            <Row gutter={8} wrap={false}> {/* Asegura un espacio entre los elementos y no los envuelve */}
+                <Col flex="auto"> {/* Ocupa el espacio disponible */}
+                    <Form.Item name="activities" label="Activities" className="customFormItem">
+                        <Select
+                            mode="multiple"
+                            placeholder="Select activities"
+                            allowClear
+                        >
+                            {state.activities.map((option) => (
+                                <Select.Option key={option.name} value={option.id}>
+                                    {option.name}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                </Col>
+                {state.authenticatedUser?.is_admin && (
+                    <Col> {/* Ocupa el espacio necesario para el botón */}
+                        <Button
+                            type="primary"
+                            icon={<PlusOutlined />}
+                            onClick={() => setIsModalOpen(true)}
+                            style={{ marginTop: '32px' }} // Ajusta para alinear con el Select
+                        >
+                        </Button>
+                    </Col>
+                )}
+            </Row>
+            <Modal
+                title="Add activity"
+                open={isModalOpen}
+                onOk={handleAddNewItem}
+                onCancel={() => setIsModalOpen(false)}
+            >
+                <Form>
+                    <Form.Item label="New activity">
+                        <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </>
     );
 };

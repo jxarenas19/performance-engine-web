@@ -21,10 +21,9 @@ const SelectDesignersTitle = () => {
                 </Form.Item>
             </Col>
 
-            <Form.Item name="amount_error"
-
+            <Form.Item
                        tooltip={{title: 'Number of errors detected', icon: <InfoCircleOutlined/>}}
-                       label="Amount error" className="customFormItem">
+                       label="Amount error" name="amount_error" className="customFormItem">
                 <InputNumber min={0} max={10} defaultValue={0}/>
             </Form.Item>
         </Row>

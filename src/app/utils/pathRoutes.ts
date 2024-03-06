@@ -12,6 +12,7 @@ export const PATH_ROUTES_PROD = {
     'CREATE_TRACING': 'api/performance/task/update',
     'GET_TEAMS': 'api/performance/teams',
     'GET_ACTIVITIES': 'api/performance/activities',
+    'CREATE_ACTIVITY': 'api/performance/activities/update',
     'CREATE_TEAM': 'api/performance/teams/update',
     'GET_TRACING': 'api/performance/task',
     'GET_USERS': 'api/performance/users',

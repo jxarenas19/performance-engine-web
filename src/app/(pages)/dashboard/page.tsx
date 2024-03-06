@@ -1,6 +1,6 @@
 'use client'
 
-import {Card, Col, Row, Tooltip} from "antd";
+import {Card, Col, Row, Skeleton, Tooltip} from "antd";
 import React, {useEffect, useState} from "react";
 import {
     Bar,
@@ -44,13 +44,17 @@ export default function DashboardPage() {
     const [dataTimeSpentRemaining, setDataTimeSpentRemaining] = useState([]);
     const [dataTimeSpentRemainingByTeam, setDataTimeSpentRemainingByTeam] = useState([]);
     const [dataUserActivity, setDataUserActivity] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
     const fetchDashboardData = async () => {
+        setIsLoading(true);
         const response:DashboardData = await getDashboard();
         console.log(response)
         setdataAmount(response.dataAmount)
         setDataTimeSpentRemaining(response.dataTimeSpentRemaining)
         setDataTimeSpentRemainingByTeam(response.dataTimeSpentRemainingByTeam)
         setDataUserActivity(response.dataUserActivity)
+        setIsLoading(false);
     }
     useEffect(() => {
         fetchDashboardData();
@@ -58,7 +62,9 @@ export default function DashboardPage() {
 
     return (
         <div style={{ padding: '20px' }}>
-            <Row gutter={16}>
+        {isLoading ? (<Skeleton active />): (
+                <>
+                <Row gutter={16}>
                 <Col span={12}>
                     <Card title="Temporal Evolution: Time Spent vs Time Remaining">
                         <ResponsiveContainer width="100%" height={300}>
@@ -90,7 +96,6 @@ export default function DashboardPage() {
                     </Card>
                 </Col>
             </Row>
-
             <Row gutter={16}>
                 <Col span={12}>
                     <Card title="Quantity Distribution">
@@ -116,6 +121,9 @@ export default function DashboardPage() {
                     </Card>
                 </Col>
             </Row>
+                </>
+        )}
+            
 
         </div>
     );

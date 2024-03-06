@@ -4,6 +4,7 @@ export const initialState: TracingState & PageValues= {
     selectedPerson: null,
     authenticatedUser: null,
     isModalOpen: false,
+    isModalDashboardOpen: false,
     groupBy: 'Diario',
     filters: {'group':'Daily'},
     selectedValues: [],
@@ -17,7 +18,7 @@ export const initialState: TracingState & PageValues= {
     isLoading: false,
     error: '',
     page: 1,
-    limit: 1,
+    limit: 10,
     total: 0,
     is_admin: true,
     selectedTeam: null,
@@ -34,6 +35,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return {...state, selectedTask: action.payload};
         case 'SET_MODAL_OPEN':
             return {...state, isModalOpen: action.payload};
+        case 'SET_MODAL_DASHBOARD_OPEN':
+            return {...state, isModalDashboardOpen: action.payload};
         case 'SET_GROUP_BY':
             return {...state, groupBy: action.payload};
         case 'SET_FILTER':

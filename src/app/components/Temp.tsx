@@ -81,7 +81,7 @@ export default function Temp() {
         const user: UserData = {
             user_id: '2458e4c8-80e1-70a8-e6e4-4d57fa2e5061',
             name: 'Messi',
-            is_admin: false
+            is_admin: true
         }
         if (!user.is_admin) {
             updateFilter('user_id', user.user_id)

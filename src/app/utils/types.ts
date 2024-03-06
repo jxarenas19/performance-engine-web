@@ -11,8 +11,7 @@ export interface Requirement {
 }
 
 export interface Achievement {
-    id: string;
-    imageUrl: string;
+    name: string;
 }
 
 export interface Person {
@@ -23,7 +22,7 @@ export interface Person {
     hoursWorked?: number;
     team?: string;
     requirements?: Requirement[];
-    plus?: Achievement[];
+    plus?: string[];
 }
 export interface User {
     email?: string;
@@ -88,7 +87,7 @@ export interface FiltersValues {
 }
 export interface PageValues {
     page: number | 1
-    limit: number | 1
+    limit: number | 10
     filters?: FiltersValues,
 
 }
@@ -97,6 +96,7 @@ export interface TracingState {
     selectedPerson: Person | null;
     authenticatedUser: UserData | null;
     isModalOpen: boolean;
+    isModalDashboardOpen: boolean;
     groupBy: string;
     filters: Filters;
     selectedValues: CheckboxValueType[];
@@ -134,6 +134,7 @@ export type TracingAction =
     | { type: 'SET_USER_AUTHENTICATED'; payload: UserData | null }
     | { type: 'SET_SELECTED_TASK'; payload: DataForm | null }
     | { type: 'SET_MODAL_OPEN'; payload: boolean }
+    | { type: 'SET_MODAL_DASHBOARD_OPEN'; payload: boolean }
     | { type: 'SET_GROUP_BY'; payload: string }
     | { type: 'SET_FILTER'; key: keyof Filters; value: string  }
     | { type: 'REMOVE_FILTER'; keys: (keyof Filters)[]  }

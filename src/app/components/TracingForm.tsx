@@ -46,6 +46,7 @@ const TracingForm = () => {
         if (!values.calls_made) values.calls_made = 0;
         if (!values.activities) values.activities = [];
         if (!values.affectation) values.affectation = [];
+        if (!values.plus) values.plus = [];
         if (!values.title) values.title = ' ';
         if (!values.t_affectation ) values.t_affectation  = '0h';
 
@@ -86,7 +87,9 @@ const TracingForm = () => {
     useEffect(() => {
         if (state.isModalOpen) {
             form.resetFields();
-            // setShowTextArea(true);
+            if(!state.authenticatedUser?.is_admin){
+                form.setFieldValue('sub',state.authenticatedUser?.user_id)
+            }
         }
     }, [state.isModalOpen, form]);
 
@@ -213,7 +216,7 @@ const TracingForm = () => {
                                 <Checkbox
                                     value="creativity"
                                     style={{lineHeight: "32px"}}
-                                    disabled
+
                                 >
                                     Creativity
                                     <AliwangwangOutlined style={{ marginLeft: 8 }} />

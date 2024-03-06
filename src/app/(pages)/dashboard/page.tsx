@@ -1,7 +1,7 @@
 'use client'
 
 import {Card, Col, Row, Skeleton, Tooltip} from "antd";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
     Bar,
     BarChart,
@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import {getDashboard, getUsers} from "@/app/hooks/useTracingApi";
 import {DashboardData} from "@/app/utils/types";
+import {TracingContext} from "@/app/context/tracingContext";
 
 
 // const dataCreationUpdate = [
@@ -40,6 +41,10 @@ import {DashboardData} from "@/app/utils/types";
 // ];
 
 export default function DashboardPage() {
+    const context = useContext(TracingContext);
+    if (!context) throw new Error('TracingContext must be used within TracingProvider');
+    const {state, dispatch} = context;
+
     const [dataAmount, setdataAmount] = useState([]);
     const [dataTimeSpentRemaining, setDataTimeSpentRemaining] = useState([]);
     const [dataTimeSpentRemainingByTeam, setDataTimeSpentRemainingByTeam] = useState([]);
@@ -57,8 +62,8 @@ export default function DashboardPage() {
         setIsLoading(false);
     }
     useEffect(() => {
-        fetchDashboardData();
-    }, []);
+        if (state.isModalDashboardOpen) fetchDashboardData();
+    }, [state.isModalDashboardOpen]);
 
     return (
         <div style={{ padding: '20px' }}>

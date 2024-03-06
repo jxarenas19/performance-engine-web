@@ -68,3 +68,6 @@
 .ant-form {
     width: 100%;
 }
+.icon-margin {
+    margin-right: 8px; /* Ajusta este valor según tus necesidades */
+}

@@ -1,9 +1,16 @@
 import React, {useContext} from 'react';
-import {Badge, Button, Descriptions, Skeleton, Table} from 'antd';
+import {Badge, Button, Descriptions, Skeleton, Table, Tooltip} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import {DataForm, Requirement} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
-import {EditOutlined} from "@ant-design/icons";
+import {
+    BookOutlined, CarOutlined,
+    CheckCircleOutlined,
+    DingdingOutlined,
+    EditOutlined,
+    PlusOutlined,
+    SmileOutlined
+} from "@ant-design/icons";
 import {StatusData} from "@/app/utils/data";
 
 const ExpandableRequiriments = () => {
@@ -38,7 +45,69 @@ const ExpandableRequiriments = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
-            width: '70%'
+            width: '40%'
+        },
+        {
+            title: "Plus",
+            width: '30%',
+            key: "plus",
+            dataIndex: "plus",
+            render: (values) => (
+                <div className="icon-column">
+                    {values?.map((value:string, index:number) => {
+                        let icon = null;
+
+                        switch (value) {
+                            case 'compliance':
+                                icon = (
+                                    <Tooltip title="Compliance" key={`compliance-${index}`}>
+                                        <CheckCircleOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'creativity':
+                                icon = (
+                                    <Tooltip title="Creativity" key={`creativity-${index}`}>
+                                        <SmileOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'plus':
+                                icon = (
+                                    <Tooltip title="Plus" key={`plus-${index}`}>
+                                        <PlusOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'performance':
+                                icon = (
+                                    <Tooltip title="Performance" key={`performance-${index}`}>
+                                        <DingdingOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'leadership':
+                                icon = (
+                                    <Tooltip title="Leadership" key={`leadership-${index}`}>
+                                        <BookOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'speed':
+                                icon = (
+                                    <Tooltip title="Speed" key={`speed-${index}`}>
+                                        <CarOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            default:
+                                icon = null;
+                        }
+
+                        return icon;
+                    })}
+                </div>
+            ),
         },
         {
             title: 'Status',
@@ -104,7 +173,8 @@ const ExpandableRequiriments = () => {
                 people_entered_to_system: person.people_entered_to_system || 0,
                 incoming_calls: person.incoming_calls || 0,
                 calls_made: person.calls_made || 0,
-                activities: person.activities || []
+                activities: person.activities || [],
+                plus: person.plus || []
             }
             dispatch({type: 'SET_SELECTED_TASK', payload: dataForm});
         }

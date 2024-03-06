@@ -1,5 +1,12 @@
 import {Generic} from "@/app/utils/types";
-
+import {
+    CheckCircleOutlined,
+    AliwangwangOutlined,
+    PlusOutlined,
+    DingdingOutlined,
+    BookOutlined,
+    CarOutlined,
+} from '@ant-design/icons';
 
 export const CustomerSupportTitle: Generic[] = [
     {id: "1", name: 'Answer call'},

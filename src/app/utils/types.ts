@@ -36,6 +36,7 @@ export interface DayGroup {
 }
 
 export interface TeamGroup {
+    key: string;
     id: string;
     team: string;
     date: string;

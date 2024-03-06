@@ -116,6 +116,11 @@ const ExpandableDayGroups = () => {
             render: (hoursWorked) => <TimeWorked hoursWorked={hoursWorked}/>,
         },
     ];
+
+    const dataSourceWithKeys = state.tracings.map(tracing => ({
+        ...tracing,
+        key: tracing.id, // Asegúrate de que `id` sea un campo único para cada tracing
+    }));
     const expandedRowRender = (record: DayGroup) => (
         <Table
             columns={columnsPeople}
@@ -131,7 +136,7 @@ const ExpandableDayGroups = () => {
         <Table
             loading={state.isLoading}
             columns={columnsDayGroups}
-            dataSource={state.tracings}
+            dataSource={dataSourceWithKeys}
             pagination={{
                 current: state.page,
                 pageSize: state.limit,

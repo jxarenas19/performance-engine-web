@@ -143,9 +143,11 @@ const ExpandableRequiriments = () => {
             key: 'action',
             width: '10%',
             render: (record) => (
-                <Button type="link" onClick={() => setIsModalOpen(record)}>
-                    <EditOutlined />
-                </Button>
+                record.status !== "Approved" && record.status !== 2  ? (
+                    <Button type="link" onClick={() => setIsModalOpen(record)}>
+                        <EditOutlined />
+                    </Button>
+                ) : null
             ),
         },
     ];
@@ -156,11 +158,13 @@ const ExpandableRequiriments = () => {
             if (typeof person.status === 'string'){
                 person.status = StatusData.find(item => item.name === person.status)?.id_two;
             }
+            let sub:string | undefined = state.authenticatedUser?.user_id
+            if(state.authenticatedUser?.is_admin) sub = state.selectedPerson.id
             const dataForm:DataForm = {
                 id:person.id,
                 status:person.status,
                 team:state.selectedPerson.team,
-                sub:state.authenticatedUser?.user_id,
+                sub:sub,
                 title:person.title,
                 detail:person.detail,
                 t_spent:person.t_spent,

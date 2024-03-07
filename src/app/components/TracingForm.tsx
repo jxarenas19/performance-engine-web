@@ -121,12 +121,12 @@ const TracingForm = () => {
             {/*    </Form.Item>*/}
             {/*)}*/}
             <Row gutter={12}>
-                <Col span={12}>
+                <Col span={9}>
                     <SelectEquipoForm
                         form={form}
                     />
                 </Col>
-                <Col span={12} style={{ display: 'flex'}}>
+                <Col span={15} style={{ display: 'flex'}}>
                     <Form.Item
                         className="customFormItem"
                         name="sub"

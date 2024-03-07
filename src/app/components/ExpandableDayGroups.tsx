@@ -117,17 +117,13 @@ const ExpandableDayGroups = () => {
         },
     ];
 
-    const dataSourceWithKeys = state.tracings.map(tracing => ({
-        ...tracing,
-        key: tracing.id, // Asegúrate de que `id` sea un campo único para cada tracing
-    }));
     const expandedRowRender = (record: DayGroup) => (
         <Table
             columns={columnsPeople}
             dataSource={filterPersonById(record.people)}
             pagination={false}
             onRow={onRowClick}
-            key={record.date}
+            rowKey="id"
 
         />
     );
@@ -136,7 +132,7 @@ const ExpandableDayGroups = () => {
         <Table
             loading={state.isLoading}
             columns={columnsDayGroups}
-            dataSource={dataSourceWithKeys}
+            dataSource={state.tracings}
             pagination={{
                 current: state.page,
                 pageSize: state.limit,

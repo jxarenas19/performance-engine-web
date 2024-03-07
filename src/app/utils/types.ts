@@ -30,16 +30,9 @@ export interface User {
 }
 
 export interface DayGroup {
+    key: React.Key,
     date: string;
     hours?: number;
-    people: Person[];
-}
-
-export interface TeamGroup {
-    key: string;
-    id: string;
-    team: string;
-    date: string;
     people: Person[];
 }
 
@@ -102,7 +95,7 @@ export interface TracingState {
     filters: Filters;
     selectedValues: CheckboxValueType[];
     personId?: number;
-    tracings: TeamGroup[];
+    tracings: DayGroup[];
     teams: Generic[];
     activities: Generic[];
     persons: Person[];
@@ -142,7 +135,7 @@ export type TracingAction =
     | { type: 'CLEAR_FILTERS' }
     | { type: 'SET_SELECTED_VALUES'; payload: CheckboxValueType[] }
     | { type: 'SET_PERSON_ID'; payload: number }
-    | { type: 'SET_TRACINGS'; payload: TeamGroup[] }
+    | { type: 'SET_TRACINGS'; payload: DayGroup[] }
     | { type: 'SET_TEAMS'; payload: Generic[] }
     | { type: 'SET_ACTIVITIES'; payload: Generic[] }
     | { type: 'SET_USERS'; payload: Person[] }

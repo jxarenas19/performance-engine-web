@@ -222,7 +222,7 @@ const ExpandableRequiriments = () => {
                     dataSource={state.selectedPerson.requirements}
                     pagination={{ pageSize: 2 }}
                     expandable={{ expandedRowRender }}
-                    // onRow={onRowClick}
+                    rowKey="id"
                 />
             ) : (
                 <Skeleton />

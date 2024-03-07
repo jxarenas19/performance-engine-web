@@ -1,7 +1,7 @@
 import {Button, DatePicker, Modal, Select} from "antd";
 import {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
-import {Filters} from "@/app/utils/types";
+import {DataForm, Filters} from "@/app/utils/types";
 import {BarChartOutlined, DeleteOutlined, ReloadOutlined} from "@ant-design/icons";
 import DashboardPage from "@/app/(pages)/dashboard/page";
 
@@ -15,6 +15,13 @@ const TracingFilters: React.FC = () => {
     const [group, setGroup] = useState('Daily');
     const setIsModalOpen = () => {
         dispatch({type: 'SET_MODAL_OPEN', payload: true});
+        if (state.selectedTeam){
+            const team_id = state.teams.find(item => item.name === state.selectedTeam)?.id;
+            const dataForm:DataForm = {
+                team:team_id
+            }
+            dispatch({type: 'SET_SELECTED_TASK', payload: dataForm});
+        }
     };
 
     const updateFilter = (key: keyof Filters, value: string) => {

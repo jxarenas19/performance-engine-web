@@ -35,3 +35,37 @@ export const StatusData: Generic[] = [
     {id: "2",id_two:2, name: 'Approved'},
     {id: "3",id_two:3, name: 'Refused'},
 ];
+
+export const dataChart = [
+    {
+        name: 'Supervisors',
+        t_affectation: 10,
+        t_spent: 20,
+        t_remaining: 40,
+    },
+    {
+        name: 'Editors',
+        t_affectation: 15,
+        t_spent: 30,
+        t_remaining: 44,
+    },
+    {
+        name: 'Customer Support',
+        t_affectation: 2,
+        t_spent: 23,
+        t_remaining: 45,
+    },
+    {
+        name: 'Designers',
+        t_affectation: 12,
+        t_spent: 19,
+        t_remaining: 30,
+    },
+    {
+        name: 'Develop',
+        t_affectation: 5,
+        t_spent: 23,
+        t_remaining: 30,
+    }
+
+];

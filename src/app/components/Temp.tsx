@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useContext, useEffect, useState} from "react";
-import {Col, Modal, notification, Row, Tabs} from "antd";
+import {Card, Col, Modal, notification, Radio, Row, Tabs, Typography} from "antd";
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
@@ -10,6 +10,10 @@ import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
 import {Filters, UserData} from "@/app/utils/types";
+import Paragraph from "antd/lib/typography/Paragraph";
+import Echart from "@/app/components/chart/EChart";
+import LineChart from "@/app/components/chart/LineChart";
+import ChartByTime from "@/app/components/chart/ChartByTime";
 
 export default function Temp() {
     const context = useContext(TracingContext);
@@ -18,6 +22,7 @@ export default function Temp() {
     const [initialized, setInitialized] = useState(false);
     const [loadedTeam, setloadedTeam] = useState(false);
 
+    const { Title, Text } = Typography;
 
     const fetchFilteredData = async () => {
         if (loadedTeam) {
@@ -132,12 +137,20 @@ export default function Temp() {
         label: team.name,
         key: team.id,
         children: (
-            <Row gutter={16}>
-                <Col span={12}>
-                    <ExpandableDayGroups></ExpandableDayGroups>
+            <Row gutter={[24, 0]}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12} className="mb-24">
+                    <Card bordered={false} className="criclebox cardbody h-full">
+                        <div className="ant-list-box table-responsive">
+                            <ExpandableDayGroups></ExpandableDayGroups>
+                        </div>
+                    </Card>
                 </Col>
-                <Col span={12}>
-                    <ExpandableRequiriments></ExpandableRequiriments>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12} className="mb-24">
+                    <Card bordered={false} className="criclebox cardbody h-full">
+                        <div className="ant-list-box table-responsive">
+                            <ExpandableRequiriments></ExpandableRequiriments>
+                        </div>
+                    </Card>
                 </Col>
             </Row>
         ),
@@ -146,14 +159,32 @@ export default function Temp() {
 
     return (
         <>
-            <TracingFilters></TracingFilters>
-            {state.teams.length > 0 && (
-                <Tabs
-                    defaultActiveKey="1"
-                    onTabClick={handleTabChange}
-                    items={tabsItems}
-                ></Tabs>
-            )}
+            <Row gutter={[24, 0]}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={10} className="mb-24">
+                    <Card bordered={false} className="criclebox h-full">
+                        <ChartByTime />
+                    </Card>
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={14} className="mb-24">
+                    <Card bordered={false} className="criclebox h-full">
+                        <LineChart />
+                    </Card>
+                </Col>
+            </Row>
+            <Row gutter={[24, 0]}>
+                <Col xs="24" xl={24}>
+                    <Card bordered={false} className="criclebox tablespace mb-24">
+                        <TracingFilters></TracingFilters>
+                        {state.teams.length > 0 && (
+                            <Tabs
+                                defaultActiveKey="1"
+                                onTabClick={handleTabChange}
+                                items={tabsItems}
+                            ></Tabs>
+                        )}
+                    </Card>
+                </Col>
+            </Row>
             <Modal
                 title="Tracing time"
                 open={state.isModalOpen}

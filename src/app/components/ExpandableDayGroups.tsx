@@ -130,6 +130,7 @@ const ExpandableDayGroups = () => {
 
     return (
         <Table
+            className="width-100"
             loading={state.isLoading}
             columns={columnsDayGroups}
             dataSource={state.tracings}

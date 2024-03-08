@@ -221,6 +221,7 @@ const ExpandableRequiriments = () => {
             {/*</div>*/}
             {state.selectedPerson ? (
                 <Table
+                    className="width-100"
                     loading={state.isLoading}
                     columns={columnsRequirements}
                     dataSource={state.selectedPerson.requirements}

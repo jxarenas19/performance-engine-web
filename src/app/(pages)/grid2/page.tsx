@@ -34,7 +34,6 @@ import team1 from "@/app/assets/images/team-1.jpg";
 import team2 from "@/app/assets/images/team-2.jpg";
 import team3 from "@/app/assets/images/team-3.jpg";
 import team4 from "@/app/assets/images/team-4.jpg";
-import card from "@/app/assets/images/info-card-1.jpg";
 
 function Home() {
   const { Title, Text } = Typography;

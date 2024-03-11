@@ -10,10 +10,8 @@ import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
 import {Filters, UserData} from "@/app/utils/types";
-import Paragraph from "antd/lib/typography/Paragraph";
-import Echart from "@/app/components/chart/EChart";
-import LineChart from "@/app/components/chart/LineChart";
 import ChartByTime from "@/app/components/chart/ChartByTime";
+import StatisticsCard from "@/app/components/chart/StatisticsCard";
 
 export default function Temp() {
     const context = useContext(TracingContext);
@@ -160,15 +158,13 @@ export default function Temp() {
     return (
         <>
             <Row gutter={[24, 0]}>
-                <Col xs={24} sm={24} md={12} lg={12} xl={10} className="mb-24">
+                <Col xs={24} sm={24} md={12} lg={12} xl={12} className="mb-24">
                     <Card bordered={false} className="criclebox h-full">
                         <ChartByTime />
                     </Card>
                 </Col>
-                <Col xs={24} sm={24} md={12} lg={12} xl={14} className="mb-24">
-                    <Card bordered={false} className="criclebox h-full">
-                        <LineChart />
-                    </Card>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12} className="mb-24">
+                    <StatisticsCard></StatisticsCard>
                 </Col>
             </Row>
             <Row gutter={[24, 0]}>

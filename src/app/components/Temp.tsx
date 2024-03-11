@@ -5,13 +5,14 @@ import {Card, Col, Modal, notification, Radio, Row, Tabs, Typography} from "antd
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
-import {getActivities, getAffectations, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
+import {getActivities, getAffectations, getScore, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
 import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
 import {Filters, UserData} from "@/app/utils/types";
 import ChartByTime from "@/app/components/chart/ChartByTime";
 import StatisticsCard from "@/app/components/chart/StatisticsCard";
+import {ScoreFake} from "@/app/utils/data";
 
 export default function Temp() {
     const context = useContext(TracingContext);
@@ -80,6 +81,12 @@ export default function Temp() {
         dispatch({type: 'SET_AFFECTATIONS', payload: response});
     }
 
+    const fetchScoreData = async () => {
+        const response = await getScore();
+        console.log(response)
+        const fakeResponse = ScoreFake;
+        dispatch({type: 'SET_SCORE', payload: fakeResponse});
+    }
     useEffect(() => {
         const user: UserData = {
             user_id: '2458e4c8-80e1-70a8-e6e4-4d57fa2e5061',
@@ -100,6 +107,7 @@ export default function Temp() {
             fetchUsersData();
             fetchActivitiesData();
             fetchAffectationsData();
+            fetchScoreData();
         }
     }, [initialized]);
 

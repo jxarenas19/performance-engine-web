@@ -1,4 +1,4 @@
-import {Generic} from "@/app/utils/types";
+import {Generic, Score} from "@/app/utils/types";
 import {
     CheckCircleOutlined,
     AliwangwangOutlined,
@@ -69,3 +69,12 @@ export const dataChart = [
     }
 
 ];
+
+export const ScoreFake: Score = {
+    "t_spent": "2h",
+    "t_remaining": "4h",
+    "t_affectation": "1h",
+    "t_restant": "6h",
+    "previous_score": 135,
+    "actual_score": 190
+}

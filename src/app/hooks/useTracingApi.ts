@@ -52,6 +52,17 @@ export const getDashboard = async () => {
         return [];
     }
 }
+export const getScore = async () => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.GET_SCORE
+        )
+
+        return data;
+    } catch (e) {
+        return [];
+    }
+}
 export const createTeam = async (info: string) => {
     try {
         const {data}: AxiosResponse = await axiosRequest.post(

@@ -14,6 +14,7 @@ export const initialState: TracingState & PageValues= {
     activities: [],
     persons: [],
     affectations: [],
+    score: null,
     users: [],
     isLoading: false,
     error: '',
@@ -72,6 +73,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return {...state, persons: action.payload, isLoading: false};
         case 'SET_AFFECTATIONS':
             return {...state, affectations: action.payload, isLoading: false};
+        case 'SET_SCORE':
+            return {...state, score: action.payload, isLoading: false};
         case 'LOADING_TRACINGS':
             return {...state, isLoading: action.isLoading};
         case 'SET_ERROR':

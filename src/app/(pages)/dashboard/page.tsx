@@ -18,6 +18,9 @@ import {
 import {getDashboard, getUsers} from "@/app/hooks/useTracingApi";
 import {DashboardData} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
+import {DashboardProvider} from "@/app/context/DashboardContext";
+import TracingFilters from "@/app/components/TracingFilters";
+import DashboardFilters from "@/app/components/DashboardFilters";
 
 
 // const dataCreationUpdate = [
@@ -66,7 +69,9 @@ export default function DashboardPage() {
     }, [state.isModalDashboardOpen]);
 
     return (
-        <div style={{ padding: '20px' }}>
+        <DashboardProvider>
+            <DashboardFilters></DashboardFilters>
+            <div style={{ padding: '20px' }}>
         {isLoading ? (<Skeleton active />): (
                 <>
                 <Row gutter={16}>
@@ -132,6 +137,7 @@ export default function DashboardPage() {
             
 
         </div>
+        </DashboardProvider>
     );
 };
 

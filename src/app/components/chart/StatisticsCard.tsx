@@ -1,22 +1,48 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Card, Statistic, Row, Col } from 'antd';
-import { ClockCircleOutlined, HourglassOutlined, FrownOutlined, SmileOutlined } from '@ant-design/icons';
+import {
+    ClockCircleOutlined,
+    HourglassOutlined,
+    SmileOutlined,
+    ArrowUpOutlined,
+    ArrowDownOutlined, MinusOutlined, ExclamationCircleOutlined, SyncOutlined
+} from '@ant-design/icons';
+import {TracingContext} from "@/app/context/tracingContext";
 
 interface StatisticItem {
     title: string;
-    value: number | string;
-    icon: React.ReactNode;
+    value: number | string | undefined;
+    icon?: React.ReactNode;
 }
 
 const StatisticsCard: React.FC = () => {
+    const context = useContext(TracingContext);
+    if (!context) throw new Error('TracingContext must be used within TracingProvider');
+    const {state, dispatch} = context;
+
+
     const statistics: StatisticItem[] = [
-        { title: 'Tiempo Trabajado', value: '8h', icon: <ClockCircleOutlined /> },
-        { title: 'Tiempo por Trabajar', value: '2h', icon: <HourglassOutlined /> },
-        { title: 'Tiempo Afectado', value: '1h', icon: <FrownOutlined /> },
-        { title: 'Tiempo Perdido', value: '0.5h', icon: <SmileOutlined /> },
-        { title: 'Tiempo Perdido2', value: '0.7h', icon: <SmileOutlined /> },
-        { title: 'Tiempo Perdido3', value: '0.9h', icon: <SmileOutlined /> }
+        { title: 'Time employee', value: state.score?.t_spent, icon: <ClockCircleOutlined style={{ color: 'green' }} /> },
+        { title: 'Time remaining', value: state.score?.t_remaining, icon: <HourglassOutlined style={{ color: 'blue' }} /> },
+        { title: 'Time affectation', value: state.score?.t_affectation, icon: <ExclamationCircleOutlined style={{ color: 'red' }} /> },
+        { title: 'Time restant', value: state.score?.t_restant, icon: <SyncOutlined style={{ color: 'yellow' }} /> },
+        { title: 'Previuos score', value: state.score?.previous_score, icon: <SmileOutlined /> },
+        { title: 'Score', value: state.score?.actual_score }
     ];
+
+    class ScoreIcon extends React.Component<{ score: number | undefined, previousScore: number | undefined }> {
+        render() {
+            let {score, previousScore} = this.props;
+            if(score && previousScore)
+            if (score > previousScore) {
+                return <ArrowUpOutlined style={{color: 'green'}}/>;
+            } else if (score < previousScore) {
+                return <ArrowDownOutlined style={{color: 'red'}}/>;
+            } else {
+                return <MinusOutlined/>;
+            }
+        }
+    }
 
     return (
         <div>
@@ -50,7 +76,9 @@ const StatisticsCard: React.FC = () => {
                 </Col>
                 <Col span={8}>
                     <Card bordered={false} className="criclebox ">
-                        <Statistic title={statistics[5].title} value={statistics[5].value} prefix={statistics[5].icon} />
+                        <Statistic title={statistics[5].title} value={statistics[5].value}
+                                   prefix={<ScoreIcon score={state.score?.actual_score} previousScore={state.score?.previous_score} />}
+                        />
                     </Card>
                 </Col>
             </Row>

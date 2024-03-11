@@ -3049,4 +3049,6 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  padding-top:10px;
+  padding-bottom:10px;
 }

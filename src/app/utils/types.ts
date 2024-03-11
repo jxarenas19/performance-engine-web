@@ -100,6 +100,7 @@ export interface TracingState {
     activities: Generic[];
     persons: Person[];
     affectations: Generic[];
+    score: Score | null;
     users: User[];
     isLoading: boolean;
     error?: string;
@@ -140,6 +141,7 @@ export type TracingAction =
     | { type: 'SET_ACTIVITIES'; payload: Generic[] }
     | { type: 'SET_USERS'; payload: Person[] }
     | { type: 'SET_AFFECTATIONS'; payload: Generic[] }
+    | { type: 'SET_SCORE'; payload: Score }
     | { type: 'SET_ERROR'; payload: string}
     | { type: 'SET_PAGE'; payload: number}
     | { type: 'SET_PAGE_SIZE'; payload: number}
@@ -153,6 +155,14 @@ export interface Generic {
     id: string;
     id_two?: number;
     name: string;
+}
+export interface Score {
+    t_spent: string,
+    t_remaining: string,
+    t_affectation: string,
+    t_restant: string,
+    previous_score: number,
+    actual_score: number
 }
 
 export interface DashboardData {

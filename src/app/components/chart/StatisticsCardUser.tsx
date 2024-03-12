@@ -15,7 +15,7 @@ interface StatisticItem {
     icon?: React.ReactNode;
 }
 
-const StatisticsCard: React.FC = () => {
+const StatisticsCardUser: React.FC = () => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
@@ -86,4 +86,4 @@ const StatisticsCard: React.FC = () => {
     );
 };
 
-export default StatisticsCard;
+export default StatisticsCardUser;

@@ -41,10 +41,11 @@ export const getTracings = async (info: any) => {
     }
 }
 
-export const getDashboard = async () => {
+export const getDashboard = async (info: any) => {
     try {
         const {data}: AxiosResponse = await axiosRequest.post(
-            PATH_ROUTES_PROD.GET_DASHBOARD
+            PATH_ROUTES_PROD.GET_DASHBOARD,
+            info
         )
 
         return data;
@@ -52,10 +53,24 @@ export const getDashboard = async () => {
         return [];
     }
 }
-export const getScore = async () => {
+export const getChartByTime = async (info: any) => {
+
     try {
         const {data}: AxiosResponse = await axiosRequest.post(
-            PATH_ROUTES_PROD.GET_SCORE
+            PATH_ROUTES_PROD.GET_CHART_BY_TIME,
+            info
+        )
+
+        return data.data;
+    } catch (e) {
+        return [];
+    }
+}
+export const getScore = async (info:any) => {
+    try {
+        const {data}: AxiosResponse = await axiosRequest.post(
+            PATH_ROUTES_PROD.GET_SCORE,
+            info
         )
 
         return data;

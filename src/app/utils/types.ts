@@ -101,6 +101,7 @@ export interface TracingState {
     persons: Person[];
     affectations: Generic[];
     score: Score | null;
+    chartByTime: ChartByTime[] | [];
     users: User[];
     isLoading: boolean;
     error?: string;
@@ -117,6 +118,7 @@ export interface Filters {
     dateEnd?: string;
     group?: string;
     user_id?: string;
+    type?: string;
 }
 export interface UserData {
     user_id: string;
@@ -142,6 +144,7 @@ export type TracingAction =
     | { type: 'SET_USERS'; payload: Person[] }
     | { type: 'SET_AFFECTATIONS'; payload: Generic[] }
     | { type: 'SET_SCORE'; payload: Score }
+    | { type: 'SET_CHART_BY_TIME'; payload: ChartByTime }
     | { type: 'SET_ERROR'; payload: string}
     | { type: 'SET_PAGE'; payload: number}
     | { type: 'SET_PAGE_SIZE'; payload: number}
@@ -164,7 +167,12 @@ export interface Score {
     previous_score: number,
     actual_score: number
 }
-
+export interface ChartByTime {
+    t_spent: number,
+    t_remaining: number,
+    t_affectation: number,
+    name: string
+}
 export interface DashboardData {
     dataAmount?:any,
     dataTimeSpentRemaining?:any,

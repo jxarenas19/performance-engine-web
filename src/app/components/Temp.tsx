@@ -5,13 +5,21 @@ import {Card, Col, Modal, notification, Radio, Row, Tabs, Typography} from "antd
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
-import {getActivities, getAffectations, getScore, getTeams, getTracings, getUsers} from "@/app/hooks/useTracingApi";
+import {
+    getActivities,
+    getAffectations,
+    getChartByTime,
+    getScore,
+    getTeams,
+    getTracings,
+    getUsers
+} from "@/app/hooks/useTracingApi";
 import ExpandableRequiriments from "@/app/components/ExpandableRequiriments";
 import ExpandableDayGroups from "@/app/components/ExpandableDayGroups";
 import eventEmitter from "../utils/eventEmitter";
 import {Filters, UserData} from "@/app/utils/types";
 import ChartByTime from "@/app/components/chart/ChartByTime";
-import StatisticsCard from "@/app/components/chart/StatisticsCard";
+import StatisticsCardUser from "@/app/components/chart/StatisticsCardUser";
 import {ScoreFake} from "@/app/utils/data";
 
 export default function Temp() {
@@ -80,11 +88,31 @@ export default function Temp() {
         const response = await getAffectations({page: 1, limit: 0});
         dispatch({type: 'SET_AFFECTATIONS', payload: response});
     }
-
+    const filterTemp = () => {
+        let filters_temp: Filters = {};
+        filters_temp.type = state.filters.type
+        filters_temp.dateStart = state.filters.dateStart
+        filters_temp.dateEnd = state.filters.dateEnd
+        filters_temp.user_id = state.filters.user_id
+        return filters_temp
+    }
     const fetchScoreData = async () => {
-        const response = await getScore();
+        let filters_temp= filterTemp()
+        const response = await getScore({
+            page: 0,
+            limit: 0,
+            filters: [filters_temp]});
         console.log(response)
-        dispatch({type: 'SET_SCORE', payload: ScoreFake});
+        dispatch({type: 'SET_SCORE', payload: response});
+    }
+    const fetchChartByTimeData = async () => {
+        let filters_temp= filterTemp()
+        const response = await getChartByTime({
+            page: 0,
+            limit: 0,
+            filters: [filters_temp]});
+        console.log(response)
+        dispatch({type: 'SET_CHART_BY_TIME', payload: response});
     }
     useEffect(() => {
         const user: UserData = {
@@ -94,6 +122,10 @@ export default function Temp() {
         }
         if (!user.is_admin) {
             updateFilter('user_id', user.user_id)
+            updateFilter('type', 'user')
+        }
+        else{
+            updateFilter('type', 'team')
         }
         dispatch({type: 'SET_USER_AUTHENTICATED', payload: user});
         setInitialized(true);
@@ -107,8 +139,9 @@ export default function Temp() {
             fetchActivitiesData();
             fetchAffectationsData();
             fetchScoreData();
+            fetchChartByTimeData();
         }
-    }, [initialized]);
+    }, [initialized,state.lastUpdated]);
 
     useEffect(() => {
         fetchFilteredData();
@@ -171,7 +204,7 @@ export default function Temp() {
                     </Card>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12} className="mb-24">
-                    <StatisticsCard></StatisticsCard>
+                    <StatisticsCardUser></StatisticsCardUser>
                 </Col>
             </Row>
             <Row gutter={[24, 0]}>

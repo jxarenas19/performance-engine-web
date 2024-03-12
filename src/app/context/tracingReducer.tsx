@@ -15,6 +15,7 @@ export const initialState: TracingState & PageValues= {
     persons: [],
     affectations: [],
     score: null,
+    chartByTime: [],
     users: [],
     isLoading: false,
     error: '',
@@ -75,6 +76,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return {...state, affectations: action.payload, isLoading: false};
         case 'SET_SCORE':
             return {...state, score: action.payload, isLoading: false};
+        case 'SET_CHART_BY_TIME':
+            return {...state, chartByTime: action.payload, isLoading: false};
         case 'LOADING_TRACINGS':
             return {...state, isLoading: action.isLoading};
         case 'SET_ERROR':

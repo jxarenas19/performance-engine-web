@@ -942,7 +942,7 @@ button.ant-btn.bell strong {
   color: #52c41a;
   font-weight: 700;
 }
-.ant-card.criclebox {
+.ant-card.  {
   box-shadow: 0px 20px 27px #0000000d;
   border-radius: 12px;
 }
@@ -1510,17 +1510,17 @@ ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav li svg path {
   padding-right: 0px;
 }
 
-.ant-card.criclebox .project-ant {
-  padding-left: 24px;
-  padding-right: 24px;
-}
+/*.ant-card.criclebox .project-ant {*/
+/*  padding-left: 24px;*/
+/*  padding-right: 24px;*/
+/*}*/
 
-.ant-card.criclebox table th {
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 14px;
-  padding-bottom: 14px;
-}
+/*.ant-card.criclebox table th {*/
+/*  padding-left: 24px;*/
+/*  padding-right: 24px;*/
+/*  padding-top: 14px;*/
+/*  padding-bottom: 14px;*/
+/*}*/
 .percent-progress .ant-progress-bg {
   height: 3px !important;
 }

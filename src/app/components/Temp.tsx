@@ -84,8 +84,7 @@ export default function Temp() {
     const fetchScoreData = async () => {
         const response = await getScore();
         console.log(response)
-        const fakeResponse = ScoreFake;
-        dispatch({type: 'SET_SCORE', payload: fakeResponse});
+        dispatch({type: 'SET_SCORE', payload: ScoreFake});
     }
     useEffect(() => {
         const user: UserData = {

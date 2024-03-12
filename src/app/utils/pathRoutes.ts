@@ -19,5 +19,6 @@ export const PATH_ROUTES_PROD = {
     'GET_AFFECTATIONS': 'api/performance/affectations',
     'CREATE_AFFECTATION': 'api/performance/affectations/update',
     'GET_DASHBOARD': 'api/performance/dashboard',
+    'GET_CHART_BY_TIME': 'api/performance/dashboard/progress',
     'GET_SCORE': 'api/performance/score'
 };

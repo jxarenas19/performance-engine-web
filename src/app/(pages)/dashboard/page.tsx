@@ -16,9 +16,9 @@ import {
     YAxis
 } from "recharts";
 import {getDashboard, getUsers} from "@/app/hooks/useTracingApi";
-import {DashboardData} from "@/app/utils/types";
+import {DashboardData, Filters} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
-import {DashboardProvider} from "@/app/context/DashboardContext";
+import {DashboardProvider, useDasboard} from "@/app/context/DashboardContext";
 import TracingFilters from "@/app/components/TracingFilters";
 import DashboardFilters from "@/app/components/DashboardFilters";
 
@@ -48,16 +48,23 @@ export default function DashboardPage() {
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
 
+    const contextDashboard = useDasboard()
+    if (!contextDashboard) throw new Error('DashboardContext must be used within DashboardProvider');
+    const {stateDashboard, dispatchDashboard} = contextDashboard;
+
     const [dataAmount, setdataAmount] = useState([]);
     const [dataTimeSpentRemaining, setDataTimeSpentRemaining] = useState([]);
     const [dataTimeSpentRemainingByTeam, setDataTimeSpentRemainingByTeam] = useState([]);
     const [dataUserActivity, setDataUserActivity] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchDashboardData = async () => {
+    const fetchDashboardData = async (): Promise<void> => {
         setIsLoading(true);
-        const response:DashboardData = await getDashboard();
-        console.log(response)
+        const response:DashboardData = await getDashboard({
+            page: 0,
+            limit: 0,
+            filters: [stateDashboard.filters]
+        });
         setdataAmount(response.dataAmount)
         setDataTimeSpentRemaining(response.dataTimeSpentRemaining)
         setDataTimeSpentRemainingByTeam(response.dataTimeSpentRemainingByTeam)
@@ -65,12 +72,15 @@ export default function DashboardPage() {
         setIsLoading(false);
     }
     useEffect(() => {
-        if (state.isModalDashboardOpen) fetchDashboardData();
-    }, [state.isModalDashboardOpen]);
+        if (state.isModalDashboardOpen) {
+
+            fetchDashboardData();
+        }
+    }, [state.isModalDashboardOpen,stateDashboard.filters]);
 
     return (
-        <DashboardProvider>
-            <DashboardFilters></DashboardFilters>
+        <>
+            <DashboardFilters fetchDashboardData={fetchDashboardData}></DashboardFilters>
             <div style={{ padding: '20px' }}>
         {isLoading ? (<Skeleton active />): (
                 <>
@@ -137,7 +147,7 @@ export default function DashboardPage() {
             
 
         </div>
-        </DashboardProvider>
+        </>
     );
 };
 

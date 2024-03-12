@@ -9,7 +9,7 @@ type ItemType = {
 
 // Estado inicial
 const initialState: ItemType = {
-    filters: {'group':'Weekly'}
+    filters: {'group':'Daily'}
 };
 
 // Acciones
@@ -20,9 +20,9 @@ type Action =
 
 // Contexto
 const DashboardContext = createContext<{
-    state: ItemType;
-    dispatch: React.Dispatch<Action>;
-}>({ state: initialState, dispatch: () => null });
+    stateDashboard: ItemType;
+    dispatchDashboard: React.Dispatch<Action>;
+}>({ stateDashboard: initialState, dispatchDashboard: () => null });
 
 // Reducer
 const dashboardReducer = (state: ItemType, action: Action): ItemType => {
@@ -52,10 +52,10 @@ interface DashboardProviderProps {
     children: ReactNode;
 }
 export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }) => {
-    const [state, dispatch] = useReducer(dashboardReducer, initialState);
+    const [stateDashboard, dispatchDashboard] = useReducer(dashboardReducer, initialState);
 
     return (
-        <DashboardContext.Provider value={{ state, dispatch }}>
+        <DashboardContext.Provider value={{ stateDashboard, dispatchDashboard }}>
             {children}
         </DashboardContext.Provider>
     );

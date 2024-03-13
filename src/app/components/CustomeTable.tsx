@@ -3,7 +3,7 @@ import React, {useContext, useState} from 'react';
 import {Button, Col, Form, Input, InputNumber, Modal, Row, Select} from 'antd';
 import {InfoCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {TracingContext} from "@/app/context/tracingContext";
-import {createActivity, createAffectation} from "@/app/hooks/useTracingApi";
+import {createActivity} from "@/app/hooks/useTracingApi";
 
 const { Option } = Select;
 

@@ -15,11 +15,10 @@ import {
     XAxis,
     YAxis
 } from "recharts";
-import {getDashboard, getUsers} from "@/app/hooks/useTracingApi";
-import {DashboardData, Filters} from "@/app/utils/types";
+import {getDashboard} from "@/app/hooks/useTracingApi";
+import {DashboardData} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
-import {DashboardProvider, useDasboard} from "@/app/context/DashboardContext";
-import TracingFilters from "@/app/components/TracingFilters";
+import {useDasboard} from "@/app/context/DashboardContext";
 import DashboardFilters from "@/app/components/DashboardFilters";
 
 

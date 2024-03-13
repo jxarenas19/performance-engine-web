@@ -25,7 +25,8 @@ export const initialState: TracingState & PageValues= {
     is_admin: true,
     selectedTeam: null,
     selectedTask: null,
-    lastUpdated: new Date()
+    lastUpdated: new Date(),
+    lastUpdatedStatistic: new Date()
 };
 export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
@@ -94,6 +95,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return { ...state, is_admin: action.is_admin };
         case 'RELOAD_DATA':
             return { ...state, lastUpdated: new Date() };
+        case 'RELOAD_DATA_STATISTIC_CARD':
+            return { ...state, lastUpdatedStatistic: new Date() };
         default:
             throw new Error('Acción no soportada');
     }

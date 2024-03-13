@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import {DataForm, DataTask, Filters} from '../utils/types';
+import {DataForm, Filters} from '../utils/types';
 import {createTracing, updateTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
@@ -16,10 +16,10 @@ import {
     InfoCircleOutlined,
     PlusOutlined
 } from "@ant-design/icons";
-import {regexTime, TEXT_AREA_TOOLTIP} from "@/app/utils/variables";
+import {regexTime} from "@/app/utils/variables";
 import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
 import ShowTitleByTeam from "@/app/components/ShowTitleByTeam";
-import {DesignersTitle, StatusData} from "@/app/utils/data";
+import {StatusData} from "@/app/utils/data";
 
 const TracingForm = () => {
     const context = useContext(TracingContext);

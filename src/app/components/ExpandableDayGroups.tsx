@@ -4,10 +4,10 @@ import {ColumnsType} from 'antd/es/table';
 import {DayGroup, Person} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
 import {
-    BookOutlined, CarOutlined,
+    BookOutlined,
+    CarOutlined,
     CheckCircleOutlined,
     DingdingOutlined,
-    HeartOutlined,
     PlusOutlined,
     SmileOutlined
 } from "@ant-design/icons";

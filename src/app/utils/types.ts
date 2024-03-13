@@ -110,6 +110,7 @@ export interface TracingState {
     selectedTeam: string | null;
     selectedTask: DataForm | null;
     lastUpdated: Date | null;
+    lastUpdatedStatistic: Date | null;
 }
 
 export interface Filters {
@@ -152,6 +153,7 @@ export type TracingAction =
     | { type: 'SET_SELECTED_TEAM'; payload: string}
     | { type: 'SET_ADMIN'; is_admin: boolean}
     | { type: 'RELOAD_DATA'}
+    | { type: 'RELOAD_DATA_STATISTIC_CARD'}
     | { type: 'LOADING_TRACINGS'; isLoading: boolean };
 
 export interface Generic {

@@ -1,7 +1,7 @@
 import {Button, DatePicker, Select} from "antd";
 import React, {useContext, useState} from "react";
 import {Filters} from "@/app/utils/types";
-import {DeleteOutlined, FunnelPlotOutlined} from "@ant-design/icons";
+import {DeleteOutlined} from "@ant-design/icons";
 import {useDasboard} from "@/app/context/DashboardContext";
 import {TracingContext} from "@/app/context/tracingContext";
 

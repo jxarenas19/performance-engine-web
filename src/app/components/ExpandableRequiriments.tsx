@@ -4,7 +4,8 @@ import {ColumnsType} from 'antd/es/table';
 import {DataForm, Requirement} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
 import {
-    BookOutlined, CarOutlined,
+    BookOutlined,
+    CarOutlined,
     CheckCircleOutlined,
     DingdingOutlined,
     EditOutlined,

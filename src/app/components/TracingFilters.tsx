@@ -64,12 +64,12 @@ const TracingFilters: React.FC = () => {
             <DatePicker.RangePicker value={date} onChange={rangeDateFilter}/>
             <Select  value={group} defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
                 <Select.Option key="Daily" value="Daily">Daily</Select.Option>
-                <Select.Option disabled key="Weekly" value="Weekly">Weekly</Select.Option>
-                <Select.Option disabled key="Biweekly" value="Biweekly">Biweekly</Select.Option>
-                <Select.Option disabled key="Monthly" value="Monthly">Monthly</Select.Option>
-                <Select.Option disabled key="Quarterly" value="Quarterly">Quarterly</Select.Option>
-                <Select.Option disabled key="Biannual" value="Biannual">Biannual</Select.Option>
-                <Select.Option disabled key="Annual" value="Annual">Annual</Select.Option>
+                <Select.Option key="Weekly" value="Weekly">Weekly</Select.Option>
+                <Select.Option key="Biweekly" value="Biweekly">Biweekly</Select.Option>
+                <Select.Option key="Monthly" value="Monthly">Monthly</Select.Option>
+                <Select.Option key="Quarterly" value="Quarterly">Quarterly</Select.Option>
+                <Select.Option key="Biannual" value="Biannual">Biannual</Select.Option>
+                <Select.Option key="Annual" value="Annual">Annual</Select.Option>
             </Select>
             <Button  icon={<DeleteOutlined />} type="primary" onClick={() => {
                 clearFilters(['dateStart', 'dateEnd','group'])

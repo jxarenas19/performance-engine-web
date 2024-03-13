@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { Card, Statistic, Row, Col } from 'antd';
+import React, {useContext} from 'react';
+import {Card, Col, Row, Statistic} from 'antd';
 import {FieldTimeOutlined, StarOutlined, TeamOutlined, WarningOutlined} from '@ant-design/icons';
-import { TracingContext } from "@/app/context/tracingContext";
+import {TracingContext} from "@/app/context/tracingContext";
 
 interface TeamStatistics {
     name: string;

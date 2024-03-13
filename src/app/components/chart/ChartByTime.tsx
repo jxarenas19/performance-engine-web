@@ -1,19 +1,7 @@
 import React, {useContext} from 'react';
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Legend,
-    Line,
-    LineChart, Pie, PieChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis
-} from 'recharts';
-import {dataChart} from "@/app/utils/data";
+import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import {TracingContext} from "@/app/context/tracingContext";
-import {Card, Col, Row, Skeleton} from "antd";
+import {Skeleton} from "antd";
 
 
 const ChartByTime = () => {

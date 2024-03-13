@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useContext, useEffect, useState} from "react";
-import {Card, Col, Modal, notification, Radio, Row, Tabs, Typography} from "antd";
+import {Card, Col, Modal, notification, Row, Tabs, Typography} from "antd";
 import TracingForm from "@/app/components/TracingForm";
 import TracingFilters from "@/app/components/TracingFilters";
 import {TracingContext} from "@/app/context/tracingContext";
@@ -20,7 +20,6 @@ import eventEmitter from "../utils/eventEmitter";
 import {Filters, UserData} from "@/app/utils/types";
 import ChartByTime from "@/app/components/chart/ChartByTime";
 import StatisticsCardUser from "@/app/components/chart/StatisticsCardUser";
-import {ScoreFake} from "@/app/utils/data";
 
 export default function Temp() {
     const context = useContext(TracingContext);
@@ -32,6 +31,7 @@ export default function Temp() {
     const { Title, Text } = Typography;
 
     const fetchFilteredData = async () => {
+        let filters_temp= filterTemp()
         if (loadedTeam) {
             dispatch({type: 'LOADING_TRACINGS', isLoading: true});
             console.log('entro datos trabajdo')
@@ -39,7 +39,7 @@ export default function Temp() {
                 {
                     page: state.page,
                     limit: state.limit,
-                    filters: [state.filters]
+                    filters: [filters_temp]
                 });
             if (response) {
                 dispatch({type: 'SET_TRACINGS', payload: response.data});
@@ -90,19 +90,30 @@ export default function Temp() {
     }
     const filterTemp = () => {
         let filters_temp: Filters = {};
-        filters_temp.type = state.filters.type
+        if(state.filters.type=='team' && !state.filters.user_id){
+            filters_temp.type = state.filters.type
+        }
         filters_temp.dateStart = state.filters.dateStart
         filters_temp.dateEnd = state.filters.dateEnd
         filters_temp.user_id = state.filters.user_id
+        filters_temp.group = state.filters.group
+        return filters_temp
+    }
+
+    const filterTemp2 = () => {
+        let filters_temp: Filters = {};
+        filters_temp.dateStart = state.filters.dateStart
+        filters_temp.dateEnd = state.filters.dateEnd
+        filters_temp.user_id = state.filters.user_id
+        filters_temp.group = state.filters.group
         return filters_temp
     }
     const fetchScoreData = async () => {
         let filters_temp= filterTemp()
         const response = await getScore({
-            page: 0,
-            limit: 0,
+            page: 1,
+            limit: 10,
             filters: [filters_temp]});
-        console.log(response)
         dispatch({type: 'SET_SCORE', payload: response});
     }
     const fetchChartByTimeData = async () => {
@@ -114,6 +125,7 @@ export default function Temp() {
         console.log(response)
         dispatch({type: 'SET_CHART_BY_TIME', payload: response});
     }
+
     useEffect(() => {
         const user: UserData = {
             user_id: '2458e4c8-80e1-70a8-e6e4-4d57fa2e5061',
@@ -138,10 +150,15 @@ export default function Temp() {
             fetchUsersData();
             fetchActivitiesData();
             fetchAffectationsData();
-            fetchScoreData();
             fetchChartByTimeData();
         }
     }, [initialized,state.lastUpdated]);
+
+    useEffect(() => {
+        if (initialized) {
+            fetchScoreData();
+        }
+    }, [state.lastUpdatedStatistic]);
 
     useEffect(() => {
         fetchFilteredData();

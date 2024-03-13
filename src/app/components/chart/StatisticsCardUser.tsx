@@ -1,13 +1,17 @@
 import React, {useContext} from 'react';
-import { Card, Statistic, Row, Col } from 'antd';
+import {Card, Col, Row, Select, Skeleton, Statistic} from 'antd';
 import {
-    ClockCircleOutlined,
-    HourglassOutlined,
-    SmileOutlined,
+    ArrowDownOutlined,
     ArrowUpOutlined,
-    ArrowDownOutlined, MinusOutlined, ExclamationCircleOutlined, SyncOutlined
+    ClockCircleOutlined,
+    ExclamationCircleOutlined,
+    HourglassOutlined,
+    MinusOutlined,
+    SmileOutlined,
+    SyncOutlined
 } from '@ant-design/icons';
 import {TracingContext} from "@/app/context/tracingContext";
+import {Filters} from "@/app/utils/types";
 
 interface StatisticItem {
     title: string;
@@ -43,46 +47,71 @@ const StatisticsCardUser: React.FC = () => {
             }
         }
     }
-
+    const updateFilter = (key: keyof Filters, value: string) => {
+        dispatch({type: 'SET_FILTER', key, value});
+    };
+    const userSelected = (value: string) => {
+        updateFilter('user_id', value);
+        dispatch({ type: 'RELOAD_DATA_STATISTIC_CARD' });
+    }
     return (
-        <div>
-            <Row gutter={16}>
-                <Col span={8}>
-                    <Card bordered={false} className="criclebox ">
-                        <Statistic title={statistics[0].title} value={statistics[0].value} prefix={statistics[0].icon} />
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card bordered={false} className="criclebox ">
-                        <Statistic title={statistics[1].title} value={statistics[1].value} prefix={statistics[1].icon} />
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card bordered={false} className="criclebox ">
-                        <Statistic title={statistics[4].title} value={statistics[4].value} prefix={statistics[4].icon} />
-                    </Card>
-                </Col>
-            </Row>
-            <Row gutter={16} style={{ marginTop: 16 }}>
-                <Col span={8}>
-                    <Card bordered={false} className="criclebox ">
-                        <Statistic title={statistics[2].title} value={statistics[2].value} prefix={statistics[2].icon} />
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card bordered={false} className="criclebox ">
-                        <Statistic title={statistics[3].title} value={statistics[3].value} prefix={statistics[3].icon} />
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card bordered={false} className="criclebox ">
-                        <Statistic title={statistics[5].title} value={statistics[5].value}
-                                   prefix={<ScoreIcon score={state.score?.actual_score} previousScore={state.score?.previous_score} />}
-                        />
-                    </Card>
-                </Col>
-            </Row>
-        </div>
+        <>
+    {state.isLoading ? (<Skeleton active />): (
+            <div>
+                <Select placeholder="Select an employee" allowClear
+                        onSelect={userSelected}
+                        disabled={!state.authenticatedUser?.is_admin}>
+                    {state.persons.map((option) => (
+                        <Select.Option key={option.sub} value={option.sub}>
+                            {option.email}
+                        </Select.Option>
+                    ))}
+                </Select>
+                <Row gutter={16}>
+                    <Col span={8}>
+                        <Card bordered={false} className="criclebox ">
+                            <Statistic title={statistics[0].title} value={statistics[0].value}
+                                       prefix={statistics[0].icon}/>
+                        </Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card bordered={false} className="criclebox ">
+                            <Statistic title={statistics[1].title} value={statistics[1].value}
+                                       prefix={statistics[1].icon}/>
+                        </Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card bordered={false} className="criclebox ">
+                            <Statistic title={statistics[4].title} value={statistics[4].value}
+                                       prefix={statistics[4].icon}/>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row gutter={16} style={{marginTop: 16}}>
+                    <Col span={8}>
+                        <Card bordered={false} className="criclebox ">
+                            <Statistic title={statistics[2].title} value={statistics[2].value}
+                                       prefix={statistics[2].icon}/>
+                        </Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card bordered={false} className="criclebox ">
+                            <Statistic title={statistics[3].title} value={statistics[3].value}
+                                       prefix={statistics[3].icon}/>
+                        </Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card bordered={false} className="criclebox ">
+                            <Statistic title={statistics[5].title} value={statistics[5].value}
+                                       prefix={<ScoreIcon score={state.score?.actual_score}
+                                                          previousScore={state.score?.previous_score}/>}
+                            />
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
+        )}
+        </>
     );
 };
 

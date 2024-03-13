@@ -100,7 +100,7 @@ export interface TracingState {
     activities: Generic[];
     persons: Person[];
     affectations: Generic[];
-    score: Score | null;
+    score: GlobalScore;
     chartByTime: ChartByTime[] | [];
     users: User[];
     isLoading: boolean;
@@ -118,7 +118,9 @@ export interface Filters {
     dateStart?: string;
     dateEnd?: string;
     group?: string;
+    groupScore?: string;
     user_id?: string;
+    userIdScore?: string;
     type?: string;
 }
 export interface UserData {
@@ -161,13 +163,17 @@ export interface Generic {
     id_two?: number;
     name: string;
 }
+
+interface GlobalScore {
+    result_current: Score,
+    result_previous: Score
+}
 export interface Score {
     t_spent: string,
     t_remaining: string,
     t_affectation: string,
     t_restant: string,
-    previous_score: number,
-    actual_score: number
+    score: number
 }
 export interface ChartByTime {
     t_spent: number,

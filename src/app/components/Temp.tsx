@@ -90,13 +90,13 @@ export default function Temp() {
     }
     const filterTemp = () => {
         let filters_temp: Filters = {};
-        if(state.filters.type=='team' && !state.filters.user_id){
+        if(state.filters.type=='team' && !state.filters.userIdScore){
             filters_temp.type = state.filters.type
         }
         filters_temp.dateStart = state.filters.dateStart
         filters_temp.dateEnd = state.filters.dateEnd
-        filters_temp.user_id = state.filters.user_id
-        filters_temp.group = state.filters.group
+        filters_temp.user_id = state.filters.userIdScore
+        filters_temp.group = state.filters.groupScore ? state.filters.groupScore : "Daily"
         return filters_temp
     }
 
@@ -114,6 +114,7 @@ export default function Temp() {
             page: 1,
             limit: 10,
             filters: [filters_temp]});
+        console.log(response)
         dispatch({type: 'SET_SCORE', payload: response});
     }
     const fetchChartByTimeData = async () => {
@@ -155,10 +156,10 @@ export default function Temp() {
     }, [initialized,state.lastUpdated]);
 
     useEffect(() => {
-        if (initialized) {
+        if (initialized && state.filters.userIdScore && state.filters.userIdScore) {
             fetchScoreData();
         }
-    }, [state.lastUpdatedStatistic]);
+    }, [state.filters.groupScore,state.filters.userIdScore]);
 
     useEffect(() => {
         fetchFilteredData();

@@ -100,10 +100,21 @@ export interface TracingState {
     activities: Generic[];
     persons: Person[];
     affectations: Generic[];
-    score: GlobalScore;
+    score: GlobalScore | {'result_previous':{
+        't_spent':'',
+            't_remaining':'',
+            't_restant':'',
+            'score':0,
+            't_affectation':''},'result_current':{
+            't_spent':'',
+            't_remaining':'',
+            't_restant':'',
+            'score':0,
+            't_affectation':''}};
     chartByTime: ChartByTime[] | [];
     users: User[];
     isLoading: boolean;
+    isLoading2: boolean;
     error?: string;
     total:number;
     is_admin:boolean;
@@ -156,7 +167,8 @@ export type TracingAction =
     | { type: 'SET_ADMIN'; is_admin: boolean}
     | { type: 'RELOAD_DATA'}
     | { type: 'RELOAD_DATA_STATISTIC_CARD'}
-    | { type: 'LOADING_TRACINGS'; isLoading: boolean };
+    | { type: 'LOADING_TRACINGS'; isLoading: boolean }
+    | { type: 'LOADING_STATISTIC'; isLoading2: boolean };
 
 export interface Generic {
     id: string;

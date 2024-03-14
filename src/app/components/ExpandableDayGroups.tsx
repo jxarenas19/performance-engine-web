@@ -47,10 +47,13 @@ const ExpandableDayGroups = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
+            width: '20%'
+            
         },
         {
             title: "Plus",
             key: "plus",
+            width: '10%',
             dataIndex: "plus",
             render: (values) => (
                 <div className="icon-column">
@@ -112,6 +115,7 @@ const ExpandableDayGroups = () => {
         {
             title: 'Advance',
             dataIndex: 'hoursWorked',
+            width: '60%',
             key: 'hoursWorked',
             render: (hoursWorked) => <TimeWorked hoursWorked={hoursWorked}/>,
         },

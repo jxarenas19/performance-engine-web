@@ -109,6 +109,7 @@ export default function Temp() {
         return filters_temp
     }
     const fetchScoreData = async () => {
+        dispatch({type: 'LOADING_STATISTIC', isLoading2: true});
         let filters_temp= filterTemp()
         const response = await getScore({
             page: 1,
@@ -116,6 +117,7 @@ export default function Temp() {
             filters: [filters_temp]});
         console.log(response)
         dispatch({type: 'SET_SCORE', payload: response});
+        dispatch({type: 'LOADING_STATISTIC', isLoading2: false});
     }
     const fetchChartByTimeData = async () => {
         let filters_temp= filterTemp()

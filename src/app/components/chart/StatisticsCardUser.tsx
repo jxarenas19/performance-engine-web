@@ -61,96 +61,91 @@ const StatisticsCardUser: React.FC = () => {
     }
     return (
         <>
-    {state.isLoading ? (<Skeleton active />): (
-            <div>
-                <div className="button-container">
-                    <Select  value={group} defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
-                        <Select.Option key="Daily" value="Daily">Daily</Select.Option>
-                        <Select.Option key="Weekly" value="Weekly">Weekly</Select.Option>
-                        <Select.Option key="Biweekly" value="Biweekly">Biweekly</Select.Option>
-                        <Select.Option key="Monthly" value="Monthly">Monthly</Select.Option>
-                        <Select.Option key="Quarterly" value="Quarterly">Quarterly</Select.Option>
-                        <Select.Option key="Biannual" value="Biannual">Biannual</Select.Option>
-                        <Select.Option key="Annual" value="Annual">Annual</Select.Option>
-                    </Select>
-                    <Select placeholder="Select an employee" allowClear
-                            onSelect={userSelected}
-                            disabled={!state.authenticatedUser?.is_admin}>
-                        {state.persons.map((option) => (
-                            <Select.Option key={option.sub} value={option.sub}>
-                                {option.email}
-                            </Select.Option>
-                        ))}
-                    </Select>
-                </div>
-                <Row gutter={16}>
-                    <Col span={8}>
-                        <Card bordered={false} className="criclebox ">
-                            <Statistic title={statistics[0].title} value={statistics[0].value}
-                                       prefix={statistics[0].icon}
-                                       valueStyle={{ fontSize: '14px' }}  // Ajustar según sea necesario
-                                       titleStyle={{ fontSize: '12px' }}  // Ajustar según sea necesario
-                            />
-                        </Card>
-                    </Col>
-                    <Col span={8}>
-                        <Card bordered={false} className="criclebox ">
-                            <Statistic title={statistics[1].title} value={statistics[1].value}
-                                       prefix={statistics[1].icon}
-                                       valueStyle={{ fontSize: '14px' }}  // Ajustar según sea necesario
-                                       titleStyle={{ fontSize: '12px' }}  // Ajustar según sea necesario/>
-                            />
-                        </Card>
-                    </Col>
-                    <Col span={8}>
-                        <Card bordered={false} className="criclebox ">
-                            <Statistic title={statistics[4].title} value={statistics[4].value}
-                                       prefix={statistics[4].icon}
-                                       valueStyle={{ fontSize: '14px' }}  // Ajustar según sea necesario
-                                       titleStyle={{ fontSize: '12px' }}  // Ajustar según sea necesario/>
-                            />
-                        </Card>
-                    </Col>
-                </Row>
-                <Row gutter={16} style={{ marginTop: 16 }}>
-                    <Col span={8}>
-                        <Card bordered={false} className="criclebox">
-                            <Statistic
-                                title={statistics[2].title}
-                                value={statistics[2].value}
-                                prefix={statistics[2].icon}
-                                valueStyle={{ fontSize: '14px' }}  // Ajustar según sea necesario
-                                titleStyle={{ fontSize: '12px' }}  // Ajustar según sea necesario
-                            />
-                        </Card>
-                    </Col>
-                    <Col span={8}>
-                        <Card bordered={false} className="criclebox">
-                            <Statistic
-                                title={statistics[3].title}
-                                value={statistics[3].value}
-                                prefix={statistics[3].icon}
-                                valueStyle={{ fontSize: '14px' }}  // Ajustar según sea necesario
-                                titleStyle={{ fontSize: '12px' }}  // Ajustar según sea necesario
-                            />
-                        </Card>
-                    </Col>
-                    <Col span={8}>
-                        <Card bordered={false} className="criclebox">
-                            <Statistic
-                                title={statistics[5].title}
-                                value={statistics[5].value}
-                                prefix={<ScoreIcon score={state.score?.result_current?.score}
-                                                   previousScore={state.score?.result_previous?.score}/>}
-                                valueStyle={{ fontSize: '14px' }}  // Ajustar según sea necesario
-                                titleStyle={{ fontSize: '12px' }}  // Ajustar según sea necesario
-                            />
-                        </Card>
-                    </Col>
-                </Row>
-
+            <div className="button-container">
+                <Select value={group} defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
+                    <Select.Option key="Daily" value="Daily">Daily</Select.Option>
+                    <Select.Option key="Weekly" value="Weekly">Weekly</Select.Option>
+                    <Select.Option key="Biweekly" value="Biweekly">Biweekly</Select.Option>
+                    <Select.Option key="Monthly" value="Monthly">Monthly</Select.Option>
+                    <Select.Option key="Quarterly" value="Quarterly">Quarterly</Select.Option>
+                    <Select.Option key="Biannual" value="Biannual">Biannual</Select.Option>
+                    <Select.Option key="Annual" value="Annual">Annual</Select.Option>
+                </Select>
+                <Select placeholder="Select an employee" allowClear
+                        onSelect={userSelected}
+                        disabled={!state.authenticatedUser?.is_admin}>
+                    {state.persons.map((option) => (
+                        <Select.Option key={option.sub} value={option.sub}>
+                            {option.email}
+                        </Select.Option>
+                    ))}
+                </Select>
             </div>
-        )}
+            {state.isLoading2 ? (<Skeleton active/>) : (
+                <div>
+
+                    <Row gutter={16}>
+                        <Col span={8}>
+                            <Card bordered={false} className="criclebox ">
+                                <Statistic title={statistics[0].title} value={statistics[0].value}
+                                           prefix={statistics[0].icon}
+                                           valueStyle={{fontSize: '14px'}}  // Ajustar según sea necesario
+                                />
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card bordered={false} className="criclebox ">
+                                <Statistic title={statistics[1].title} value={statistics[1].value}
+                                           prefix={statistics[1].icon}
+                                           valueStyle={{fontSize: '14px'}}  // Ajustar según sea necesario
+                                />
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card bordered={false} className="criclebox ">
+                                <Statistic title={statistics[4].title} value={statistics[4].value}
+                                           prefix={statistics[4].icon}
+                                           valueStyle={{fontSize: '14px'}}  // Ajustar según sea necesario
+                                />
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Row gutter={16} style={{marginTop: 16}}>
+                        <Col span={8}>
+                            <Card bordered={false} className="criclebox">
+                                <Statistic
+                                    title={statistics[2].title}
+                                    value={statistics[2].value}
+                                    prefix={statistics[2].icon}
+                                    valueStyle={{fontSize: '14px'}}  // Ajustar según sea necesario
+                                />
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card bordered={false} className="criclebox">
+                                <Statistic
+                                    title={statistics[3].title}
+                                    value={statistics[3].value}
+                                    prefix={statistics[3].icon}
+                                    valueStyle={{fontSize: '14px'}}  // Ajustar según sea necesario
+                                />
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card bordered={false} className="criclebox">
+                                <Statistic
+                                    title={statistics[5].title}
+                                    value={statistics[5].value}
+                                    prefix={<ScoreIcon score={state.score?.result_current?.score}
+                                                       previousScore={state.score?.result_previous?.score}/>}
+                                    valueStyle={{fontSize: '14px'}}  // Ajustar según sea necesario
+                                />
+                            </Card>
+                        </Col>
+                    </Row>
+
+                </div>
+            )}
         </>
     );
 };

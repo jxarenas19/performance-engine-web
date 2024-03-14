@@ -14,10 +14,21 @@ export const initialState: TracingState & PageValues= {
     activities: [],
     persons: [],
     affectations: [],
-    score: null,
+    score: {'result_previous':{
+            't_spent':'',
+            't_remaining':'',
+            't_restant':'',
+            'score':0,
+            't_affectation':''},'result_current':{
+            't_spent':'',
+            't_remaining':'',
+            't_restant':'',
+            'score':0,
+            't_affectation':''}},
     chartByTime: [],
     users: [],
     isLoading: false,
+    isLoading2: false,
     error: '',
     page: 1,
     limit: 10,
@@ -81,6 +92,8 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return {...state, chartByTime: action.payload, isLoading: false};
         case 'LOADING_TRACINGS':
             return {...state, isLoading: action.isLoading};
+        case 'LOADING_STATISTIC':
+            return {...state, isLoading2: action.isLoading2};
         case 'SET_ERROR':
             return {...state, error: action.payload};
         case 'SET_PAGE':

@@ -41,7 +41,7 @@ const SelectEquipoForm = (form:any ) => {
     };
     return (
         <div>
-            <Form.Item name="team" label="Team" className="customFormItem" rules={[{ required: true }]}>
+            <Form.Item name="team" label="Team" hidden={!state.authenticatedUser?.is_admin} className="customFormItem" rules={[{ required: true }]}>
                 <Select
                         loading={state.isLoading} placeholder="Select a project" allowClear onSelect={handleClick}>
                     {state.teams.map((option) => (

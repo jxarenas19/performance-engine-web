@@ -89,6 +89,7 @@ const TracingForm = () => {
             form.resetFields();
             if(!state.authenticatedUser?.is_admin){
                 form.setFieldValue('sub',state.authenticatedUser?.user_id)
+                form.setFieldValue('team',state.teams[0].id)
             }
         }
     }, [state.isModalOpen, form]);
@@ -131,10 +132,11 @@ const TracingForm = () => {
                         className="customFormItem"
                         name="sub"
                         label="Employee"
+                        hidden={!state.authenticatedUser?.is_admin}
                         rules={[{required: true}]}
                     >
                         <Select placeholder="Select an employee" allowClear
-                                disabled={!state.authenticatedUser?.is_admin}>
+                                >
                             {state.persons.map((option) => (
                                 <Select.Option key={option.sub} value={option.sub}>
                                     {option.email}
@@ -188,19 +190,22 @@ const TracingForm = () => {
                     </Col>
                 </Row>
                 <Row gutter={24} style={{ display: 'flex', alignItems: 'center' }}>
-                    <Col span={12} style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <Col span={12} >
                         <SelectAffectationForm></SelectAffectationForm>
                     </Col>
-                    <Form.Item
-                        className="customFormItem"
-                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
-                        name="t_affectation"
-                        label="Time affectation"
-                    >
-                        <Input
-                            placeholder="Enter a value"
-                        />
-                    </Form.Item>
+                    <Col span={8} >
+                        <Form.Item
+                            className="customFormItem"
+                            tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
+                            name="t_affectation"
+                            label="Time affectation"
+                        >
+                            <Input
+                                placeholder="Enter a value"
+                            />
+                        </Form.Item>
+                    </Col>
+
                 </Row>
             {state.authenticatedUser?.is_admin && (
                 <Form.Item name="plus" label="Plus">

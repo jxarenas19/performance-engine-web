@@ -25,9 +25,9 @@ const ChartByTime = () => {
                             { value: 'Time remaining', type: 'square', id: 't_remaining', color: '#82ca9d' },
                             { value: 'Time affectation', type: 'square', id: 't_affectation', color: '#fa4614' }
                         ]}/>
-                        <Bar dataKey="t_spent" stackId="a" fill="#144dfa" />
-                        <Bar dataKey="t_remaining" stackId="a" fill="#82ca9d" />
-                        <Bar dataKey="t_affectation" fill="#fa4614" />
+                        <Bar dataKey="t_spent" name="Time spent" stackId="a" fill="#144dfa" />
+                        <Bar dataKey="t_remaining" name="Time remaining" stackId="a" fill="#82ca9d" />
+                        <Bar dataKey="t_affectation"  name="Time affectation" fill="#fa4614" />
                     </BarChart>
                 </ResponsiveContainer>
             )}

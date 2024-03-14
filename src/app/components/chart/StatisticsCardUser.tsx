@@ -1,12 +1,13 @@
 import React, {useContext, useState} from 'react';
-import {Card, Col, Row, Select, Skeleton, Statistic} from 'antd';
+import {Card, Checkbox, Col, Form, Row, Select, Skeleton, Statistic} from 'antd';
 import {
+    AliwangwangOutlined,
     ArrowDownOutlined,
-    ArrowUpOutlined,
-    ClockCircleOutlined,
+    ArrowUpOutlined, BookOutlined, CarOutlined, CheckCircleOutlined,
+    ClockCircleOutlined, DingdingOutlined,
     ExclamationCircleOutlined,
-    HourglassOutlined,
-    MinusOutlined,
+    HourglassOutlined, MenuOutlined,
+    MinusOutlined, PlusOutlined,
     SmileOutlined,
     SyncOutlined
 } from '@ant-design/icons';
@@ -25,7 +26,7 @@ const StatisticsCardUser: React.FC = () => {
     const {state, dispatch} = context;
     const [group, setGroup] = useState('Daily');
 
-
+    console.log(state)
     const statistics: StatisticItem[] = [
         { title: 'Time employee', value: state.score?.result_current?.t_spent, icon: <ClockCircleOutlined style={{ color: 'green' }} /> },
         { title: 'Time remaining', value: state.score?.result_current?.t_remaining, icon: <HourglassOutlined style={{ color: 'blue' }} /> },
@@ -38,14 +39,33 @@ const StatisticsCardUser: React.FC = () => {
     class ScoreIcon extends React.Component<{ score: number | undefined, previousScore: number | undefined }> {
         render() {
             let {score, previousScore} = this.props;
-            if(score && previousScore)
-            if (score > previousScore) {
-                return <ArrowUpOutlined style={{color: 'green'}}/>;
-            } else if (score < previousScore) {
-                return <ArrowDownOutlined style={{color: 'red'}}/>;
-            } else {
-                return <MinusOutlined/>;
+            console.log('score prev:'+previousScore)
+            console.log('score actual:'+score)
+
+            if(score && previousScore) {
+                if (score > previousScore) {
+                    return <ArrowUpOutlined style={{color: 'green'}}/>;
+                } else if (score <= previousScore) {
+                    return <ArrowDownOutlined style={{color: 'red'}}/>;
+                } else {
+                    return <MinusOutlined/>;
+                }
             }
+            else if(!previousScore && !score){
+                return <MenuOutlined/>;
+            }
+            if (score){
+                if (!previousScore && score>0) {
+                    return <ArrowUpOutlined style={{color: 'green'}}/>;
+                }
+                else {
+                    return <ArrowDownOutlined style={{color: 'red'}}/>;
+                }
+            }
+            else{
+                return <ArrowDownOutlined style={{color: 'red'}}/>;
+            }
+
         }
     }
     const updateFilter = (key: keyof Filters, value: string) => {
@@ -71,15 +91,20 @@ const StatisticsCardUser: React.FC = () => {
                     <Select.Option key="Biannual" value="Biannual">Biannual</Select.Option>
                     <Select.Option key="Annual" value="Annual">Annual</Select.Option>
                 </Select>
-                <Select placeholder="Select an employee" allowClear
-                        onSelect={userSelected}
-                        disabled={!state.authenticatedUser?.is_admin}>
-                    {state.persons.map((option) => (
-                        <Select.Option key={option.sub} value={option.sub}>
-                            {option.email}
-                        </Select.Option>
-                    ))}
-                </Select>
+                {state.authenticatedUser?.is_admin && (
+                    <Select placeholder="Select an employee" allowClear
+                            onSelect={userSelected}
+                            // value={state.authenticatedUser ? state.authenticatedUser.user_id : undefined}
+                            disabled={!state.authenticatedUser?.is_admin}>
+                        {state.persons.map((option) => (
+                            <Select.Option key={option.sub} value={option.sub}>
+                                {option.email}
+                            </Select.Option>
+                        ))}
+                    </Select>
+
+                )}
+
             </div>
             {state.isLoading2 ? (<Skeleton active/>) : (
                 <div>

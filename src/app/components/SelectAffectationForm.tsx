@@ -1,4 +1,4 @@
-import {Button, Form, Input, Modal, Select} from "antd";
+import {Button, Col, Form, Input, Modal, Row, Select} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import React, {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
@@ -32,8 +32,9 @@ const SelectAffectationForm = () => {
     };
 
     return (
-        <>
-            <Form.Item name="affectation" label="Affectation" className="customFormItem">
+        <Row gutter={24}>
+            <Col span={16} >
+                <Form.Item name="affectation" label="Affectation" className="customFormItem">
                 <Select mode="multiple" loading={state.isLoading}  placeholder="Select an affectation" allowClear>
                     {state.affectations.map((option) => (
                         <Select.Option key={option.id} value={option.id}>
@@ -42,16 +43,18 @@ const SelectAffectationForm = () => {
                     ))}
                 </Select>
             </Form.Item>
-            {state.authenticatedUser?.is_admin && (
-                <Button
-                    type="primary"
-                    icon={<PlusOutlined/>}
-                    onClick={() => setIsModalOpen(true)}
-                    style={{marginLeft: '4px' ,marginTop:'32px'}}
-                >
-                </Button>
-            )}
-
+            </Col>
+            <Col span={6} >
+                {state.authenticatedUser?.is_admin && (
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined/>}
+                        onClick={() => setIsModalOpen(true)}
+                        style={{marginLeft: '4px' ,marginTop:'32px'}}
+                    >
+                    </Button>
+                )}
+            </Col>
 
             <Modal
                 title="Add affectation"
@@ -65,7 +68,7 @@ const SelectAffectationForm = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-        </>
+        </Row>
     );
 };
 

@@ -5,7 +5,7 @@ export const initialState: TracingState & PageValues= {
     authenticatedUser: null,
     isModalOpen: false,
     isModalDashboardOpen: false,
-    groupBy: 'Diario',
+    groupBy: 'Daily',
     filters: {'group':'Daily'},
     selectedValues: [],
     personId: 0,

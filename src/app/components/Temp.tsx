@@ -31,7 +31,7 @@ export default function Temp() {
     const { Title, Text } = Typography;
 
     const fetchFilteredData = async () => {
-        let filters_temp= filterTemp()
+        let filters_temp= filterTemp2()
         if (loadedTeam) {
             dispatch({type: 'LOADING_TRACINGS', isLoading: true});
             console.log('entro datos trabajdo')
@@ -130,20 +130,27 @@ export default function Temp() {
     }
 
     useEffect(() => {
-        const user: UserData = {
-            user_id: '2458e4c8-80e1-70a8-e6e4-4d57fa2e5061',
-            name: 'Messi',
-            is_admin: true
+        if(!initialized) {
+            const user: UserData = {
+                user_id: '3448b418-8091-7092-d0e6-f30074cdae1b',
+                name: 'Messi',
+                is_admin: false
+            }
+            if (!user.is_admin) {
+                updateFilter('user_id', user.user_id)
+                updateFilter('userIdScore', user.user_id)
+                updateFilter('groupScore', 'Daily')
+                updateFilter('type', 'user')
+            }
+            else{
+                updateFilter('type', 'team')
+            }
+            dispatch({type: 'SET_USER_AUTHENTICATED', payload: user});
+            setInitialized(true);
+            updateFilter('groupScore', 'Daily')
+
         }
-        if (!user.is_admin) {
-            updateFilter('user_id', user.user_id)
-            updateFilter('type', 'user')
-        }
-        else{
-            updateFilter('type', 'team')
-        }
-        dispatch({type: 'SET_USER_AUTHENTICATED', payload: user});
-        setInitialized(true);
+
 
     }, []);
 
@@ -231,13 +238,19 @@ export default function Temp() {
                 <Col xs="24" xl={24}>
                     <Card bordered={false} className="criclebox tablespace mb-24">
                         <TracingFilters></TracingFilters>
-                        {state.teams.length > 0 && (
-                            <Tabs
-                                defaultActiveKey="1"
-                                onTabClick={handleTabChange}
-                                items={tabsItems}
-                            ></Tabs>
-                        )}
+                        {
+                            state.teams.length > 0 && (
+                                state.authenticatedUser?.is_admin ? (
+                                    <Tabs
+                                        defaultActiveKey="1"
+                                        onTabClick={handleTabChange}
+                                        items={tabsItems}
+                                    ></Tabs>
+                                ) : (
+                                    <div>{tabsItems[0].children}</div>
+                                )
+                            )
+                        }
                     </Card>
                 </Col>
             </Row>

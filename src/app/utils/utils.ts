@@ -1,4 +1,4 @@
-import {DataType} from "@/app/utils/types";
+import {DataForm} from "@/app/utils/types";
 
 export const extractKeyValuePairs = (inputText: string): Record<string, string> =>{
     const record: Record<string, string> = {};
@@ -15,7 +15,7 @@ export const extractKeyValuePairs = (inputText: string): Record<string, string> 
     return record;
 }
 
-export const convertKeyValueToFormData = (data:Record<string, string>): DataType =>{
+export const convertKeyValueToFormData = (data:Record<string, string>): DataForm =>{
     const keys: string[] = Object.keys(data);
     const formData: Record<string, string> = {
         team: "",
@@ -25,12 +25,18 @@ export const convertKeyValueToFormData = (data:Record<string, string>): DataType
         t_spent: "",
         t_remaining: "",
         affectation: "",
-        t_affectation: ""
+        t_affectation: "",
+        amount: "",
+        amount_error: "",
+        people_attended: "",
+        people_entered_to_system: "",
+        incoming_calls: "",
+        calls_made: "",
     };
     keys.forEach(key => {
         formData[convertKey[key]] = data[key]
     });
-    return formData as DataType;
+    return formData as DataForm;
 }
 
 const convertKey:Record<string, string> = {
@@ -40,5 +46,12 @@ const convertKey:Record<string, string> = {
     "Detail":'detail',
     "Time employee":'t_spent',
     "Time remaining":'t_remaining',
-    "Time affectation":'t_affectation'
+    "Time affectation":'t_affectation',
+    "amount":'Amount',
+    "amount_error":'Amount error',
+    "people_attended":'People attended',
+    "people_entered_to_system":'People attended to system',
+    "incoming_calls":'Incoming calls',
+    "calls_made":'Calls made',
 }
+

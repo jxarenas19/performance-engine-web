@@ -2,9 +2,11 @@ import {Filters, PageValues, TracingAction, TracingState} from "@/app/utils/type
 
 export const initialState: TracingState & PageValues= {
     selectedPerson: null,
+    authenticatedUser: null,
     isModalOpen: false,
+    isModalDashboardOpen: false,
     groupBy: 'Diario',
-    filters: {},
+    filters: {'group':'Daily'},
     selectedValues: [],
     personId: 0,
     tracings: [],
@@ -12,21 +14,43 @@ export const initialState: TracingState & PageValues= {
     activities: [],
     persons: [],
     affectations: [],
+    score: {'result_previous':{
+            't_spent':'',
+            't_remaining':'',
+            't_restant':'',
+            'score':0,
+            't_affectation':''},'result_current':{
+            't_spent':'',
+            't_remaining':'',
+            't_restant':'',
+            'score':0,
+            't_affectation':''}},
+    chartByTime: [],
     users: [],
     isLoading: false,
+    isLoading2: false,
     error: '',
     page: 1,
-    limit: 1,
+    limit: 10,
     total: 0,
     is_admin: true,
     selectedTeam: null,
+    selectedTask: null,
+    lastUpdated: new Date(),
+    lastUpdatedStatistic: new Date()
 };
 export const tracingReducer = (state: TracingState & PageValues, action: TracingAction) => {
     switch (action.type) {
+        case 'SET_USER_AUTHENTICATED':
+            return {...state, authenticatedUser: action.payload};
         case 'SET_SELECTED_PERSON':
             return {...state, selectedPerson: action.payload};
+        case 'SET_SELECTED_TASK':
+            return {...state, selectedTask: action.payload};
         case 'SET_MODAL_OPEN':
             return {...state, isModalOpen: action.payload};
+        case 'SET_MODAL_DASHBOARD_OPEN':
+            return {...state, isModalDashboardOpen: action.payload};
         case 'SET_GROUP_BY':
             return {...state, groupBy: action.payload};
         case 'SET_FILTER':
@@ -62,8 +86,14 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
             return {...state, persons: action.payload, isLoading: false};
         case 'SET_AFFECTATIONS':
             return {...state, affectations: action.payload, isLoading: false};
+        case 'SET_SCORE':
+            return {...state, score: action.payload, isLoading: false};
+        case 'SET_CHART_BY_TIME':
+            return {...state, chartByTime: action.payload, isLoading: false};
         case 'LOADING_TRACINGS':
             return {...state, isLoading: action.isLoading};
+        case 'LOADING_STATISTIC':
+            return {...state, isLoading2: action.isLoading2};
         case 'SET_ERROR':
             return {...state, error: action.payload};
         case 'SET_PAGE':
@@ -75,7 +105,11 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
         case 'SET_SELECTED_TEAM':
             return { ...state, selectedTeam: action.payload };
         case 'SET_ADMIN':
-            return { ...state, is_admin: action.payload };
+            return { ...state, is_admin: action.is_admin };
+        case 'RELOAD_DATA':
+            return { ...state, lastUpdated: new Date() };
+        case 'RELOAD_DATA_STATISTIC_CARD':
+            return { ...state, lastUpdatedStatistic: new Date() };
         default:
             throw new Error('Acción no soportada');
     }

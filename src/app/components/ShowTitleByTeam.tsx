@@ -9,7 +9,7 @@ const ShowTitleByTeam = () => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
-
+    console.log(state)
     if (state.selectedTeam == 'Designers') {
         return (<SelectDesignersTitle></SelectDesignersTitle>)
     } else if (state.selectedTeam == 'Editors') {

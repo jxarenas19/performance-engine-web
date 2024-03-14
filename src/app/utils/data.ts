@@ -1,5 +1,4 @@
-import {Generic, TeamGroup} from "@/app/utils/types";
-
+import {Generic, Score} from "@/app/utils/types";
 
 export const CustomerSupportTitle: Generic[] = [
     {id: "1", name: 'Answer call'},
@@ -23,3 +22,51 @@ export const DesignersTitle: Generic[] = [
     {id: "13", name: 'Sending the video to the ABA4LOVE group for final review. II: 15-20 minutes'},
     {id: "14", name: 'Placing the video in the Folder: 5 minutes'}
 ];
+export const StatusData: Generic[] = [
+    {id: "1",id_two:1, name: 'Pending'},
+    {id: "2",id_two:2, name: 'Approved'},
+    {id: "3",id_two:3, name: 'Refused'},
+];
+
+export const dataChart = [
+    {
+        name: 'Supervisors',
+        t_affectation: 10,
+        t_spent: 20,
+        t_remaining: 40,
+    },
+    {
+        name: 'Editors',
+        t_affectation: 15,
+        t_spent: 30,
+        t_remaining: 44,
+    },
+    {
+        name: 'Customer Support',
+        t_affectation: 2,
+        t_spent: 23,
+        t_remaining: 45,
+    },
+    {
+        name: 'Designers',
+        t_affectation: 12,
+        t_spent: 19,
+        t_remaining: 30,
+    },
+    {
+        name: 'Develop',
+        t_affectation: 5,
+        t_spent: 23,
+        t_remaining: 30,
+    }
+
+];
+
+export const ScoreFake: Score = {
+    "t_spent": "2h",
+    "t_remaining": "4h",
+    "t_affectation": "1h",
+    "t_restant": "6h",
+    "previous_score": 135,
+    "actual_score": 190
+}

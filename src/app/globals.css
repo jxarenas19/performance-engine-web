@@ -68,3 +68,35 @@
 .ant-form {
     width: 100%;
 }
+.icon-margin {
+    margin-right: 8px; /* Ajusta este valor según tus necesidades */
+}
+
+
+
+/* FacebookStyledEmailTasksManager.css */
+.row-container {
+    padding: 20px;
+    background-color: #F0F2F5;
+}
+
+.email-list-card, .task-list-card, .task-detail-card {
+    overflow: auto;
+    height: 90vh;
+}
+
+.list-item {
+    cursor: pointer;
+}
+
+.date-picker, .buttons-container button {
+    margin: 0 5px;
+}
+
+.form-container {
+    padding: 20px;
+}
+
+.form-item {
+    margin-bottom: 20px;
+}

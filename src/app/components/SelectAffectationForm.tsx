@@ -32,9 +32,9 @@ const SelectAffectationForm = () => {
     };
 
     return (
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        <>
             <Form.Item name="affectation" label="Affectation" className="customFormItem">
-                <Select mode="multiple" loading={state.isLoading} placeholder="Select an affectation" allowClear>
+                <Select mode="multiple" loading={state.isLoading}  placeholder="Select an affectation" allowClear>
                     {state.affectations.map((option) => (
                         <Select.Option key={option.id} value={option.id}>
                             {option.name}
@@ -42,12 +42,12 @@ const SelectAffectationForm = () => {
                     ))}
                 </Select>
             </Form.Item>
-            {state.is_admin && (
+            {state.authenticatedUser?.is_admin && (
                 <Button
                     type="primary"
                     icon={<PlusOutlined/>}
                     onClick={() => setIsModalOpen(true)}
-                    style={{marginLeft: '4px' ,marginTop:'22px'}}
+                    style={{marginLeft: '4px' ,marginTop:'32px'}}
                 >
                 </Button>
             )}
@@ -65,7 +65,7 @@ const SelectAffectationForm = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-        </div>
+        </>
     );
 };
 

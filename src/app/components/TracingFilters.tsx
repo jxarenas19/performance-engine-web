@@ -1,7 +1,7 @@
 import {Button, DatePicker, Modal, Select} from "antd";
 import {useContext, useState} from "react";
 import {TracingContext} from "@/app/context/tracingContext";
-import {Filters} from "@/app/utils/types";
+import {DataForm, Filters} from "@/app/utils/types";
 import {BarChartOutlined, DeleteOutlined, ReloadOutlined} from "@ant-design/icons";
 import DashboardPage from "@/app/(pages)/dashboard/page";
 
@@ -13,9 +13,15 @@ const TracingFilters: React.FC = () => {
     const {state, dispatch} = context;
     const [date, setDate] = useState(null);
     const [group, setGroup] = useState('Daily');
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const setIsModalOpen = () => {
         dispatch({type: 'SET_MODAL_OPEN', payload: true});
+        if (state.selectedTeam){
+            const team_id = state.teams.find(item => item.name === state.selectedTeam)?.id;
+            const dataForm:DataForm = {
+                team:team_id
+            }
+            dispatch({type: 'SET_SELECTED_TASK', payload: dataForm});
+        }
     };
 
     const updateFilter = (key: keyof Filters, value: string) => {
@@ -27,6 +33,7 @@ const TracingFilters: React.FC = () => {
         const endDate = dateRange[1].format('YYYY-MM-DD');
         updateFilter('dateStart',startDate)
         updateFilter('dateEnd',endDate)
+        dispatch({type: 'SET_SELECTED_PERSON', payload: null});
 
     }
     const clearFilters = (keys: (keyof Filters)[]) => {
@@ -39,13 +46,15 @@ const TracingFilters: React.FC = () => {
         updateFilter('group',value)
     }
     const reloadTable = () => {
-        updateFilter('group',group)
+        dispatch({ type: 'RELOAD_DATA' });
+        dispatch({type: 'SET_SELECTED_PERSON', payload: null});
     }
     const loadDashboard = () => {
-        setIsModalVisible(true);
+        dispatch({type: 'SET_MODAL_DASHBOARD_OPEN', payload: true});
+        console.log(state.isModalDashboardOpen)
     }
     const handleCancel = () => {
-        setIsModalVisible(false);
+        dispatch({type: 'SET_MODAL_DASHBOARD_OPEN', payload: false});
     };
     return (
         <div className="button-container">
@@ -73,7 +82,7 @@ const TracingFilters: React.FC = () => {
             </Button>
             <Modal
                 title="Chart Dashboard"
-                open={isModalVisible}
+                open={state.isModalDashboardOpen}
                 onCancel={handleCancel}
                 width="90%"  // Ajusta el ancho según necesites
                 footer={null}  // Elimina el pie del modal si no necesitas botones de acción

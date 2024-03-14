@@ -1,9 +1,18 @@
 import React, {useContext} from 'react';
-import {Button, Descriptions, Skeleton, Table} from 'antd';
+import {Badge, Button, Descriptions, Skeleton, Table, Tooltip} from 'antd';
 import {ColumnsType} from 'antd/es/table';
-import {Requirement} from "@/app/utils/types";
+import {DataForm, Requirement} from "@/app/utils/types";
 import {TracingContext} from "@/app/context/tracingContext";
-import {EditOutlined} from "@ant-design/icons";
+import {
+    BookOutlined,
+    CarOutlined,
+    CheckCircleOutlined,
+    DingdingOutlined,
+    EditOutlined,
+    PlusOutlined,
+    SmileOutlined
+} from "@ant-design/icons";
+import {StatusData} from "@/app/utils/data";
 
 const ExpandableRequiriments = () => {
     const context = useContext(TracingContext);
@@ -22,9 +31,7 @@ const ExpandableRequiriments = () => {
             </Descriptions>
         );
     };
-    const setIsModalOpen = () => {
-        dispatch({type: 'SET_MODAL_OPEN', payload: true});
-    };
+
     const expandedRowRender = (record: Requirement) => {
         return (
             <>
@@ -39,33 +46,195 @@ const ExpandableRequiriments = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
-            width: '90%'
+            width: '40%'
+        },
+        {
+            title: "Plus",
+            width: '30%',
+            key: "plus",
+            dataIndex: "plus",
+            render: (values) => (
+                <div className="icon-column">
+                    {values?.map((value:string, index:number) => {
+                        let icon = null;
+
+                        switch (value) {
+                            case 'compliance':
+                                icon = (
+                                    <Tooltip title="Compliance" key={`compliance-${index}`}>
+                                        <CheckCircleOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'creativity':
+                                icon = (
+                                    <Tooltip title="Creativity" key={`creativity-${index}`}>
+                                        <SmileOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'plus':
+                                icon = (
+                                    <Tooltip title="Plus" key={`plus-${index}`}>
+                                        <PlusOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'performance':
+                                icon = (
+                                    <Tooltip title="Performance" key={`performance-${index}`}>
+                                        <DingdingOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'leadership':
+                                icon = (
+                                    <Tooltip title="Leadership" key={`leadership-${index}`}>
+                                        <BookOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            case 'speed':
+                                icon = (
+                                    <Tooltip title="Speed" key={`speed-${index}`}>
+                                        <CarOutlined className="icon-margin" />
+                                    </Tooltip>
+                                );
+                                break;
+                            default:
+                                icon = null;
+                        }
+
+                        return icon;
+                    })}
+                </div>
+            ),
+        },
+        {
+            title: 'Status',
+            key: 'status',
+            dataIndex: 'status',
+            width: '20%',
+            render: (text) => {
+                if (typeof text === 'number'){
+                    text = StatusData.find(item => item.id_two === text)?.name;
+                }
+                let color = '';
+                switch (text) {
+                    case 'Pending':
+                        color = 'green';
+                        break;
+                    case 'Approved':
+                        color = 'blue';
+                        break;
+                    case 'Refused':
+                        color = 'red';
+                        break;
+                    default:
+                        color = 'default';
+                }
+
+                return (
+                    <Badge color={color} text={text} />
+                );
+            },
         },
         {
             title: 'Action',
             key: 'action',
             width: '10%',
             render: (record) => (
-                <Button type="link" onClick={setIsModalOpen}>
-                    <EditOutlined />
-                </Button>
+                record.status !== "Approved" && record.status !== 2  ? (
+                    <Button type="link" onClick={() => setIsModalOpen(record)}>
+                        <EditOutlined />
+                    </Button>
+                ) : null
             ),
         },
     ];
-
-    return state.selectedPerson ? (
-        <Table
-            loading={state.isLoading}
-            columns={columnsRequirements}
-            dataSource={state.selectedPerson.requirements}
-            pagination={{pageSize: 2}}
-            expandable={{
-                expandedRowRender
-            }}
-        />
-    ) : (
-        <Skeleton/>
-    )
+    const setIsModalOpen = (person: any) => {
+        console.log(person)
+        dispatch({type: 'SET_MODAL_OPEN', payload: true});
+        if(state.selectedPerson){
+            if (typeof person.status === 'string'){
+                person.status = StatusData.find(item => item.name === person.status)?.id_two;
+            }
+            let sub:string | undefined = state.authenticatedUser?.user_id
+            if(state.authenticatedUser?.is_admin) sub = state.selectedPerson.id
+            const dataForm:DataForm = {
+                id:person.id,
+                status:person.status,
+                team:state.selectedPerson.team,
+                sub:sub,
+                title:person.title,
+                detail:person.detail,
+                t_spent:person.t_spent,
+                t_remaining:person.t_remaining,
+                t_affectation:person.t_affectation,
+                affectation:person.affectation || [],
+                amount:person.amount || 0,
+                amount_error:person.amount_error || 0,
+                people_attended: person.people_attended || 0,
+                people_entered_to_system: person.people_entered_to_system || 0,
+                incoming_calls: person.incoming_calls || 0,
+                calls_made: person.calls_made || 0,
+                activities: person.activities || [],
+                plus: person.plus || []
+            }
+            dispatch({type: 'SET_SELECTED_TASK', payload: dataForm});
+        }
+    };
+    // const onRowClick = (person: any) => ({
+    //     onClick: () => {
+    //         if(state.selectedPerson){
+    //             const dataForm:DataForm = {
+    //                 id:state.selectedPerson.id,
+    //                 team:state.selectedPerson.team,
+    //                 title:person.title,
+    //                 detail:person.detail,
+    //                 sub:state.authenticatedUser?.user_id,
+    //                 t_spent:person.t_spent,
+    //                 t_remaining:person.t_remaining,
+    //                 t_affectation:person.t_affectation,
+    //                 affectation:person.affectation || [],
+    //                 amount:person.amount || 1,
+    //                 amount_error:person.amount || 0,
+    //                 people_attended: person.people_attended || 0,
+    //                 people_entered_to_system: person.people_entered_to_system || 0,
+    //                 incoming_calls: person.incoming_calls || 0,
+    //                 calls_made: person.calls_made || 0,
+    //                 activities: person.activities || []
+    //             }
+    //             dispatch({type: 'SET_SELECTED_TASK', payload: dataForm});
+    //         }
+    //
+    //         console.log(person)
+    //         console.log(state.selectedPerson)
+    //
+    //     },
+    // });
+    return (
+        <div>
+            {/*<div style={{ marginBottom: 16, textAlign: 'left' }}>*/}
+            {/*    <Button type="primary" disabled={state.selectedTask==null} onClick={setIsModalOpen}>*/}
+            {/*        Edit*/}
+            {/*    </Button>*/}
+            {/*</div>*/}
+            {state.selectedPerson ? (
+                <Table
+                    className="width-100"
+                    loading={state.isLoading}
+                    columns={columnsRequirements}
+                    dataSource={state.selectedPerson.requirements}
+                    pagination={{ pageSize: 2 }}
+                    expandable={{ expandedRowRender }}
+                    rowKey="id"
+                />
+            ) : (
+                <Skeleton />
+            )}
+        </div>
+    );
 
 };
 

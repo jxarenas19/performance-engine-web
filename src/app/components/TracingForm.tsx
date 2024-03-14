@@ -1,64 +1,68 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import {DataTask, DataType, Filters} from '../utils/types';
-import {createTracing} from "@/app/hooks/useTracingApi";
+import {DataForm, Filters} from '../utils/types';
+import {createTracing, updateTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
 import {CheckboxValueType} from "antd/lib/checkbox/Group";
 import SelectEquipoForm from "@/app/components/SelectEquipoForm";
 import SelectAffectationForm from "@/app/components/SelectAffectationForm";
 import {
-    AliwangwangOutlined, BookOutlined,
+    AliwangwangOutlined,
+    BookOutlined,
     CarOutlined,
     CheckCircleOutlined,
     DingdingOutlined,
-    InfoCircleOutlined, PlusOutlined
+    InfoCircleOutlined,
+    PlusOutlined
 } from "@ant-design/icons";
-import {regexTime, TEXT_AREA_TOOLTIP} from "@/app/utils/variables";
+import {regexTime} from "@/app/utils/variables";
 import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
 import ShowTitleByTeam from "@/app/components/ShowTitleByTeam";
+import {StatusData} from "@/app/utils/data";
 
 const TracingForm = () => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
-    const [showTextArea, setShowTextArea] = useState<boolean>(true);
+    const [showTextArea, setShowTextArea] = useState<boolean>(false);
     const [form] = Form.useForm();
 
-    const fetchTracing = async (values: DataType) => {
-        console.log(values)
-        const data: DataTask = {
-            user_id:values.sub,
-            team:values.team,
-            title:values.title || " ",
-            detail:values.detail,
-            t_spent:values.t_spent,
-            t_remaining:values.t_remaining,
-            t_affectation:values.t_affectation,
-            affectation:values.affectation  || [],
-            amount:values.amount || 1,
-            amount_error:values.amount || 0,
-            people_attended: values.people_attended || 0,
-            people_entered_to_system: values.people_entered_to_system || 0,
-            incoming_calls: values.incoming_calls || 0,
-            calls_made: values.calls_made || 0,
-            activities: values.activities || []
-        }
-        return await createTracing(data)
+    const fetchTracing = async (values: DataForm) => {
+
+        if(!values.id) return await createTracing(values)
+        else return await updateTracing(values)
     }
     const updateFilter = (key: keyof Filters, value: string) => {
         dispatch({ type: 'SET_FILTER', key, value });
     };
-    const addData = (values: DataType) => {
+    const completeField = (values: DataForm) => {
+        values.user_id = values.sub;
+        if (!values.amount) values.amount = 0;
+        if (!values.amount_error) values.amount_error = 0;
+        if (!values.people_attended) values.people_attended = 0;
+        if (!values.people_entered_to_system) values.people_entered_to_system = 0;
+        if (!values.incoming_calls) values.incoming_calls = 0;
+        if (!values.calls_made) values.calls_made = 0;
+        if (!values.activities) values.activities = [];
+        if (!values.affectation) values.affectation = [];
+        if (!values.plus) values.plus = [];
+        if (!values.title) values.title = ' ';
+        if (!values.t_affectation ) values.t_affectation  = '0h';
+
+        return values
+    }
+    const addData = (values: DataForm) => {
         console.log(values);
+        values = completeField(values)
         dispatch({type: 'LOADING_TRACINGS', isLoading: true});
         form.resetFields();
         const response = fetchTracing(values);
         response.then(value => {
             dispatch({type: 'LOADING_TRACINGS', isLoading: false});
             dispatch({type: 'SET_MODAL_OPEN', payload: !state.isModalOpen});
-            if(state.filters.group) updateFilter('group',state.filters.group)
-            else updateFilter('group','Daily')
+            dispatch({type: 'SET_SELECTED_PERSON', payload: null});
+            dispatch({ type: 'RELOAD_DATA' });
 
         }).catch(reason => {
             dispatch({type: 'LOADING_TRACINGS', isLoading: false});
@@ -83,7 +87,9 @@ const TracingForm = () => {
     useEffect(() => {
         if (state.isModalOpen) {
             form.resetFields();
-            setShowTextArea(true);
+            if(!state.authenticatedUser?.is_admin){
+                form.setFieldValue('sub',state.authenticatedUser?.user_id)
+            }
         }
     }, [state.isModalOpen, form]);
 
@@ -94,36 +100,41 @@ const TracingForm = () => {
               onFinish={addData}
               size='small'
               initialValues={{
-                  size: 'small',
-              }}>
-            <Input
-                type="hidden"
+                  ...state.selectedTask,
+                  size: 'small'
+              }}
+        >
+            <Form.Item
                 name="id"
-            />
-            {showTextArea && (
-                <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"
-                           tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>
-                    <Input.TextArea
-                        className="customFormItem"
-                        placeholder="Paste the text here"
-                        onPaste={handlePaste}
-                    />
-                </Form.Item>
-            )}
+                hidden={true}
+            >
+                <Input placeholder="CODE:TITLE"/>
+            </Form.Item>
+            {/*{showTextArea && (*/}
+            {/*    <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"*/}
+            {/*               tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>*/}
+            {/*        <Input.TextArea*/}
+            {/*            className="customFormItem"*/}
+            {/*            placeholder="Paste the text here"*/}
+            {/*            onPaste={handlePaste}*/}
+            {/*        />*/}
+            {/*    </Form.Item>*/}
+            {/*)}*/}
             <Row gutter={12}>
-                <Col span={12}>
+                <Col span={9}>
                     <SelectEquipoForm
                         form={form}
                     />
                 </Col>
-                <Col span={12} style={{ display: 'flex'}}>
+                <Col span={15} style={{ display: 'flex'}}>
                     <Form.Item
                         className="customFormItem"
                         name="sub"
                         label="Employee"
                         rules={[{required: true}]}
                     >
-                        <Select placeholder="Select an employee" allowClear>
+                        <Select placeholder="Select an employee" allowClear
+                                disabled={!state.authenticatedUser?.is_admin}>
                             {state.persons.map((option) => (
                                 <Select.Option key={option.sub} value={option.sub}>
                                     {option.email}
@@ -176,25 +187,22 @@ const TracingForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
+                <Row gutter={24} style={{ display: 'flex', alignItems: 'center' }}>
+                    <Col span={12} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                         <SelectAffectationForm></SelectAffectationForm>
                     </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            className="customFormItem"
-                            tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
-                            name="t_affectation"
-                            label="Time affectation"
-                            rules={[{required: true}]}
-                        >
-                            <Input
-                                placeholder="Enter a value"
-                            />
-                        </Form.Item>
-                    </Col>
+                    <Form.Item
+                        className="customFormItem"
+                        tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
+                        name="t_affectation"
+                        label="Time affectation"
+                    >
+                        <Input
+                            placeholder="Enter a value"
+                        />
+                    </Form.Item>
                 </Row>
-            {state.is_admin && (
+            {state.authenticatedUser?.is_admin && (
                 <Form.Item name="plus" label="Plus">
                     <Checkbox.Group onChange={(values) => setSelectedValues(values)}>
                         <Row>
@@ -208,7 +216,7 @@ const TracingForm = () => {
                                 <Checkbox
                                     value="creativity"
                                     style={{lineHeight: "32px"}}
-                                    disabled
+
                                 >
                                     Creativity
                                     <AliwangwangOutlined style={{ marginLeft: 8 }} />
@@ -241,8 +249,22 @@ const TracingForm = () => {
                         </Row>
                     </Checkbox.Group>
                 </Form.Item>
-            )}
 
+            )}
+            {state.authenticatedUser?.is_admin && (
+                <Form.Item name="status" label="Status" className="customFormItem"
+                >
+                    <Select placeholder="Select a status" allowClear>
+                        {StatusData.map((option) => (
+                            <Select.Option key={option.id_two} value={option.id_two}>
+                                {option.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
+
+                </Form.Item>
+
+            )}
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Save

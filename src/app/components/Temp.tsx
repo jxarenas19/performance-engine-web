@@ -93,6 +93,9 @@ export default function Temp() {
         if(state.filters.type=='team' && !state.filters.userIdScore){
             filters_temp.type = state.filters.type
         }
+        else if(state.filters.type=='users' && state.filters.userIdScore) {
+            filters_temp.type = state.filters.type
+        }
         filters_temp.dateStart = state.filters.dateStart
         filters_temp.dateEnd = state.filters.dateEnd
         filters_temp.user_id = state.filters.userIdScore
@@ -106,6 +109,7 @@ export default function Temp() {
         filters_temp.dateEnd = state.filters.dateEnd
         filters_temp.user_id = state.filters.user_id
         filters_temp.group = state.filters.group
+        filters_temp.team = state.filters.team
         return filters_temp
     }
     const fetchScoreData = async () => {
@@ -134,13 +138,13 @@ export default function Temp() {
             const user: UserData = {
                 user_id: '3448b418-8091-7092-d0e6-f30074cdae1b',
                 name: 'Messi',
-                is_admin: false
+                is_admin: true
             }
             if (!user.is_admin) {
                 updateFilter('user_id', user.user_id)
                 updateFilter('userIdScore', user.user_id)
                 updateFilter('groupScore', 'Daily')
-                updateFilter('type', 'user')
+                updateFilter('type', 'users')
             }
             else{
                 updateFilter('type', 'team')

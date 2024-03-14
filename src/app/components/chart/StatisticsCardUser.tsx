@@ -82,7 +82,7 @@ const StatisticsCardUser: React.FC = () => {
     return (
         <>
             <div className="button-container">
-                <Select value={group} defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
+                <Select  size="small" value={group} defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
                     <Select.Option key="Daily" value="Daily">Daily</Select.Option>
                     <Select.Option key="Weekly" value="Weekly">Weekly</Select.Option>
                     <Select.Option key="Biweekly" value="Biweekly">Biweekly</Select.Option>
@@ -92,7 +92,7 @@ const StatisticsCardUser: React.FC = () => {
                     <Select.Option key="Annual" value="Annual">Annual</Select.Option>
                 </Select>
                 {state.authenticatedUser?.is_admin && (
-                    <Select placeholder="Select an employee" allowClear
+                    <Select  size="small" placeholder="Select an employee" allowClear
                             onSelect={userSelected}
                             // value={state.authenticatedUser ? state.authenticatedUser.user_id : undefined}
                             disabled={!state.authenticatedUser?.is_admin}>

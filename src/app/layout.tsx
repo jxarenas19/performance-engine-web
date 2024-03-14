@@ -3,6 +3,7 @@ import {Inter} from "next/font/google";
 //import './globals.css'
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
+import 'react-quill/dist/quill.snow.css';
 
 
 const inter = Inter({subsets: ["latin"]});

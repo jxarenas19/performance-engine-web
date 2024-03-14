@@ -33,8 +33,8 @@ const CustomTable: React.FC = () => {
     };
     return (
         <>
-            <Row gutter={16}>
-                <Col span={12}>
+            <Row gutter={12}>
+                <Col span={9}>
                     <Form.Item
                         className="customFormItem"
                         tooltip={{title: 'Number of people served', icon: <InfoCircleOutlined/>}}
@@ -44,7 +44,7 @@ const CustomTable: React.FC = () => {
                         <InputNumber min={0} max={10} defaultValue={0}/>
                     </Form.Item>
                 </Col>
-                <Col span={12}>
+                <Col span={15}>
                     <Form.Item
                         className="customFormItem"
                         name="people_entered_to_system"
@@ -54,8 +54,8 @@ const CustomTable: React.FC = () => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Row gutter={16}>
-                <Col span={12}>
+            <Row gutter={12}>
+                <Col span={9}>
                     <Form.Item
                         className="customFormItem"
                         tooltip={{title: '(ej. 2w, 5d, 3h, 4m)', icon: <InfoCircleOutlined/>}}
@@ -65,7 +65,7 @@ const CustomTable: React.FC = () => {
                         <InputNumber min={0} max={10} defaultValue={0}/>
                     </Form.Item>
                 </Col>
-                <Col span={12}>
+                <Col span={15}>
                     <Form.Item
                         className="customFormItem"
                         name="calls_made"
@@ -97,7 +97,7 @@ const CustomTable: React.FC = () => {
                             type="primary"
                             icon={<PlusOutlined />}
                             onClick={() => setIsModalOpen(true)}
-                            style={{ marginTop: '32px' }} // Ajusta para alinear con el Select
+                            style={{ marginTop: '32px',width:'24px',height:'24px' }}
                         >
                         </Button>
                     </Col>

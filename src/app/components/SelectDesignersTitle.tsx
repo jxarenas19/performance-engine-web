@@ -6,7 +6,7 @@ import {InfoCircleOutlined} from "@ant-design/icons";
 const SelectDesignersTitle = () => {
 
     return (
-        <Row gutter={24} style={{ display: 'flex', alignItems: 'center' }}>
+        <Row gutter={12}>
             <Col span={18} style={{ width: '100%' }}>
                 <Form.Item name="title" label="Title" className="customFormItem"
                 >

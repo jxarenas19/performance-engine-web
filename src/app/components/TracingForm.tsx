@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
+import {Button, Checkbox, Col, Form, Input, Layout, Row, Select, Spin} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import {DataForm, Filters} from '../utils/types';
 import {createTracing, updateTracing} from "@/app/hooks/useTracingApi";
@@ -20,14 +20,20 @@ import {regexTime} from "@/app/utils/variables";
 import {convertKeyValueToFormData, extractKeyValuePairs} from "@/app/utils/utils";
 import ShowTitleByTeam from "@/app/components/ShowTitleByTeam";
 import {StatusData} from "@/app/utils/data";
+import JoditEditorComponent from "@/app/components/JoditEditorComponent";
+
 
 const TracingForm = () => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
     const [showTextArea, setShowTextArea] = useState<boolean>(false);
+    const [detail, setDetail] = useState('');
     const [form] = Form.useForm();
 
+    const handleDetailChange = (newDetail:string) => {
+        setDetail(newDetail);
+    };
     const fetchTracing = async (values: DataForm) => {
 
         if(!values.id) return await createTracing(values)
@@ -38,6 +44,7 @@ const TracingForm = () => {
     };
     const completeField = (values: DataForm) => {
         values.user_id = values.sub;
+        values.detail = detail;
         if (!values.amount) values.amount = 0;
         if (!values.amount_error) values.amount_error = 0;
         if (!values.people_attended) values.people_attended = 0;
@@ -87,6 +94,11 @@ const TracingForm = () => {
     useEffect(() => {
         if (state.isModalOpen) {
             form.resetFields();
+
+            if(state.selectedTask?.detail){
+                handleDetailChange(state.selectedTask?.detail)
+            }
+
             if(!state.authenticatedUser?.is_admin){
                 form.setFieldValue('sub',state.authenticatedUser?.user_id)
                 form.setFieldValue('team',state.teams[0].id)
@@ -111,23 +123,13 @@ const TracingForm = () => {
             >
                 <Input placeholder="CODE:TITLE"/>
             </Form.Item>
-            {/*{showTextArea && (*/}
-            {/*    <Form.Item className="customFormItem" name="myTextArea" label="Introduce text here!"*/}
-            {/*               tooltip={{title: TEXT_AREA_TOOLTIP, icon: <InfoCircleOutlined/>}}>*/}
-            {/*        <Input.TextArea*/}
-            {/*            className="customFormItem"*/}
-            {/*            placeholder="Paste the text here"*/}
-            {/*            onPaste={handlePaste}*/}
-            {/*        />*/}
-            {/*    </Form.Item>*/}
-            {/*)}*/}
             <Row gutter={12}>
                 <Col span={9}>
                     <SelectEquipoForm
                         form={form}
                     />
                 </Col>
-                <Col span={15} style={{ display: 'flex'}}>
+                <Col span={15} >
                     <Form.Item
                         className="customFormItem"
                         name="sub"
@@ -152,9 +154,9 @@ const TracingForm = () => {
                     name="detail"
                     label="Detail"
                 >
-                    <TextArea placeholder="Detail" rows={4}/>
+                    <JoditEditorComponent onDetailChange={handleDetailChange}/>
                 </Form.Item>
-                <Row gutter={16}>
+                <Row gutter={24}>
                     <Col span={12}>
                         <Form.Item
                             className="customFormItem"
@@ -189,8 +191,8 @@ const TracingForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={24} style={{ display: 'flex', alignItems: 'center' }}>
-                    <Col span={12} >
+                <Row >
+                    <Col span={14} >
                         <SelectAffectationForm></SelectAffectationForm>
                     </Col>
                     <Col span={8} >
@@ -271,7 +273,7 @@ const TracingForm = () => {
 
             )}
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button style={{ marginTop:'10px',height:'24px'}} type="primary" htmlType="submit">
                         Save
                     </Button>
                 </Form.Item>

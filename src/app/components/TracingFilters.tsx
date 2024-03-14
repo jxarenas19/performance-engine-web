@@ -58,11 +58,13 @@ const TracingFilters: React.FC = () => {
     };
     return (
         <div className="button-container">
-            <Button type="primary" onClick={setIsModalOpen}>
+            <Button type="primary"
+                    style={{height:'24px'}}
+                    onClick={setIsModalOpen}>
                 Add tracing
             </Button>
-            <DatePicker.RangePicker value={date} onChange={rangeDateFilter}/>
-            <Select  value={group} defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
+            <DatePicker.RangePicker  size="small" value={date} onChange={rangeDateFilter}/>
+            <Select  value={group} defaultValue="Daily" style={{width: 120,height:24}} onChange={groupFilter}>
                 <Select.Option key="Daily" value="Daily">Daily</Select.Option>
                 <Select.Option key="Weekly" value="Weekly">Weekly</Select.Option>
                 <Select.Option key="Biweekly" value="Biweekly">Biweekly</Select.Option>
@@ -71,14 +73,14 @@ const TracingFilters: React.FC = () => {
                 <Select.Option key="Biannual" value="Biannual">Biannual</Select.Option>
                 <Select.Option key="Annual" value="Annual">Annual</Select.Option>
             </Select>
-            <Button  icon={<DeleteOutlined />} type="primary" onClick={() => {
+            <Button style={{height:'24px'}} icon={<DeleteOutlined />} type="primary" onClick={() => {
                 clearFilters(['dateStart', 'dateEnd','group'])
 
             }}>
             </Button>
-            <Button  icon={<ReloadOutlined />} type="primary" onClick={reloadTable}>
+            <Button style={{height:'24px'}} icon={<ReloadOutlined />} type="primary" onClick={reloadTable}>
             </Button>
-            <Button  icon={<BarChartOutlined />} type="primary" onClick={loadDashboard}>
+            <Button  style={{height:'24px'}} icon={<BarChartOutlined />} type="primary" onClick={loadDashboard}>
             </Button>
             <Modal
                 title="Chart Dashboard"

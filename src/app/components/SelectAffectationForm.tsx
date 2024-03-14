@@ -32,43 +32,47 @@ const SelectAffectationForm = () => {
     };
 
     return (
-        <Row gutter={24}>
-            <Col span={16} >
-                <Form.Item name="affectation" label="Affectation" className="customFormItem">
-                <Select mode="multiple" loading={state.isLoading}  placeholder="Select an affectation" allowClear>
-                    {state.affectations.map((option) => (
-                        <Select.Option key={option.id} value={option.id}>
-                            {option.name}
-                        </Select.Option>
-                    ))}
-                </Select>
-            </Form.Item>
-            </Col>
-            <Col span={6} >
+<>
+    <Row gutter={24}>
+        <Col span={20}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Form.Item name="affectation" label="Affectation" className="customFormItem" style={{ flex: 1, marginRight: 8 }}>
+                    <Select mode="multiple" loading={state.isLoading} placeholder="Select an affectation" allowClear>
+                        {state.affectations.map((option) => (
+                            <Select.Option key={option.id} value={option.id}>
+                                {option.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+
                 {state.authenticatedUser?.is_admin && (
                     <Button
                         type="primary"
-                        icon={<PlusOutlined/>}
+                        icon={<PlusOutlined />}
                         onClick={() => setIsModalOpen(true)}
-                        style={{marginLeft: '4px' ,marginTop:'32px'}}
+                        style={{marginTop:'26px',width:'24px',height:'24px'}}
                     >
                     </Button>
                 )}
-            </Col>
+            </div>
+        </Col>
+    </Row>
 
-            <Modal
-                title="Add affectation"
-                open={isModalOpen}
-                onOk={handleAddNewItem}
-                onCancel={() => setIsModalOpen(false)}
-            >
-                <Form>
-                    <Form.Item label="New affectation">
-                        <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>
-                    </Form.Item>
-                </Form>
-            </Modal>
-        </Row>
+    <Modal
+        title="Add affectation"
+        open={isModalOpen}
+        onOk={handleAddNewItem}
+        onCancel={() => setIsModalOpen(false)}
+    >
+        <Form>
+            <Form.Item label="New affectation">
+                <Input value={newItem} onChange={(e) => setNewItem(e.target.value)}/>
+            </Form.Item>
+        </Form>
+    </Modal>
+
+</>
     );
 };
 

@@ -49,7 +49,7 @@ const DashboardFilters: React.FC<DashboardFiltersProps> = ({ fetchDashboardData 
     };
     return (
         <div className="button-container">
-            <Select value={team}
+            <Select value={team} style={{width: 160,height:24}}
                 loading={state.isLoading} placeholder="Select a team" allowClear onChange={handleClick}>
                 {state.teams.map((option) => (
                     <Select.Option
@@ -60,8 +60,8 @@ const DashboardFilters: React.FC<DashboardFiltersProps> = ({ fetchDashboardData 
                     </Select.Option>
                 ))}
             </Select>
-            <DatePicker.RangePicker value={date} onChange={rangeDateFilter}/>
-            <Select  value={group} defaultValue="Daily" style={{width: 120}} onChange={groupFilter}>
+            <DatePicker.RangePicker size="small" value={date} onChange={rangeDateFilter}/>
+            <Select  value={group} defaultValue="Daily" style={{width: 120,height:24}} onChange={groupFilter}>
                 <Select.Option key="Daily" value="Daily">Daily</Select.Option>
                 <Select.Option key="Weekly" value="Weekly">Weekly</Select.Option>
                 <Select.Option key="Biweekly" value="Biweekly">Biweekly</Select.Option>
@@ -70,7 +70,7 @@ const DashboardFilters: React.FC<DashboardFiltersProps> = ({ fetchDashboardData 
                 <Select.Option key="Biannual" value="Biannual">Biannual</Select.Option>
                 <Select.Option key="Annual" value="Annual">Annual</Select.Option>
             </Select>
-            <Button  icon={<DeleteOutlined />} type="primary" onClick={() => {
+            <Button  style={{height:'24px'}} icon={<DeleteOutlined />} type="primary" onClick={() => {
                 clearFilters(['dateStart', 'dateEnd','group','team'])
 
             }}>

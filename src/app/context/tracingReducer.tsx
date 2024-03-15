@@ -1,5 +1,20 @@
-import {Filters, PageValues, TracingAction, TracingState} from "@/app/utils/types";
-
+import {Filters, GlobalScore, PageValues, TracingAction, TracingState} from "@/app/utils/types";
+const initialValue: GlobalScore = {
+    result_previous: {
+        t_spent: '',
+        t_remaining: '',
+        t_restant: '',
+        score: 0,
+        t_affectation: '',
+    },
+    result_current: {
+        t_spent: '',
+        t_remaining: '',
+        t_restant: '',
+        score: 0,
+        t_affectation: '',
+    },
+};
 export const initialState: TracingState & PageValues= {
     selectedPerson: null,
     authenticatedUser: null,
@@ -14,17 +29,7 @@ export const initialState: TracingState & PageValues= {
     activities: [],
     persons: [],
     affectations: [],
-    score: {'result_previous':{
-            't_spent':'',
-            't_remaining':'',
-            't_restant':'',
-            'score':0,
-            't_affectation':''},'result_current':{
-            't_spent':'',
-            't_remaining':'',
-            't_restant':'',
-            'score':0,
-            't_affectation':''}},
+    score: initialValue,
     chartByTime: [],
     users: [],
     isLoading: false,
@@ -87,9 +92,9 @@ export const tracingReducer = (state: TracingState & PageValues, action: Tracing
         case 'SET_AFFECTATIONS':
             return {...state, affectations: action.payload, isLoading: false};
         case 'SET_SCORE':
-            return {...state, score: action.payload, isLoading: false};
+            return {...state, score: action.payload};
         case 'SET_CHART_BY_TIME':
-            return {...state, chartByTime: action.payload, isLoading: false};
+            return {...state, chartByTime: action.payload};
         case 'LOADING_TRACINGS':
             return {...state, isLoading: action.isLoading};
         case 'LOADING_STATISTIC':

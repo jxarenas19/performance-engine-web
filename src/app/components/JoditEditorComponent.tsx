@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import JoditEditor from "jodit-react";
-import { Card } from 'antd';
 
 interface JoditEditorComponentProps {
     onDetailChange: (detail: string) => void;

@@ -100,17 +100,7 @@ export interface TracingState {
     activities: Generic[];
     persons: Person[];
     affectations: Generic[];
-    score: GlobalScore | {'result_previous':{
-        't_spent':'',
-            't_remaining':'',
-            't_restant':'',
-            'score':0,
-            't_affectation':''},'result_current':{
-            't_spent':'',
-            't_remaining':'',
-            't_restant':'',
-            'score':0,
-            't_affectation':''}};
+    score: GlobalScore;
     chartByTime: ChartByTime[] | [];
     users: User[];
     isLoading: boolean;
@@ -157,8 +147,8 @@ export type TracingAction =
     | { type: 'SET_ACTIVITIES'; payload: Generic[] }
     | { type: 'SET_USERS'; payload: Person[] }
     | { type: 'SET_AFFECTATIONS'; payload: Generic[] }
-    | { type: 'SET_SCORE'; payload: Score }
-    | { type: 'SET_CHART_BY_TIME'; payload: ChartByTime }
+    | { type: 'SET_SCORE'; payload: GlobalScore }
+    | { type: 'SET_CHART_BY_TIME'; payload: ChartByTime[] }
     | { type: 'SET_ERROR'; payload: string}
     | { type: 'SET_PAGE'; payload: number}
     | { type: 'SET_PAGE_SIZE'; payload: number}
@@ -176,7 +166,7 @@ export interface Generic {
     name: string;
 }
 
-interface GlobalScore {
+export interface GlobalScore {
     result_current: Score,
     result_previous: Score
 }

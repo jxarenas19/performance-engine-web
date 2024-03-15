@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Checkbox, Col, Form, Input, Layout, Row, Select, Spin} from 'antd';
-import TextArea from 'antd/es/input/TextArea';
+import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
 import {DataForm, Filters} from '../utils/types';
 import {createTracing, updateTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";

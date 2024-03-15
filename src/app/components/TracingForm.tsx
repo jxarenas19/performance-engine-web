@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Checkbox, Col, Form, Input, Row, Select, Spin} from 'antd';
+import {Button, Checkbox, Col, Form, Input, Modal, Radio, Row, Select, Spin, Switch} from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import {DataForm, Filters} from '../utils/types';
 import {createTracing, updateTracing} from "@/app/hooks/useTracingApi";
 import {TracingContext} from "@/app/context/tracingContext";
@@ -26,10 +27,20 @@ const TracingForm = () => {
     const context = useContext(TracingContext);
     if (!context) throw new Error('TracingContext must be used within TracingProvider');
     const {state, dispatch} = context;
-    const [showTextArea, setShowTextArea] = useState<boolean>(false);
-    const [detail, setDetail] = useState('');
     const [form] = Form.useForm();
-
+    const [detail, setDetail] = useState('');
+    const [selectedValue, setSelectedValue] = useState('detail');
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+    };
+    const handleRadioChange = function (e:any) {
+        setSelectedValue(e.target.value);
+        // Abrir el modal solo si la opción 'Advanced' se selecciona por primera vez
+        if (e.target.value === 'advanced' && !isModalVisible) {
+            setIsModalVisible(true);
+        }
+    };
     const handleDetailChange = (newDetail:string) => {
         setDetail(newDetail);
     };
@@ -43,7 +54,7 @@ const TracingForm = () => {
     };
     const completeField = (values: DataForm) => {
         values.user_id = values.sub;
-        values.detail = detail;
+        if(detail) values.detail = detail;
         if (!values.amount) values.amount = 0;
         if (!values.amount_error) values.amount_error = 0;
         if (!values.people_attended) values.people_attended = 0;
@@ -75,16 +86,7 @@ const TracingForm = () => {
         });
 
     };
-    const handlePaste = (event: any) => {
-        const pasteText = event.clipboardData.getData("text");
 
-        const values = extractKeyValuePairs(pasteText);
-        const formData = convertKeyValueToFormData(values);
-
-        form.setFieldsValue(formData);
-        form.setFieldsValue({ myTextArea: '' });
-        setShowTextArea(false);
-    };
 
     const setSelectedValues = (values: CheckboxValueType[]) => {
         dispatch({type: 'SET_SELECTED_VALUES', payload: values});
@@ -94,9 +96,6 @@ const TracingForm = () => {
         if (state.isModalOpen) {
             form.resetFields();
 
-            if(state.selectedTask?.detail){
-                handleDetailChange(state.selectedTask?.detail)
-            }
 
             if(!state.authenticatedUser?.is_admin){
                 form.setFieldValue('sub',state.authenticatedUser?.user_id)
@@ -148,13 +147,19 @@ const TracingForm = () => {
                 </Col>
             </Row>
             <ShowTitleByTeam></ShowTitleByTeam>
+            <Radio.Group onChange={handleRadioChange} value={selectedValue}>
+                <Radio value="detail">Detail basic</Radio>
+                <Radio value="advanced">Advanced</Radio>
+            </Radio.Group>
+            {selectedValue === 'detail' && (
                 <Form.Item
                     className="customFormItem"
                     name="detail"
-                    label="Detail"
                 >
-                    <JoditEditorComponent onDetailChange={handleDetailChange}/>
+                    <TextArea placeholder="Detail" rows={4}/>
+
                 </Form.Item>
+            )}
                 <Row gutter={24}>
                     <Col span={12}>
                         <Form.Item
@@ -277,6 +282,15 @@ const TracingForm = () => {
                     </Button>
                 </Form.Item>
         </Form>
+            <Modal
+                title="Configuración Avanzada"
+                open={isModalVisible}
+                onCancel={handleCloseModal}
+                onOk={handleCloseModal}
+
+            >
+                <JoditEditorComponent onDetailChange={handleDetailChange}/>
+            </Modal>
         </Spin>
 );
 };
